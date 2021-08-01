@@ -1,0 +1,31 @@
+{
+    "type": "minecraft:crafting_shapeless",
+    "ingredients": [
+        {
+            "item": "minecraft:smooth_stone_slab"
+        },
+        {
+            "item": "minecraft:rotten_flesh"
+        }
+    ],
+    "result": {
+        "type": "forge:nbt",
+        "item": "trophymanager:trophy",
+        "nbt": {
+            "TrophyType": "entity",
+            "TrophyEntity": {
+                "entityType": "minecraft:zombie",
+                "ArmorItems": [
+                    {
+                        "id": "minecraft:iron_helmet",
+                        "Count": 1
+                    },
+                    {},
+                    {},
+                    {}
+                ]
+            },
+            "Name": "Zombie Trophy"
+        }
+    }
+}

@@ -1,0 +1,22 @@
+{
+    "type": "minecraft:crafting_shapeless",
+    "ingredients": [
+        {
+            "item": "minecraft:smooth_stone_slab"
+        },
+        {
+            "item": "minecraft:grass_block"
+        }
+    ],
+    "result": {
+        "type": "forge:nbt",
+        "item": "trophymanager:trophy",
+        "nbt": {
+            "TrophyType": "item",
+            "TrophyItem": {
+                "id": "minecraft:grass_block"
+            },
+            "Name": "Grass Trophy"
+        }
+    }
+}

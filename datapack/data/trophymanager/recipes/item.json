@@ -1,0 +1,22 @@
+{
+    "type": "minecraft:crafting_shapeless",
+    "ingredients": [
+        {
+            "item": "minecraft:smooth_stone_slab"
+        },
+        {
+            "item": "minecraft:wooden_hoe"
+        }
+    ],
+    "result": {
+        "type": "forge:nbt",
+        "item": "trophymanager:trophy",
+        "nbt": {
+            "TrophyType": "item",
+            "TrophyItem": {
+                "id": "minecraft:wooden_hoe"
+            },
+            "Name": "Super Hoe Trophy"
+        }
+    }
+}

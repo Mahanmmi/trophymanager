@@ -1,0 +1,22 @@
+{
+    "type": "minecraft:crafting_shapeless",
+    "ingredients": [
+        {
+            "item": "minecraft:smooth_stone_slab"
+        },
+        {
+            "item": "minecraft:honeycomb"
+        }
+    ],
+    "result": {
+        "type": "forge:nbt",
+        "item": "trophymanager:trophy",
+        "nbt": {
+            "TrophyType": "entity",
+            "TrophyEntity": {
+                "entityType": "minecraft:bee"
+            },
+            "Name": "Bee Trophy"
+        }
+    }
+}
