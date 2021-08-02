@@ -7,7 +7,7 @@ import net.minecraft.client.renderer.model.ItemCameraTransforms;
 import net.minecraft.client.renderer.tileentity.ItemStackTileEntityRenderer;
 import net.minecraft.client.renderer.tileentity.TileEntityRendererDispatcher;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.util.math.vector.Vector3f;
 
 import javax.annotation.Nonnull;
 
@@ -20,12 +20,20 @@ public class TrophyItemStackRenderer extends ItemStackTileEntityRenderer
         if (blockEntity == null) {
             blockEntity = new TrophyBlockEntity();
         }
-        CompoundNBT tag = stack.getTag();
-        if (tag != null && tag.contains("TrophyType")) {
-            blockEntity.loadData(tag);
-            blockEntity.scale = blockEntity.scale / 2;
+        blockEntity.loadData(stack.getOrCreateTag());
+        matrixStack.pushPose();
 
-            TileEntityRendererDispatcher.instance.renderItem(blockEntity, matrixStack, buffer, packedLightIn, packedUV);
+        if (transformType.equals(ItemCameraTransforms.TransformType.GUI)) {
+            matrixStack.translate(0.42f, 0.4f, 0.42f);
+            matrixStack.scale(0.4f, 0.4f, 0.4f);
+            matrixStack.mulPose(Vector3f.XP.rotationDegrees(35.0F));
+            matrixStack.mulPose(Vector3f.YP.rotationDegrees(-45.0F));
+        } else {
+            matrixStack.translate(0.32f, 0.3f, 0.32f);
+            matrixStack.scale(0.3f, 0.3f, 0.3f);
         }
+
+        TileEntityRendererDispatcher.instance.renderItem(blockEntity, matrixStack, buffer, packedLightIn, packedUV);
+        matrixStack.popPose();
     }
 }

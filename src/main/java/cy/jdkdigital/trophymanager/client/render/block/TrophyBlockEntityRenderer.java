@@ -1,6 +1,7 @@
 package cy.jdkdigital.trophymanager.client.render.block;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
+import cy.jdkdigital.trophymanager.TrophyManager;
 import cy.jdkdigital.trophymanager.common.tileentity.TrophyBlockEntity;
 import net.minecraft.block.Block;
 import net.minecraft.block.HorizontalBlock;
@@ -77,6 +78,10 @@ public class TrophyBlockEntityRenderer extends TileEntityRenderer<TrophyBlockEnt
         matrixStack.translate(0.5f, trophyTileEntity.offsetY, 0.5f);
         matrixStack.mulPose(Vector3f.YP.rotationDegrees(angle));
         matrixStack.scale(trophyTileEntity.scale, trophyTileEntity.scale, trophyTileEntity.scale);
+
+        if (trophyTileEntity.entity.getString("entityType").equals("minecraft:ender_dragon")) {
+            matrixStack.mulPose(Vector3f.YP.rotationDegrees(180f));
+        }
 
         EntityRendererManager entityrenderermanager = Minecraft.getInstance().getEntityRenderDispatcher();
         entityrenderermanager.setRenderShadow(false);

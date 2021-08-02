@@ -1,0 +1,61 @@
+{
+    "type": "minecraft:block",
+    "pools": [
+        {
+            "rolls": 1,
+            "entries": [
+                {
+                    "type": "minecraft:item",
+                    "functions": [
+                        {
+                            "function": "minecraft:copy_name",
+                            "source": "block_entity"
+                        },
+                        {
+                            "function": "minecraft:copy_nbt",
+                            "source": "block_entity",
+                            "ops": [
+                                {
+                                    "source": "TrophyData.TrophyType",
+                                    "target": "TrophyType",
+                                    "op": "replace"
+                                },
+                                {
+                                    "source": "TrophyData.TrophyEntity",
+                                    "target": "TrophyEntity",
+                                    "op": "replace"
+                                },
+                                {
+                                    "source": "TrophyData.TrophyItem",
+                                    "target": "TrophyItem",
+                                    "op": "replace"
+                                },
+                                {
+                                    "source": "TrophyData.Name",
+                                    "target": "Name",
+                                    "op": "replace"
+                                },
+                                {
+                                    "source": "TrophyData.Scale",
+                                    "target": "Scale",
+                                    "op": "replace"
+                                },
+                                {
+                                    "source": "TrophyData.OffsetY",
+                                    "target": "OffsetY",
+                                    "op": "replace"
+                                },
+                                {
+                                    "source": "TrophyData.BaseBlock",
+                                    "target": "BaseBlock",
+                                    "op": "replace"
+                                }
+                            ]
+                        }
+                    ],
+                    "name": "trophymanager:trophy"
+                }
+            ]
+        }
+    ]
+}
