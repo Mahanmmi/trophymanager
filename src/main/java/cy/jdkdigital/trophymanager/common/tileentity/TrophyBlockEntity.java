@@ -5,6 +5,8 @@ import cy.jdkdigital.trophymanager.init.ModBlockEntities;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
+import net.minecraft.entity.IAngerable;
+import net.minecraft.entity.monster.ShulkerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.nbt.CompoundNBT;
@@ -23,7 +25,7 @@ import java.util.Map;
 
 public class TrophyBlockEntity extends TileEntity
 {
-    private static final Map<String, Entity> cachedEntity = new HashMap<>();
+    private static final Map<Integer, Entity> cachedEntities = new HashMap<>();
 
     public String trophyType; // item, entity
     public ItemStack item = null;
@@ -121,11 +123,17 @@ public class TrophyBlockEntity extends TileEntity
     }
 
     public Entity getCachedEntity() {
-        String type = this.entity.getString("entityType");
-        if (!cachedEntity.containsKey(type)) {
-            cachedEntity.put(type, createEntity(TrophyManager.proxy.getWorld(), this.entity));
+        int key = entity.hashCode();
+        if (!cachedEntities.containsKey(key)) {
+            Entity cachedEntity = createEntity(TrophyManager.proxy.getWorld(), entity);
+            if (cachedEntity instanceof IAngerable && entity.contains("AngerTime")) {
+                ((IAngerable) cachedEntity).setRemainingPersistentAngerTime(entity.getInt("AngerTime"));
+            } else if (cachedEntity instanceof ShulkerEntity && entity.contains("Peek")) {
+                ((ShulkerEntity) cachedEntity).setRawPeekAmount(entity.getInt("Peek"));
+            }
+            TrophyBlockEntity.cachedEntities.put(key, cachedEntity);
         }
-        return cachedEntity.getOrDefault(type, null);
+        return cachedEntities.getOrDefault(key, null);
     }
 
     public static Entity createEntity(World world, CompoundNBT tag) {

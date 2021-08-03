@@ -14,10 +14,13 @@
         "nbt": {
             "TrophyType": "entity",
             "TrophyEntity": {
-                "entityType": "minecraft:bee",
-                "AngerTime": 1000
+                "entityType": "minecraft:wolf",
+                "Sitting": true,
+                "CollarColor": 13
             },
-            "Name": "Bee Trophy"
+            "OffsetY": 0.0625,
+            "BaseBlock": "minecraft:red_carpet",
+            "Name": "Sitting Wolf Trophy"
         }
     }
 }

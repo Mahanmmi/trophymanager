@@ -1,0 +1,24 @@
+{
+    "type": "minecraft:crafting_shapeless",
+    "ingredients": [
+        {
+            "item": "minecraft:smooth_stone_slab"
+        },
+        {
+            "item": "minecraft:honeycomb_block"
+        }
+    ],
+    "result": {
+        "type": "forge:nbt",
+        "item": "trophymanager:trophy",
+        "nbt": {
+            "TrophyType": "entity",
+            "TrophyEntity": {
+                "entityType": "minecraft:salmon"
+            },
+            "OffsetY": 0.6,
+            "BaseBlock": "minecraft:blue_stained_glass",
+            "Name": "Fishbowl Trophy"
+        }
+    }
+}

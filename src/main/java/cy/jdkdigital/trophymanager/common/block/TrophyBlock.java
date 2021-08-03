@@ -20,6 +20,7 @@ import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.pathfinding.PathType;
 import net.minecraft.state.StateContainer;
 import net.minecraft.state.properties.BlockStateProperties;
+import net.minecraft.state.properties.SlabType;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.*;
 import net.minecraft.util.math.BlockPos;
@@ -35,7 +36,7 @@ import javax.annotation.Nullable;
 
 public class TrophyBlock extends Block implements IWaterLoggable
 {
-    protected static final VoxelShape SLAB = Block.box(0.0D, 0.0D, 0.0D, 16.0D, 8.0D, 16.0D);
+    protected static final VoxelShape SLAB = Block.box(0.0D, 0.0D, 0.0D, 16.0D, 15.9D, 16.0D);
 
     public TrophyBlock(Properties properties) {
         super(properties);
@@ -54,7 +55,8 @@ public class TrophyBlock extends Block implements IWaterLoggable
 
     @Override
     public BlockState getStateForPlacement(BlockItemUseContext context) {
-        return this.defaultBlockState().setValue(BeehiveBlock.FACING, context.getHorizontalDirection().getOpposite());
+        FluidState fluidState = context.getLevel().getFluidState(context.getClickedPos());
+        return this.defaultBlockState().setValue(BeehiveBlock.FACING, context.getHorizontalDirection().getOpposite()).setValue(BlockStateProperties.WATERLOGGED, fluidState.getType() == Fluids.WATER);
     }
 
     @Override
@@ -130,11 +132,9 @@ public class TrophyBlock extends Block implements IWaterLoggable
         if (!level.isClientSide) {
             if (level.hasNeighborSignal(pos)) {
                 TileEntity te = level.getBlockEntity(pos);
-                TrophyManager.LOGGER.info(te);
                 if (te instanceof TrophyBlockEntity) {
                     if (((TrophyBlockEntity) te).trophyType.equals("entity")) {
                         String entity = ((TrophyBlockEntity) te).entity.getString("entityType");
-                        TrophyManager.LOGGER.info(entity);
                         switch (entity) {
                             case "minecraft:creeper":
                                 level.playSound(null, pos, SoundEvents.CREEPER_PRIMED, SoundCategory.HOSTILE, 1.0F, 1.0F);
@@ -183,7 +183,10 @@ public class TrophyBlock extends Block implements IWaterLoggable
                             default:
                                 Entity e = ((TrophyBlockEntity) te).getCachedEntity();
                                 if (e instanceof MobEntity) {
-                                    level.playSound(null, pos, ((MobEntity) e).getAmbientSound(), SoundCategory.HOSTILE, 1.0F, 1.0F);
+                                    SoundEvent sound = ((MobEntity) e).getAmbientSound();
+                                    if (sound != null) {
+                                        level.playSound(null, pos, sound, SoundCategory.HOSTILE, 1.0F, 1.0F);
+                                    }
                                 }
                                 break;
                         }
@@ -195,7 +198,6 @@ public class TrophyBlock extends Block implements IWaterLoggable
 
     @Override
     public void fillItemCategory(@Nonnull ItemGroup group, @Nonnull NonNullList<ItemStack> items) {
-        // TODO fill with vanilla entity trophies
         ItemStack trophy = new ItemStack(ModBlocks.TROPHY.get());
 
         String[] entities = {"bat", "bee", "blaze", "cat", "cave_spider", "chicken", "cow", "creeper", "dolphin", "donkey", "drowned", "elder_guardian", "ender_dragon", "enderman", "endermite", "evoker", "fox", "ghast", "guardian", "hoglin", "horse", "husk", "illusioner", "iron_golem", "llama", "magma_cube", "mule", "mooshroom", "ocelot", "panda", "parrot", "phantom", "pig", "piglin", "piglin_brute", "pillager", "polar_bear", "pufferfish", "rabbit", "ravager", "sheep", "shulker", "silverfish", "skeleton", "skeleton_horse", "slime", "snow_golem", "spider", "squid", "stray", "strider", "trader_llama", "tropical_fish", "turtle", "vex", "villager", "vindicator", "wandering_trader", "witch", "wither", "wither_skeleton", "wolf", "zoglin", "zombie", "zombie_horse", "zombie_villager", "zombified_piglin"};
@@ -205,14 +207,34 @@ public class TrophyBlock extends Block implements IWaterLoggable
             entityTag.remove("TrophyEntity");
             CompoundNBT entity = new CompoundNBT();
             entity.putString("entityType", "minecraft:" + entityId);
-            entityTag.put("TrophyEntity", entity);
-            if (entityId.equals("ender_dragon")) {
-                entityTag.putFloat("Scale", 0.1f);
-                entityTag.putDouble("OffsetY", 0.8d);
-            } else if (entityId.equals("ghast")) {
-                entityTag.putFloat("Scale", 0.4f);
-                entityTag.putDouble("OffsetY", 1.2d);
+            switch (entityId) {
+                case "ender_dragon":
+                    entityTag.putFloat("Scale", 0.1f);
+                    entityTag.putDouble("OffsetY", 0.8d);
+                    break;
+                case "ghast":
+                    entityTag.putFloat("Scale", 0.4f);
+                    entityTag.putDouble("OffsetY", 1.4d);
+                    break;
+                case "bee":
+                    entityTag.putDouble("OffsetY", 0.8d);
+                    break;
+                case "vex":
+                    entityTag.putDouble("OffsetY", 0.8d);
+                    break;
+                case "phantom":
+                    entityTag.putDouble("OffsetY", 0.8d);
+                    break;
+                case "pufferfish":
+                    entity.putInt("PuffState", 1);
+                    break;
+                case "shulker":
+                    entity.putInt("Color", 2);
+                    entity.putInt("Peek", 30);
+                    break;
             }
+
+            entityTag.put("TrophyEntity", entity);
             entityTag.putString("Name", idToName(entityId) + " trophy");
 
             trophy.setTag(entityTag);
