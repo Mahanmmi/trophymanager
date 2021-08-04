@@ -2,67 +2,68 @@ package cy.jdkdigital.trophymanager.common.tileentity;
 
 import cy.jdkdigital.trophymanager.TrophyManager;
 import cy.jdkdigital.trophymanager.init.ModBlockEntities;
-import net.minecraft.block.BlockState;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.IAngerable;
-import net.minecraft.entity.monster.ShulkerEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.network.NetworkManager;
-import net.minecraft.network.play.server.SUpdateTileEntityPacket;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.math.AxisAlignedBB;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
+import net.minecraft.core.BlockPos;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.Connection;
+import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.NeutralMob;
+import net.minecraft.world.entity.monster.Shulker;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.AABB;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.HashMap;
 import java.util.Map;
 
-public class TrophyBlockEntity extends TileEntity
+public class TrophyBlockEntity extends BlockEntity
 {
     private static final Map<Integer, Entity> cachedEntities = new HashMap<>();
 
     public String trophyType; // item, entity
     public ItemStack item = null;
-    public CompoundNBT entity = null;
+    public CompoundTag entity = null;
     public double offsetY;
+    public float rotX;
     public float scale;
     public ResourceLocation baseBlock;
     private String name;
 
-    public TrophyBlockEntity() {
-        super(ModBlockEntities.TROPHY.get());
+    public TrophyBlockEntity(BlockPos pos, BlockState state) {
+        super(ModBlockEntities.TROPHY.get(), pos, state);
     }
 
     @Override
-    public AxisAlignedBB getRenderBoundingBox() {
+    public AABB getRenderBoundingBox() {
         BlockPos pos = getBlockPos();
-        return new AxisAlignedBB(pos, pos.offset(1, 2, 1));
+        return new AABB(pos, pos.offset(1, 2, 1));
     }
 
     @Override
-    public void load(@Nonnull BlockState blockState, @Nonnull CompoundNBT tag) {
-        super.load(blockState, tag);
+    public void load(@Nonnull CompoundTag tag) {
+        super.load(tag);
 
         loadData(tag.getCompound("TrophyData"));
     }
 
     @Nonnull
     @Override
-    public CompoundNBT save(@Nonnull CompoundNBT tag) {
+    public CompoundTag save(@Nonnull CompoundTag tag) {
         super.save(tag);
 
-        CompoundNBT trophyTag = new CompoundNBT();
+        CompoundTag trophyTag = new CompoundTag();
 
         trophyTag.putString("TrophyType", trophyType);
 
         if (item != null) {
-            trophyTag.put("TrophyItem", item.save(new CompoundNBT()));
+            trophyTag.put("TrophyItem", item.save(new CompoundTag()));
         }
 
         if (entity != null) {
@@ -70,6 +71,7 @@ public class TrophyBlockEntity extends TileEntity
         }
 
         trophyTag.putDouble("OffsetY", offsetY);
+        trophyTag.putFloat("RotX", rotX);
         trophyTag.putFloat("Scale", scale);
         trophyTag.putString("BaseBlock", baseBlock.toString());
         if (name != null) {
@@ -81,11 +83,11 @@ public class TrophyBlockEntity extends TileEntity
         return tag;
     }
 
-    public void loadData(CompoundNBT tag) {
+    public void loadData(CompoundTag tag) {
         trophyType = tag.contains("TrophyType") ? tag.getString("TrophyType") : "item";
 
         if (tag.contains("TrophyItem")) {
-            CompoundNBT itemTag = tag.getCompound("TrophyItem");
+            CompoundTag itemTag = tag.getCompound("TrophyItem");
             if (!itemTag.contains("Count")) {
                 itemTag.putDouble("Count", 1D);
             }
@@ -103,6 +105,12 @@ public class TrophyBlockEntity extends TileEntity
             scale = tag.getFloat("Scale");
         } else {
             scale = 0.5f;
+        }
+
+        if (tag.contains("RotX")) {
+            rotX = tag.getFloat("RotX");
+        } else {
+            rotX = 0.0f;
         }
 
         if (tag.contains("OffsetY")) {
@@ -126,17 +134,17 @@ public class TrophyBlockEntity extends TileEntity
         int key = entity.hashCode();
         if (!cachedEntities.containsKey(key)) {
             Entity cachedEntity = createEntity(TrophyManager.proxy.getWorld(), entity);
-            if (cachedEntity instanceof IAngerable && entity.contains("AngerTime")) {
-                ((IAngerable) cachedEntity).setRemainingPersistentAngerTime(entity.getInt("AngerTime"));
-            } else if (cachedEntity instanceof ShulkerEntity && entity.contains("Peek")) {
-                ((ShulkerEntity) cachedEntity).setRawPeekAmount(entity.getInt("Peek"));
+            if (cachedEntity instanceof NeutralMob && entity.contains("AngerTime")) {
+                ((NeutralMob) cachedEntity).setRemainingPersistentAngerTime(entity.getInt("AngerTime"));
+            } else if (cachedEntity instanceof Shulker && entity.contains("Peek")) {
+//                ((Shulker) cachedEntity).setRawPeekAmount(entity.getInt("Peek"));
             }
             TrophyBlockEntity.cachedEntities.put(key, cachedEntity);
         }
         return cachedEntities.getOrDefault(key, null);
     }
 
-    public static Entity createEntity(World world, CompoundNBT tag) {
+    public static Entity createEntity(Level world, CompoundTag tag) {
         EntityType<?> type = EntityType.byString(tag.getString("entityType")).orElse(null);
         if (type != null) {
             Entity loadedEntity = type.create(world);
@@ -150,23 +158,23 @@ public class TrophyBlockEntity extends TileEntity
 
     @Nullable
     @Override
-    public SUpdateTileEntityPacket getUpdatePacket() {
-        return new SUpdateTileEntityPacket(this.getBlockPos(), -1, this.getUpdateTag());
+    public ClientboundBlockEntityDataPacket getUpdatePacket() {
+        return new ClientboundBlockEntityDataPacket(this.getBlockPos(), -1, this.getUpdateTag());
     }
 
     @Override
-    public void onDataPacket(NetworkManager net, SUpdateTileEntityPacket pkt) {
-        handleUpdateTag(null, pkt.getTag());
+    public void onDataPacket(Connection net, ClientboundBlockEntityDataPacket pkt) {
+        handleUpdateTag(pkt.getTag());
     }
 
     @Override
     @Nonnull
-    public CompoundNBT getUpdateTag() {
+    public CompoundTag getUpdateTag() {
         return this.serializeNBT();
     }
 
     @Override
-    public void handleUpdateTag(BlockState state, CompoundNBT tag) {
+    public void handleUpdateTag(CompoundTag tag) {
         deserializeNBT(tag);
     }
 }

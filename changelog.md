@@ -1,3 +1,8 @@
+0.1.1.1
+
+- Fixed sounds
+
+
 0.1.1.0
 
 - Added mob sound effect when the trophy is given a redstone signal

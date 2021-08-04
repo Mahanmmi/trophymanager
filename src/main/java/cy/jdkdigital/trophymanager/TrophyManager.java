@@ -6,10 +6,10 @@ import cy.jdkdigital.trophymanager.init.ModBlocks;
 import cy.jdkdigital.trophymanager.setup.ClientProxy;
 import cy.jdkdigital.trophymanager.setup.IProxy;
 import cy.jdkdigital.trophymanager.setup.ServerProxy;
+import net.minecraft.client.renderer.blockentity.BlockEntityRenderers;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.DistExecutor;
-import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
@@ -36,11 +36,11 @@ public class TrophyManager
         IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
         ModBlocks.BLOCKS.register(modEventBus);
         ModBlocks.ITEMS.register(modEventBus);
-        ModBlockEntities.BLOCK_ENTITY_TYPES.register(modEventBus);
+        ModBlockEntities.BLOCK_ENTITIES.register(modEventBus);
     }
 
     private void doClientStuff(final FMLClientSetupEvent event) {
         // do something that can only be done on the client
-        ClientRegistry.bindTileEntityRenderer(ModBlockEntities.TROPHY.get(), TrophyBlockEntityRenderer::new);
+        BlockEntityRenderers.register(ModBlockEntities.TROPHY.get(), TrophyBlockEntityRenderer::new);
     }
 }

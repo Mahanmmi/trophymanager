@@ -1,69 +1,66 @@
 package cy.jdkdigital.trophymanager.client.render.block;
 
-import com.mojang.blaze3d.matrix.MatrixStack;
-import cy.jdkdigital.trophymanager.TrophyManager;
+import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.math.Vector3f;
 import cy.jdkdigital.trophymanager.common.tileentity.TrophyBlockEntity;
-import net.minecraft.block.Block;
-import net.minecraft.block.HorizontalBlock;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.IRenderTypeBuffer;
-import net.minecraft.client.renderer.entity.EntityRendererManager;
-import net.minecraft.client.renderer.model.ItemCameraTransforms;
-import net.minecraft.client.renderer.tileentity.TileEntityRenderer;
-import net.minecraft.client.renderer.tileentity.TileEntityRendererDispatcher;
-import net.minecraft.entity.Entity;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.util.Direction;
-import net.minecraft.util.math.vector.Vector3f;
+import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.client.renderer.block.model.ItemTransforms;
+import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
+import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
+import net.minecraft.client.renderer.entity.EntityRenderDispatcher;
+import net.minecraft.core.Direction;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.HorizontalDirectionalBlock;
 import net.minecraftforge.client.model.data.EmptyModelData;
 import net.minecraftforge.registries.ForgeRegistries;
 
 import javax.annotation.Nonnull;
 
-public class TrophyBlockEntityRenderer extends TileEntityRenderer<TrophyBlockEntity>
+public class TrophyBlockEntityRenderer implements BlockEntityRenderer<TrophyBlockEntity>
 {
-    public TrophyBlockEntityRenderer(TileEntityRendererDispatcher dispatcher) {
-        super(dispatcher);
+    public TrophyBlockEntityRenderer(BlockEntityRendererProvider.Context context) {
     }
 
     @Override
-    public void render(@Nonnull TrophyBlockEntity trophyTileEntity, float v, @Nonnull MatrixStack matrixStack, @Nonnull IRenderTypeBuffer buffer, int combinedLightIn, int combinedOverlayIn) {
+    public void render(@Nonnull TrophyBlockEntity trophyTileEntity, float v, @Nonnull PoseStack poseStack, @Nonnull MultiBufferSource buffer, int combinedLightIn, int combinedOverlayIn) {
         if (trophyTileEntity.trophyType != null) {
             if (trophyTileEntity.trophyType.equals("item") && trophyTileEntity.item != null) {
-                renderItem(trophyTileEntity, matrixStack, buffer, combinedLightIn, combinedOverlayIn);
+                renderItem(trophyTileEntity, poseStack, buffer, combinedLightIn, combinedOverlayIn);
             } else if (trophyTileEntity.trophyType.equals("entity")) {
                 Entity entity = trophyTileEntity.getCachedEntity();
                 if (entity != null) {
-                    renderEntity(trophyTileEntity, matrixStack, buffer, combinedLightIn);
+                    renderEntity(trophyTileEntity, poseStack, buffer, combinedLightIn);
                 }
             }
         }
 
-        renderBase(trophyTileEntity, matrixStack, buffer, combinedLightIn, combinedOverlayIn);
+        renderBase(trophyTileEntity, poseStack, buffer, combinedLightIn, combinedOverlayIn);
     }
 
-    private void renderBase(TrophyBlockEntity trophyTileEntity, MatrixStack matrixStack, @Nonnull IRenderTypeBuffer buffer, int combinedLightIn, int combinedOverlayIn) {
+    private void renderBase(TrophyBlockEntity trophyTileEntity, PoseStack poseStack, @Nonnull MultiBufferSource buffer, int combinedLightIn, int combinedOverlayIn) {
         Block baseBlock = ForgeRegistries.BLOCKS.getValue(trophyTileEntity.baseBlock);
         if (baseBlock != null) {
-            Minecraft.getInstance().getBlockRenderer().renderBlock(baseBlock.defaultBlockState(), matrixStack, buffer, combinedLightIn, combinedOverlayIn, EmptyModelData.INSTANCE);
+            Minecraft.getInstance().getBlockRenderer().renderSingleBlock(baseBlock.defaultBlockState(), poseStack, buffer, combinedLightIn, combinedOverlayIn, EmptyModelData.INSTANCE);
         }
     }
 
-    private void renderItem(TrophyBlockEntity trophyTileEntity, MatrixStack matrixStack, @Nonnull IRenderTypeBuffer buffer, int combinedLightIn, int combinedOverlayIn) {
+    private void renderItem(TrophyBlockEntity trophyTileEntity, PoseStack poseStack, @Nonnull MultiBufferSource buffer, int combinedLightIn, int combinedOverlayIn) {
         double tick = System.currentTimeMillis() / 800.0D;
 
-        matrixStack.pushPose();
-        matrixStack.translate(0.5f, trophyTileEntity.offsetY + 0.5D + Math.sin(tick / 25f) / 15f, 0.5f);
-        matrixStack.mulPose(Vector3f.YP.rotationDegrees((float) ((tick * 40.0D) % 360)));
-        matrixStack.scale(trophyTileEntity.scale, trophyTileEntity.scale, trophyTileEntity.scale);
-        Minecraft.getInstance().getItemRenderer().renderStatic(trophyTileEntity.item, ItemCameraTransforms.TransformType.FIXED, combinedLightIn, combinedOverlayIn, matrixStack, buffer);
-        matrixStack.popPose();
+        poseStack.pushPose();
+        poseStack.translate(0.5f, trophyTileEntity.offsetY + 0.5D + Math.sin(tick / 25f) / 15f, 0.5f);
+        poseStack.mulPose(Vector3f.YP.rotationDegrees((float) ((tick * 40.0D) % 360)));
+        poseStack.scale(trophyTileEntity.scale, trophyTileEntity.scale, trophyTileEntity.scale);
+        Minecraft.getInstance().getItemRenderer().renderStatic(trophyTileEntity.item, ItemTransforms.TransformType.FIXED, combinedLightIn, combinedOverlayIn, poseStack, buffer, 0);
+        poseStack.popPose();
     }
 
-    private void renderEntity(TrophyBlockEntity trophyTileEntity, MatrixStack matrixStack, @Nonnull IRenderTypeBuffer buffer, int combinedLightIn) {
+    private void renderEntity(TrophyBlockEntity trophyTileEntity, PoseStack matrixStack, @Nonnull MultiBufferSource buffer, int combinedLightIn) {
         float angle = 0;
         if (trophyTileEntity.getLevel() != null) {
-            Direction facing = trophyTileEntity.getBlockState().getValue(HorizontalBlock.FACING);
+            Direction facing = trophyTileEntity.getBlockState().getValue(HorizontalDirectionalBlock.FACING);
             if (facing == Direction.NORTH) {
                 angle = 180f;
             } else if (facing == Direction.SOUTH) {
@@ -78,13 +75,14 @@ public class TrophyBlockEntityRenderer extends TileEntityRenderer<TrophyBlockEnt
         matrixStack.pushPose();
         matrixStack.translate(0.5f, trophyTileEntity.offsetY, 0.5f);
         matrixStack.mulPose(Vector3f.YP.rotationDegrees(angle));
+        matrixStack.mulPose(Vector3f.XP.rotationDegrees(trophyTileEntity.rotX));
         matrixStack.scale(trophyTileEntity.scale, trophyTileEntity.scale, trophyTileEntity.scale);
 
         if (trophyTileEntity.entity.getString("entityType").equals("minecraft:ender_dragon")) {
             matrixStack.mulPose(Vector3f.YP.rotationDegrees(180f));
         }
 
-        EntityRendererManager entityrenderermanager = Minecraft.getInstance().getEntityRenderDispatcher();
+        EntityRenderDispatcher entityrenderermanager = Minecraft.getInstance().getEntityRenderDispatcher();
         entityrenderermanager.setRenderShadow(false);
         entityrenderermanager.render(trophyTileEntity.getCachedEntity(), 0, 0, 0., Minecraft.getInstance().getFrameTime(), 1, matrixStack, buffer, combinedLightIn);
 

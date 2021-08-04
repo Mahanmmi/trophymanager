@@ -41,6 +41,11 @@
                                     "op": "replace"
                                 },
                                 {
+                                    "source": "TrophyData.RotX",
+                                    "target": "RotX",
+                                    "op": "replace"
+                                },
+                                {
                                     "source": "TrophyData.OffsetY",
                                     "target": "OffsetY",
                                     "op": "replace"
