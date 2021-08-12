@@ -7,6 +7,7 @@ import cy.jdkdigital.trophymanager.common.tileentity.TrophyBlockEntity;
 import cy.jdkdigital.trophymanager.network.Networking;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.components.Button;
+import net.minecraft.client.gui.components.MultiLineLabel;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.core.BlockPos;
@@ -36,14 +37,14 @@ public class TrophyScreen extends Screen
         int relX = (this.width - WIDTH) / 2;
         int relY = (this.height - HEIGHT) / 2;
 
-        addWidget(new Button(relX + 10, relY + 10, 20, 20, new TextComponent("-"), button -> adjustScale(-1)));
-        addWidget(new Button(relX + 120, relY + 10, 20, 20, new TextComponent("+"), button -> adjustScale(1)));
+        addRenderableWidget(new Button(relX + 10, relY + 10, 20, 20, new TextComponent("-"), button -> adjustScale(-1)));
+        addRenderableWidget(new Button(relX + 120, relY + 10, 20, 20, new TextComponent("+"), button -> adjustScale(1)));
 
-        addWidget(new Button(relX + 10, relY + 35, 20, 20, new TextComponent("-"), button -> adjustOffsetY(-1)));
-        addWidget(new Button(relX + 120, relY + 35, 20, 20, new TextComponent("+"), button -> adjustOffsetY(1)));
+        addRenderableWidget(new Button(relX + 10, relY + 35, 20, 20, new TextComponent("-"), button -> adjustOffsetY(-1)));
+        addRenderableWidget(new Button(relX + 120, relY + 35, 20, 20, new TextComponent("+"), button -> adjustOffsetY(1)));
 
-        addWidget(new Button(relX + 10, relY + 60, 65, 20, new TextComponent("gui.cancel"), button -> close()));
-        addWidget(new Button(relX + 75, relY + 60, 65, 20, new TextComponent("gui.ok"), button -> save(this)));
+        addRenderableWidget(new Button(relX + 10, relY + 60, 65, 20, new TranslatableComponent("gui.cancel"), button -> close()));
+        addRenderableWidget(new Button(relX + 76, relY + 60, 65, 20, new TranslatableComponent("gui.ok"), button -> save(this)));
     }
 
     @Override
