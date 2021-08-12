@@ -151,6 +151,10 @@ dependencies {
     implementation fg.deobf("curse.maven:item-filters-forge-309674:3376819")
     implementation fg.deobf("curse.maven:ftb-teams-forge-404468:3373835")
     implementation fg.deobf("curse.maven:ftb-quests-forge-289412:3403160")
+    implementation fg.deobf("curse.maven:cofh-core-69162:3249453")
+    implementation fg.deobf("curse.maven:thermal-foundation-222880:3248150")
+    implementation fg.deobf("curse.maven:thermal-expansion-69163:3247000")
+    implementation fg.deobf("curse.maven:productivebees-377897:3406686")
 }
 
 // Example for how to get properties into the manifest for reading by the runtime..

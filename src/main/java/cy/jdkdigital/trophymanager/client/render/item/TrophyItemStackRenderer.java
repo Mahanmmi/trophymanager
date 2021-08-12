@@ -7,7 +7,6 @@ import net.minecraft.client.renderer.model.ItemCameraTransforms;
 import net.minecraft.client.renderer.tileentity.ItemStackTileEntityRenderer;
 import net.minecraft.client.renderer.tileentity.TileEntityRendererDispatcher;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.math.vector.Vector3f;
 
 import javax.annotation.Nonnull;
 
@@ -22,16 +21,6 @@ public class TrophyItemStackRenderer extends ItemStackTileEntityRenderer
         }
         blockEntity.loadData(stack.getOrCreateTag());
         matrixStack.pushPose();
-
-        if (transformType.equals(ItemCameraTransforms.TransformType.GUI)) {
-            matrixStack.translate(0.42f, 0.4f, 0.42f);
-            matrixStack.scale(0.4f, 0.4f, 0.4f);
-            matrixStack.mulPose(Vector3f.XP.rotationDegrees(35.0F));
-            matrixStack.mulPose(Vector3f.YP.rotationDegrees(-45.0F));
-        } else {
-            matrixStack.translate(0.32f, 0.3f, 0.32f);
-            matrixStack.scale(0.3f, 0.3f, 0.3f);
-        }
 
         TileEntityRendererDispatcher.instance.renderItem(blockEntity, matrixStack, buffer, packedLightIn, packedUV);
         matrixStack.popPose();

@@ -1,15 +1,17 @@
 package cy.jdkdigital.trophymanager.common.block;
 
-import cy.jdkdigital.trophymanager.TrophyManager;
+import cy.jdkdigital.trophymanager.TrophyManagerConfig;
 import cy.jdkdigital.trophymanager.common.tileentity.TrophyBlockEntity;
 import cy.jdkdigital.trophymanager.init.ModBlockEntities;
 import cy.jdkdigital.trophymanager.init.ModBlocks;
 import cy.jdkdigital.trophymanager.init.ModTags;
+import cy.jdkdigital.trophymanager.network.Networking;
 import net.minecraft.block.*;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.MobEntity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.fluid.FluidState;
 import net.minecraft.fluid.Fluids;
 import net.minecraft.item.BlockItem;
@@ -20,7 +22,6 @@ import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.pathfinding.PathType;
 import net.minecraft.state.StateContainer;
 import net.minecraft.state.properties.BlockStateProperties;
-import net.minecraft.state.properties.SlabType;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.*;
 import net.minecraft.util.math.BlockPos;
@@ -124,6 +125,17 @@ public class TrophyBlock extends Block implements IWaterLoggable
                 }
             }
         }
+
+        if (!world.isClientSide() && player instanceof ServerPlayerEntity) {
+            if (TrophyManagerConfig.GENERAL.allowNonOpEdit.get() || player.hasPermissions(2)) {
+                final TileEntity blockEntity = world.getBlockEntity(pos);
+                if (blockEntity instanceof TrophyBlockEntity) {
+                    Networking.sendToClient(new Networking.PacketOpenGui(blockEntity.getBlockPos()), (ServerPlayerEntity) player);
+                    return ActionResultType.SUCCESS;
+                }
+            }
+        }
+
         return ActionResultType.PASS;
     }
 
@@ -198,51 +210,56 @@ public class TrophyBlock extends Block implements IWaterLoggable
 
     @Override
     public void fillItemCategory(@Nonnull ItemGroup group, @Nonnull NonNullList<ItemStack> items) {
-        ItemStack trophy = new ItemStack(ModBlocks.TROPHY.get());
-
         String[] entities = {"bat", "bee", "blaze", "cat", "cave_spider", "chicken", "cow", "creeper", "dolphin", "donkey", "drowned", "elder_guardian", "ender_dragon", "enderman", "endermite", "evoker", "fox", "ghast", "guardian", "hoglin", "horse", "husk", "illusioner", "iron_golem", "llama", "magma_cube", "mule", "mooshroom", "ocelot", "panda", "parrot", "phantom", "pig", "piglin", "piglin_brute", "pillager", "polar_bear", "pufferfish", "rabbit", "ravager", "sheep", "shulker", "silverfish", "skeleton", "skeleton_horse", "slime", "snow_golem", "spider", "squid", "stray", "strider", "trader_llama", "tropical_fish", "turtle", "vex", "villager", "vindicator", "wandering_trader", "witch", "wither", "wither_skeleton", "wolf", "zoglin", "zombie", "zombie_horse", "zombie_villager", "zombified_piglin"};
         for (String entityId: entities) {
-            CompoundNBT entityTag = new CompoundNBT();
-            entityTag.putString("TrophyType", "entity");
-            entityTag.remove("TrophyEntity");
-            CompoundNBT entity = new CompoundNBT();
-            entity.putString("entityType", "minecraft:" + entityId);
-            switch (entityId) {
-                case "ender_dragon":
-                    entityTag.putFloat("Scale", 0.1f);
-                    entityTag.putDouble("OffsetY", 0.8d);
-                    break;
-                case "ghast":
-                    entityTag.putFloat("Scale", 0.4f);
-                    entityTag.putDouble("OffsetY", 1.4d);
-                    break;
-                case "bee":
-                    entityTag.putDouble("OffsetY", 0.8d);
-                    break;
-                case "vex":
-                    entityTag.putDouble("OffsetY", 0.8d);
-                    break;
-                case "phantom":
-                    entityTag.putDouble("OffsetY", 0.8d);
-                    break;
-                case "pufferfish":
-                    entity.putInt("PuffState", 1);
-                    break;
-                case "shulker":
-                    entity.putInt("Color", 2);
-                    entity.putInt("Peek", 30);
-                    break;
-            }
-
-            entityTag.put("TrophyEntity", entity);
-            entityTag.putString("Name", idToName(entityId) + " trophy");
-
-            trophy.setTag(entityTag);
-            items.add(trophy.copy());
+            items.add(createTrophy("minecraft:" + entityId));
         }
     }
 
-    private String idToName(String id) {
-        return id.substring(0, 1).toUpperCase() + id.substring(1).replace("_", " ");
+    private static String idToName(String id) {
+        int start = id.indexOf(":") + 1;
+        return id.substring(start, start + 1).toUpperCase() + id.substring(start + 1).replace("_", " ");
+    }
+
+    public static ItemStack createTrophy(String entityId) {
+        ItemStack trophy = new ItemStack(ModBlocks.TROPHY.get());
+        CompoundNBT entityTag = new CompoundNBT();
+        entityTag.putString("TrophyType", "entity");
+        entityTag.remove("TrophyEntity");
+        CompoundNBT entity = new CompoundNBT();
+        entity.putString("entityType", entityId);
+        switch (entityId) {
+            case "minecraft:ender_dragon":
+                entityTag.putFloat("Scale", 0.1f);
+                entityTag.putDouble("OffsetY", 0.8d);
+                break;
+            case "minecraft:ghast":
+                entityTag.putFloat("Scale", 0.4f);
+                entityTag.putDouble("OffsetY", 1.4d);
+                break;
+            case "minecraft:bee":
+                entityTag.putDouble("OffsetY", 0.8d);
+                break;
+            case "minecraft:vex":
+                entityTag.putDouble("OffsetY", 0.8d);
+                break;
+            case "minecraft:phantom":
+                entityTag.putDouble("OffsetY", 0.8d);
+                break;
+            case "minecraft:pufferfish":
+                entity.putInt("PuffState", 1);
+                break;
+            case "minecraft:shulker":
+                entity.putInt("Color", 2);
+                entity.putInt("Peek", 30);
+                break;
+        }
+
+        entityTag.put("TrophyEntity", entity);
+        entityTag.putString("Name", idToName(entityId) + " trophy");
+
+        trophy.setTag(entityTag);
+
+        return trophy;
     }
 }
