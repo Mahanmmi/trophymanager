@@ -1,3 +1,9 @@
+0.1.2.0
+
+- Trophies drop from killing mobs. Config to disable and config for the chances (split into boss and normal)
+- Config screen where you can change the offsets and scale. Is only available to ops unless config set to allow for all
+
+
 0.1.1.1
 
 - Fixed sounds

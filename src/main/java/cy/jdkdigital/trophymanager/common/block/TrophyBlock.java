@@ -1,12 +1,15 @@
 package cy.jdkdigital.trophymanager.common.block;
 
+import cy.jdkdigital.trophymanager.TrophyManagerConfig;
 import cy.jdkdigital.trophymanager.common.tileentity.TrophyBlockEntity;
 import cy.jdkdigital.trophymanager.init.ModBlocks;
 import cy.jdkdigital.trophymanager.init.ModTags;
+import cy.jdkdigital.trophymanager.network.Networking;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
@@ -123,6 +126,17 @@ public class TrophyBlock extends BaseEntityBlock implements SimpleWaterloggedBlo
                 }
             }
         }
+
+        if (!world.isClientSide() && player instanceof ServerPlayer) {
+            if (TrophyManagerConfig.GENERAL.allowNonOpEdit.get() || player.hasPermissions(2)) {
+                final BlockEntity blockEntity = world.getBlockEntity(pos);
+                if (blockEntity instanceof TrophyBlockEntity) {
+                    Networking.sendToClient(new Networking.PacketOpenGui(blockEntity.getBlockPos()), (ServerPlayer) player);
+                    return InteractionResult.SUCCESS;
+                }
+            }
+        }
+
         return InteractionResult.PASS;
     }
 
@@ -204,49 +218,56 @@ public class TrophyBlock extends BaseEntityBlock implements SimpleWaterloggedBlo
 
     @Override
     public void fillItemCategory(@Nonnull CreativeModeTab group, @Nonnull NonNullList<ItemStack> items) {
-        ItemStack trophy = new ItemStack(ModBlocks.TROPHY.get());
-
         String[] entities = {"axolotl", "bat", "bee", "blaze", "cat", "cave_spider", "chicken", "cow", "creeper", "dolphin", "donkey", "drowned", "elder_guardian", "ender_dragon", "enderman", "endermite", "evoker", "fox", "ghast", "glow_squid", "goat", "guardian", "hoglin", "horse", "husk", "illusioner", "iron_golem", "llama", "magma_cube", "mule", "mooshroom", "ocelot", "panda", "parrot", "phantom", "pig", "piglin", "piglin_brute", "pillager", "polar_bear", "pufferfish", "rabbit", "ravager", "sheep", "shulker", "silverfish", "skeleton", "skeleton_horse", "slime", "snow_golem", "spider", "squid", "stray", "strider", "trader_llama", "tropical_fish", "turtle", "vex", "villager", "vindicator", "wandering_trader", "witch", "wither", "wither_skeleton", "wolf", "zoglin", "zombie", "zombie_horse", "zombie_villager", "zombified_piglin"};
-        for (String entityId: entities) {
-            CompoundTag entityTag = new CompoundTag();
-            entityTag.putString("TrophyType", "entity");
-            entityTag.remove("TrophyEntity");
-            CompoundTag entity = new CompoundTag();
-            entity.putString("entityType", "minecraft:" + entityId);
-            switch (entityId) {
-                case "axolotl" -> entity.putInt("Variant", 4);
-                case "ender_dragon" -> {
-                    entityTag.putFloat("Scale", 0.1f);
-                    entityTag.putDouble("OffsetY", 0.8d);
-                }
-                case "ghast" -> {
-                    entityTag.putFloat("Scale", 0.4f);
-                    entityTag.putDouble("OffsetY", 1.4d);
-                }
-                case "bee" -> entityTag.putDouble("OffsetY", 0.8d);
-                case "vex" -> entityTag.putDouble("OffsetY", 0.8d);
-                case "phantom" -> entityTag.putDouble("OffsetY", 0.8d);
-                case "pufferfish" -> entity.putInt("PuffState", 1);
-                case "shulker" -> {
-                    entity.putInt("Color", 2);
-                    entity.putInt("Peek", 30);
-                }
-                case "glow_squid" -> {
-                    entityTag.putFloat("Scale", 0.4f);
-                    entityTag.putFloat("RotX", 70f);
-                    entityTag.putDouble("OffsetY", 0.7d);
-                }
-            }
-
-            entityTag.put("TrophyEntity", entity);
-            entityTag.putString("Name", idToName(entityId) + " trophy");
-
-            trophy.setTag(entityTag);
-            items.add(trophy.copy());
+        for (String entityId : entities) {
+            items.add(createTrophy("minecraft:" + entityId));
         }
     }
 
-    private String idToName(String id) {
-        return id.substring(0, 1).toUpperCase() + id.substring(1).replace("_", " ");
+    private static String idToName(String id) {
+        int start = id.indexOf(":") + 1;
+        return id.substring(start, start + 1).toUpperCase() + id.substring(start + 1).replace("_", " ");
+    }
+
+    public static ItemStack createTrophy(String entityId) {
+        ItemStack trophy = new ItemStack(ModBlocks.TROPHY.get());
+
+        CompoundTag entityTag = new CompoundTag();
+        entityTag.putString("TrophyType", "entity");
+
+        CompoundTag entity = new CompoundTag();
+        entity.putString("entityType", entityId);
+
+        switch (entityId) {
+            case "axolotl" -> entity.putInt("Variant", 4);
+            case "ender_dragon" -> {
+                entityTag.putFloat("Scale", 0.1f);
+                entityTag.putDouble("OffsetY", 0.8d);
+            }
+            case "ghast" -> {
+                entityTag.putFloat("Scale", 0.4f);
+                entityTag.putDouble("OffsetY", 1.4d);
+            }
+            case "bee" -> entityTag.putDouble("OffsetY", 0.8d);
+            case "vex" -> entityTag.putDouble("OffsetY", 0.8d);
+            case "phantom" -> entityTag.putDouble("OffsetY", 0.8d);
+            case "pufferfish" -> entity.putInt("PuffState", 1);
+            case "shulker" -> {
+                entity.putInt("Color", 2);
+                entity.putInt("Peek", 30);
+            }
+            case "glow_squid" -> {
+                entityTag.putFloat("Scale", 0.4f);
+                entityTag.putFloat("RotX", 70f);
+                entityTag.putDouble("OffsetY", 0.7d);
+            }
+        }
+
+        entityTag.put("TrophyEntity", entity);
+        entityTag.putString("Name", idToName(entityId) + " trophy");
+
+        trophy.setTag(entityTag);
+
+        return trophy;
     }
 }

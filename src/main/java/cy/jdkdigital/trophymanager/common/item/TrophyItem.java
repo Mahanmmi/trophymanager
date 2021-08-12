@@ -1,7 +1,6 @@
 package cy.jdkdigital.trophymanager.common.item;
 
 import cy.jdkdigital.trophymanager.client.render.item.TrophyItemStackRenderer;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
