@@ -225,7 +225,6 @@ public class TrophyBlock extends Block implements IWaterLoggable
         ItemStack trophy = new ItemStack(ModBlocks.TROPHY.get());
         CompoundNBT entityTag = new CompoundNBT();
         entityTag.putString("TrophyType", "entity");
-        entityTag.remove("TrophyEntity");
         CompoundNBT entity = new CompoundNBT();
         entity.putString("entityType", entityId);
         switch (entityId) {
@@ -238,11 +237,7 @@ public class TrophyBlock extends Block implements IWaterLoggable
                 entityTag.putDouble("OffsetY", 1.4d);
                 break;
             case "minecraft:bee":
-                entityTag.putDouble("OffsetY", 0.8d);
-                break;
             case "minecraft:vex":
-                entityTag.putDouble("OffsetY", 0.8d);
-                break;
             case "minecraft:phantom":
                 entityTag.putDouble("OffsetY", 0.8d);
                 break;

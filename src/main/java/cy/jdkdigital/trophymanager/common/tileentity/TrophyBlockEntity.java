@@ -10,6 +10,7 @@ import net.minecraft.entity.monster.ShulkerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.nbt.ListNBT;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.play.server.SUpdateTileEntityPacket;
 import net.minecraft.tileentity.TileEntity;
@@ -131,13 +132,22 @@ public class TrophyBlockEntity extends TileEntity
             } else if (cachedEntity instanceof ShulkerEntity && entity.contains("Peek")) {
                 ((ShulkerEntity) cachedEntity).setRawPeekAmount(entity.getInt("Peek"));
             }
+            try {
+                addPassengers(cachedEntity, entity);
+            } catch (Exception e) {
+                // user can fuck it up here, so don't crash
+            }
             TrophyBlockEntity.cachedEntities.put(key, cachedEntity);
         }
         return cachedEntities.getOrDefault(key, null);
     }
 
-    public static Entity createEntity(World world, CompoundNBT tag) {
-        EntityType<?> type = EntityType.byString(tag.getString("entityType")).orElse(null);
+    private static Entity createEntity(World world, CompoundNBT tag) {
+        return createEntity(world, tag.getString("entityType"), tag);
+    }
+
+    private static Entity createEntity(World world, String entityType, CompoundNBT tag) {
+        EntityType<?> type = EntityType.byString(entityType).orElse(null);
         if (type != null) {
             Entity loadedEntity = type.create(world);
             if (loadedEntity != null) {
@@ -146,6 +156,20 @@ public class TrophyBlockEntity extends TileEntity
             }
         }
         return null;
+    }
+
+    private static void addPassengers(Entity vehicle, CompoundNBT entityTag) {
+        if (entityTag.contains("Passengers")) {
+            ListNBT passengers = entityTag.getList("Passengers", 10);
+            for (int l = 0; l < passengers.size(); ++l) {
+                CompoundNBT riderTag = passengers.getCompound(l);
+                Entity rider = createEntity(TrophyManager.proxy.getWorld(), riderTag.getString("id"), riderTag);
+                if (rider != null) {
+                    rider.startRiding(vehicle);
+                }
+                addPassengers(rider, riderTag);
+            }
+        }
     }
 
     @Nullable

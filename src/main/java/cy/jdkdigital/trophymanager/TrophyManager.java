@@ -49,7 +49,6 @@ public class TrophyManager
         ModBlockEntities.BLOCK_ENTITY_TYPES.register(modEventBus);
 
         ModLoadingContext.get().registerConfig(ModConfig.Type.SERVER, TrophyManagerConfig.SERVER_CONFIG);
-
     }
 
     private void doCommonStuff(final FMLCommonSetupEvent event) {

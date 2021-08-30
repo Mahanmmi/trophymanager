@@ -82,10 +82,23 @@ public class TrophyBlockEntityRenderer extends TileEntityRenderer<TrophyBlockEnt
             matrixStack.mulPose(Vector3f.YP.rotationDegrees(180f));
         }
 
-        EntityRendererManager entityrenderermanager = Minecraft.getInstance().getEntityRenderDispatcher();
-        entityrenderermanager.setRenderShadow(false);
-        entityrenderermanager.render(trophyTileEntity.getCachedEntity(), 0, 0, 0., Minecraft.getInstance().getFrameTime(), 1, matrixStack, buffer, combinedLightIn);
+        EntityRendererManager entityRendererManager = Minecraft.getInstance().getEntityRenderDispatcher();
+        entityRendererManager.setRenderShadow(false);
+        Entity cachedEntity = trophyTileEntity.getCachedEntity();
+        entityRendererManager.render(cachedEntity, 0, 0, 0., Minecraft.getInstance().getFrameTime(), 1, matrixStack, buffer, combinedLightIn);
+
+        renderPassengers(cachedEntity, entityRendererManager, matrixStack, buffer, combinedLightIn);
 
         matrixStack.popPose();
+    }
+
+    private static void renderPassengers(Entity entity, EntityRendererManager entityRendererManager, MatrixStack matrixStack, IRenderTypeBuffer buffer, int combinedLightIn) {
+        if (entity.isVehicle()) {
+            for(Entity rider : entity.getPassengers()) {
+                entity.positionRider(rider);
+                entityRendererManager.render(rider, rider.getX(), rider.getY(), rider.getZ(), Minecraft.getInstance().getFrameTime(), 1, matrixStack, buffer, combinedLightIn);
+                renderPassengers(rider, entityRendererManager, matrixStack, buffer, combinedLightIn);
+            }
+        }
     }
 }

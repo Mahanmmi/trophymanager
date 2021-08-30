@@ -1,0 +1,37 @@
+{
+    "type": "minecraft:crafting_shapeless",
+    "ingredients": [
+        {
+            "item": "minecraft:smooth_stone_slab"
+        },
+        {
+            "item": "minecraft:rotten_flesh"
+        }
+    ],
+    "result": {
+        "type": "forge:nbt",
+        "item": "trophymanager:trophy",
+"nbt": {
+"TrophyType": "entity",
+"TrophyEntity": {
+"entityType": "minecraft:boat",
+"Passengers": [
+{
+"id": "minecraft:zombie",
+"HandItems": [{"Count":1,"id":"fishing_rod"}, {}],
+"ArmorItems": [
+{},{},{},
+{
+"Count": 1,
+"id": "turtle_helmet"
+}
+]
+}
+]
+},
+"BaseBlock": "minecraft:blue_ice",
+"OffsetY": 1,
+"Name": "Boat Trophy"
+}
+    }
+}

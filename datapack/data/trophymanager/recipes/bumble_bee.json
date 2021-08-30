@@ -1,0 +1,38 @@
+{
+    "type": "minecraft:crafting_shapeless",
+    "ingredients": [
+        {
+            "item": "minecraft:smooth_stone_slab"
+        },
+        {
+            "item": "productivebees:bee_cage"
+        }
+    ],
+    "result": {
+        "type": "forge:nbt",
+        "item": "trophymanager:trophy",
+        "nbt": {
+            "TrophyType": "entity",
+            "TrophyEntity": {
+                "entityType": "productivebees:bumble_bee",
+                "Passengers": [
+                    {
+                        "id": "zombie",
+                        "IsBaby": 1,
+                        "HandItems": [{"Count":1,"id":"productivebees:treat_on_a_stick"}, {}]
+                    }
+                ],
+                "Saddle": 1
+            },
+            "BaseBlock": "minecraft:glass",
+            "Scale": 0.3,
+            "OffsetY": 0.2
+        }
+    },
+    "conditions": [
+        {
+            "type": "forge:mod_loaded",
+            "modid": "productivebees"
+        }
+    ]
+}
