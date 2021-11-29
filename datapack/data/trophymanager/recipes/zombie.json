@@ -11,28 +11,30 @@
     "result": {
         "type": "forge:nbt",
         "item": "trophymanager:trophy",
-        "nbt":
-{
-"TrophyType": "entity",
-"TrophyEntity": {
-"entityType": "minecraft:zombie",
-"ArmorItems": [
-{
-"Count": 1,
-"id": "diamond_boots"
-}, {
-"Count": 1,
-"id": "diamond_leggings"
-}, {
-"Count": 1,
-"id": "diamond_chestplate"
-}, {
-"Count": 1,
-"id": "diamond_helmet"
-}
-]
-},
-"Name": "Zombie Trophy"
-}
+        "nbt": {
+            "TrophyType": "entity",
+            "TrophyEntity": {
+                "entityType": "minecraft:zombie",
+                "ArmorItems": [
+                    {
+                        "Count": 1,
+                        "id": "diamond_boots"
+                    },
+                    {
+                        "Count": 1,
+                        "id": "diamond_leggings"
+                    },
+                    {
+                        "Count": 1,
+                        "id": "diamond_chestplate"
+                    },
+                    {
+                        "Count": 1,
+                        "id": "diamond_helmet"
+                    }
+                ]
+            },
+            "Name": "Zombie Trophy"
+        }
     }
 }

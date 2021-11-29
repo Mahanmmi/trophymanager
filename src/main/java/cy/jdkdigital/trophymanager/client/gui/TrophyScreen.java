@@ -3,6 +3,7 @@ package cy.jdkdigital.trophymanager.client.gui;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import cy.jdkdigital.trophymanager.TrophyManager;
+import cy.jdkdigital.trophymanager.TrophyManagerConfig;
 import cy.jdkdigital.trophymanager.common.tileentity.TrophyBlockEntity;
 import cy.jdkdigital.trophymanager.network.Networking;
 import net.minecraft.client.Minecraft;
@@ -72,7 +73,7 @@ public class TrophyScreen extends Screen
         if (Screen.hasShiftDown()) {
             d = d * 10;
         }
-        trophy.scale = Math.round(trophy.scale * 10 + d) / 10f;
+        trophy.scale = (float) Math.min(Math.round(trophy.scale * 10 + d) / 10f, TrophyManagerConfig.GENERAL.maxSize.get());
     }
 
     private void adjustOffsetY(double d) {

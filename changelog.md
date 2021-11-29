@@ -1,3 +1,11 @@
+0.1.4.1
+
+- Armor and equipment can now be added to trophies of mobs that are able to hold them
+- Trophy drop rate is affected by looting level
+- Fixed crash with entities requiring NBT
+- Added config for max size modifier
+
+
 0.1.4.0
 
 - Fixed crash with Infernal Expansion mobs

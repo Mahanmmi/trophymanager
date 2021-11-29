@@ -3,17 +3,20 @@ package cy.jdkdigital.trophymanager.common.tileentity;
 import cy.jdkdigital.trophymanager.TrophyManager;
 import cy.jdkdigital.trophymanager.init.ModBlockEntities;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.network.Connection;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.NeutralMob;
+import net.minecraft.world.entity.decoration.ArmorStand;
 import net.minecraft.world.entity.monster.Shulker;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
+import net.minecraft.world.item.*;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
@@ -22,6 +25,7 @@ import net.minecraft.world.phys.AABB;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
 
 public class TrophyBlockEntity extends BlockEntity
@@ -147,6 +151,11 @@ public class TrophyBlockEntity extends BlockEntity
                     // user can fuck it up here, so don't crash
                 }
             }
+            try {
+                addPassengers(cachedEntity, entity);
+            } catch (Exception e) {
+                // user can fuck it up here, so don't crash
+            }
             TrophyBlockEntity.cachedEntities.put(key, cachedEntity);
         }
         return cachedEntities.getOrDefault(key, null);
@@ -166,6 +175,9 @@ public class TrophyBlockEntity extends BlockEntity
                     return loadedEntity;
                 }
             } catch (Exception e) {
+                TrophyManager.LOGGER.warn("Unable to load trophy entity " + entityType + ". Please report it to the mod author at https://github.com/JDKDigital/trophymanager/issues");
+                TrophyManager.LOGGER.warn("Error: " + e.getMessage());
+                TrophyManager.LOGGER.warn("NBT: " + tag);
                 return null;
             }
         }
@@ -206,5 +218,82 @@ public class TrophyBlockEntity extends BlockEntity
     @Override
     public void handleUpdateTag(CompoundTag tag) {
         deserializeNBT(tag);
+    }
+
+    public InteractionResult equipArmor(ItemStack heldItem) {
+        if (!canEquip(getCachedEntity())) {
+            return InteractionResult.PASS;
+        }
+
+        // Read existing armor items into list
+        ListTag armorList = entity.contains("ArmorItems") ? entity.getList("ArmorItems", 10) : new ListTag();
+        NonNullList<ItemStack> armorItems = NonNullList.withSize(4, ItemStack.EMPTY);
+        for(int l = 0; l < armorItems.size(); ++l) {
+            armorItems.set(l, ItemStack.of(armorList.getCompound(l)));
+        }
+        // Add or remove new armor item
+        Item armorItem = heldItem.getItem();
+        if (armorItem instanceof ArmorItem) {
+            int slot = ((ArmorItem) armorItem).getSlot().getIndex();
+            if (armorItems.get(slot).getItem().equals(armorItem)) {
+                armorItems.set(slot, ItemStack.EMPTY);
+            } else {
+                armorItems.set(slot, heldItem);
+            }
+        }
+
+        // Save armor list in NBT
+        ListTag listnbt = new ListTag();
+        CompoundTag compoundnbt;
+        for(Iterator<ItemStack> var3 = armorItems.iterator(); var3.hasNext(); listnbt.add(compoundnbt)) {
+            ItemStack itemstack = var3.next();
+            compoundnbt = new CompoundTag();
+            if (!itemstack.isEmpty()) {
+                itemstack.save(compoundnbt);
+            }
+        }
+
+        entity.put("ArmorItems", listnbt);
+
+        return InteractionResult.CONSUME;
+    }
+
+    public InteractionResult equipTool(ItemStack heldItem) {
+        if (!canEquip(getCachedEntity())) {
+            return InteractionResult.PASS;
+        }
+
+        // Read existing armor items into list
+        ListTag handList = entity.contains("HandItems") ? entity.getList("HandItems", 10) : new ListTag();
+        NonNullList<ItemStack> handItems = NonNullList.withSize(2, ItemStack.EMPTY);
+        for(int l = 0; l < handItems.size(); ++l) {
+            handItems.set(l, ItemStack.of(handList.getCompound(l)));
+        }
+        // Add or remove equipment
+        int slot = heldItem.getItem() instanceof ShieldItem ? 1 : 0;
+        if (handItems.get(slot).getItem().equals(heldItem.getItem())) {
+            handItems.set(slot, ItemStack.EMPTY);
+        } else {
+            handItems.set(slot, heldItem);
+        }
+
+        // Save list in NBT
+        ListTag listnbt = new ListTag();
+        CompoundTag compoundnbt;
+        for(Iterator<ItemStack> var3 = handItems.iterator(); var3.hasNext(); listnbt.add(compoundnbt)) {
+            ItemStack itemstack = var3.next();
+            compoundnbt = new CompoundTag();
+            if (!itemstack.isEmpty()) {
+                itemstack.save(compoundnbt);
+            }
+        }
+
+        entity.put("HandItems", listnbt);
+
+        return InteractionResult.CONSUME;
+    }
+
+    private boolean canEquip(Entity cachedEntity) {
+        return cachedEntity instanceof Mob || cachedEntity instanceof ArmorStand;
     }
 }
