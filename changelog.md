@@ -1,7 +1,9 @@
 0.1.4.1
 
 - Armor and equipment can now be added to trophies of mobs that are able to hold them
-- trophy drop rate is affected by looting level
+- Trophy drop rate is affected by looting level
+- Fixed crash with entities requiring NBT
+- Added config for max size modifier
 
 
 0.1.3.0
