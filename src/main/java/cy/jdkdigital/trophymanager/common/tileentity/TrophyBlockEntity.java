@@ -4,6 +4,7 @@ import cy.jdkdigital.trophymanager.TrophyManager;
 import cy.jdkdigital.trophymanager.init.ModBlockEntities;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.ListTag;
 import net.minecraft.network.Connection;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
 import net.minecraft.resources.ResourceLocation;
@@ -134,26 +135,55 @@ public class TrophyBlockEntity extends BlockEntity
         int key = entity.hashCode();
         if (!cachedEntities.containsKey(key)) {
             Entity cachedEntity = createEntity(TrophyManager.proxy.getWorld(), entity);
-            if (cachedEntity instanceof NeutralMob && entity.contains("AngerTime")) {
-                ((NeutralMob) cachedEntity).setRemainingPersistentAngerTime(entity.getInt("AngerTime"));
-            } else if (cachedEntity instanceof Shulker && entity.contains("Peek")) {
-//                ((Shulker) cachedEntity).setRawPeekAmount(entity.getInt("Peek"));
+            if (cachedEntity != null) {
+                if (cachedEntity instanceof NeutralMob && entity.contains("AngerTime")) {
+                    ((NeutralMob) cachedEntity).setRemainingPersistentAngerTime(entity.getInt("AngerTime"));
+                } else if (cachedEntity instanceof Shulker && entity.contains("Peek")) {
+                    ((Shulker) cachedEntity).setRawPeekAmount(entity.getInt("Peek"));
+                }
+                try {
+                    addPassengers(cachedEntity, entity);
+                } catch (Exception e) {
+                    // user can fuck it up here, so don't crash
+                }
             }
             TrophyBlockEntity.cachedEntities.put(key, cachedEntity);
         }
         return cachedEntities.getOrDefault(key, null);
     }
 
-    public static Entity createEntity(Level world, CompoundTag tag) {
-        EntityType<?> type = EntityType.byString(tag.getString("entityType")).orElse(null);
+    private static Entity createEntity(Level world, CompoundTag tag) {
+        return createEntity(world, tag.getString("entityType"), tag);
+    }
+
+    private static Entity createEntity(Level world, String entityType, CompoundTag tag) {
+        EntityType<?> type = EntityType.byString(entityType).orElse(null);
         if (type != null) {
-            Entity loadedEntity = type.create(world);
-            if (loadedEntity != null) {
-                loadedEntity.load(tag);
-                return loadedEntity;
+            try {
+                Entity loadedEntity = type.create(world);
+                if (loadedEntity != null) {
+                    loadedEntity.load(tag);
+                    return loadedEntity;
+                }
+            } catch (Exception e) {
+                return null;
             }
         }
         return null;
+    }
+
+    private static void addPassengers(Entity vehicle, CompoundTag entityTag) {
+        if (entityTag.contains("Passengers")) {
+            ListTag passengers = entityTag.getList("Passengers", 10);
+            for (int l = 0; l < passengers.size(); ++l) {
+                CompoundTag riderTag = passengers.getCompound(l);
+                Entity rider = createEntity(TrophyManager.proxy.getWorld(), riderTag.getString("id"), riderTag);
+                if (rider != null) {
+                    rider.startRiding(vehicle);
+                    addPassengers(rider, riderTag);
+                }
+            }
+        }
     }
 
     @Nullable

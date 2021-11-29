@@ -1,3 +1,18 @@
+0.1.4.0
+
+- Fixed crash with Infernal Expansion mobs
+
+
+0.1.3.1
+
+- Fixed trophies not being mineable
+
+
+0.1.3.0
+
+- Entity trophies can now have passengers
+
+
 0.1.2.0
 
 - Trophies drop from killing mobs. Config to disable and config for the chances (split into boss and normal)

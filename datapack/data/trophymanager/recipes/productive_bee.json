@@ -15,7 +15,7 @@
             "TrophyType": "entity",
             "TrophyEntity": {
                 "entityType": "productivebees:configurable_bee",
-                "type": "productivebees:blizz"
+                "type": "productivebees:diamond"
             },
             "Scale": 4.0,
             "OffsetY": 0.7,

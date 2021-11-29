@@ -2,6 +2,7 @@ package cy.jdkdigital.trophymanager.client.render.block;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Vector3f;
+import cy.jdkdigital.trophymanager.TrophyManager;
 import cy.jdkdigital.trophymanager.common.tileentity.TrophyBlockEntity;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
@@ -10,6 +11,7 @@ import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.client.renderer.entity.EntityRenderDispatcher;
 import net.minecraft.core.Direction;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.HorizontalDirectionalBlock;
@@ -82,10 +84,24 @@ public class TrophyBlockEntityRenderer implements BlockEntityRenderer<TrophyBloc
             matrixStack.mulPose(Vector3f.YP.rotationDegrees(180f));
         }
 
-        EntityRenderDispatcher entityrenderermanager = Minecraft.getInstance().getEntityRenderDispatcher();
-        entityrenderermanager.setRenderShadow(false);
-        entityrenderermanager.render(trophyTileEntity.getCachedEntity(), 0, 0, 0., Minecraft.getInstance().getFrameTime(), 1, matrixStack, buffer, combinedLightIn);
+        EntityRenderDispatcher entityRendererManager = Minecraft.getInstance().getEntityRenderDispatcher();
+        entityRendererManager.setRenderShadow(false);
+        Entity cachedEntity = trophyTileEntity.getCachedEntity();
+        if (cachedEntity != null) {
+            entityRendererManager.render(cachedEntity, 0, 0, 0., Minecraft.getInstance().getFrameTime(), 1, matrixStack, buffer, combinedLightIn);
+            renderPassengers(cachedEntity, entityRendererManager, matrixStack, buffer, combinedLightIn);
+        }
 
         matrixStack.popPose();
+    }
+
+    private static void renderPassengers(Entity entity, EntityRenderDispatcher entityRendererManager, PoseStack matrixStack, MultiBufferSource buffer, int combinedLightIn) {
+        if (entity.isVehicle()) {
+            for(Entity rider : entity.getPassengers()) {
+                entity.positionRider(rider);
+                entityRendererManager.render(rider, rider.getX(), rider.getY(), rider.getZ(), Minecraft.getInstance().getFrameTime(), 1, matrixStack, buffer, combinedLightIn);
+                renderPassengers(rider, entityRendererManager, matrixStack, buffer, combinedLightIn);
+            }
+        }
     }
 }
