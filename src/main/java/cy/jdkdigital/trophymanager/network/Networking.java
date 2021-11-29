@@ -1,6 +1,7 @@
 package cy.jdkdigital.trophymanager.network;
 
 import cy.jdkdigital.trophymanager.TrophyManager;
+import cy.jdkdigital.trophymanager.TrophyManagerConfig;
 import cy.jdkdigital.trophymanager.client.gui.TrophyScreen;
 import cy.jdkdigital.trophymanager.common.tileentity.TrophyBlockEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
@@ -71,7 +72,7 @@ public class Networking
                     TileEntity te = level.getBlockEntity(pos);
                     if (te instanceof TrophyBlockEntity) {
                         ((TrophyBlockEntity) te).offsetY = tag.getDouble("OffsetY");
-                        ((TrophyBlockEntity) te).scale = tag.getFloat("Scale");
+                        ((TrophyBlockEntity) te).scale = (float) Math.min(tag.getFloat("Scale"), TrophyManagerConfig.GENERAL.maxSize.get());
                         te.setChanged();
                     }
                 }

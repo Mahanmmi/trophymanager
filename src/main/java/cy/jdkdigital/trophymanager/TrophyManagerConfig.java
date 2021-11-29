@@ -3,6 +3,11 @@ package cy.jdkdigital.trophymanager;
 import net.minecraftforge.common.ForgeConfigSpec;
 import net.minecraftforge.fml.common.Mod;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 @Mod.EventBusSubscriber
 public class TrophyManagerConfig
 {
@@ -20,6 +25,8 @@ public class TrophyManagerConfig
         public final ForgeConfigSpec.DoubleValue dropChanceBoss;
         public final ForgeConfigSpec.DoubleValue dropChanceMobs;
         public final ForgeConfigSpec.BooleanValue allowNonOpEdit;
+        public final ForgeConfigSpec.DoubleValue maxSize;
+        public final ForgeConfigSpec.ConfigValue<List<String>> nbtMap;
 
         public General(ForgeConfigSpec.Builder builder) {
             builder.push("General");
@@ -39,6 +46,16 @@ public class TrophyManagerConfig
             allowNonOpEdit = builder
                     .comment("Allow non opped players to change the settings for a trophy.")
                     .define("allowNonOpEdit", true);
+
+            maxSize = builder
+                    .comment("Maximum size multiplier for a trophy.")
+                    .defineInRange("maxSize", 20.00, 0, Integer.MAX_VALUE);
+
+            nbtMap = builder.define("nbtMap", new ArrayList<String>() {{
+                add("productivebees:configurable_bee:type");
+                add("infernalexp:shroomloin:ShroomloinType");
+                add("infernalexp:basalt_giant:Size");
+            }});
 
             builder.pop();
         }

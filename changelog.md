@@ -1,3 +1,9 @@
+0.1.4.1
+
+- Armor and equipment can now be added to trophies of mobs that are able to hold them
+- trophy drop rate is affected by looting level
+
+
 0.1.3.0
 
 - Entity trophies can now have passengers

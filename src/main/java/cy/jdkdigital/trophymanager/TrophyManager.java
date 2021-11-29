@@ -9,9 +9,13 @@ import cy.jdkdigital.trophymanager.setup.ClientProxy;
 import cy.jdkdigital.trophymanager.setup.IProxy;
 import cy.jdkdigital.trophymanager.setup.ServerProxy;
 import net.minecraft.block.Block;
+import net.minecraft.enchantment.EnchantmentHelper;
+import net.minecraft.enchantment.Enchantments;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
@@ -61,11 +65,26 @@ public class TrophyManager
 
     private void onEntityDeath(final LivingDeathEvent event) {
         Entity deadEntity = event.getEntity();
-        if (TrophyManagerConfig.GENERAL.dropFromMobs.get() && !(deadEntity instanceof PlayerEntity) && event.getSource().getEntity() instanceof PlayerEntity) {
+        Entity source = event.getSource().getEntity();
+        if (TrophyManagerConfig.GENERAL.dropFromMobs.get() && !(deadEntity instanceof PlayerEntity) && source instanceof PlayerEntity) {
             World level = deadEntity.level;
             Double chance = deadEntity.canChangeDimensions() ? TrophyManagerConfig.GENERAL.dropChanceMobs.get() : TrophyManagerConfig.GENERAL.dropChanceBoss.get();
-            if (chance >= level.random.nextDouble()) {
-                ItemStack trophy = TrophyBlock.createTrophy(deadEntity.getEncodeId());
+
+            boolean willDropTrophy = chance >= level.random.nextDouble();
+
+            // Each level of looting gives an extra roll
+            if ((source instanceof ServerPlayerEntity)) {
+                ServerPlayerEntity player = (ServerPlayerEntity) source;
+                int lootingLevel = EnchantmentHelper.getItemEnchantmentLevel(Enchantments.MOB_LOOTING, player.getMainHandItem());
+                for (int i = 0; i < (1 + lootingLevel); i++) {
+                    willDropTrophy = willDropTrophy || chance >= level.random.nextDouble();
+                }
+            }
+
+            if (willDropTrophy) {
+                CompoundNBT entityTag = new CompoundNBT();
+                deadEntity.save(entityTag);
+                ItemStack trophy = TrophyBlock.createTrophy(deadEntity, entityTag);
                 Block.popResource(deadEntity.level, deadEntity.blockPosition(), trophy);
             }
         }

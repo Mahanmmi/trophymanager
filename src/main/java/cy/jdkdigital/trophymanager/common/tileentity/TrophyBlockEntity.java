@@ -6,14 +6,17 @@ import net.minecraft.block.BlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.IAngerable;
+import net.minecraft.entity.MobEntity;
+import net.minecraft.entity.item.ArmorStandEntity;
 import net.minecraft.entity.monster.ShulkerEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
+import net.minecraft.item.*;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.nbt.ListNBT;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.play.server.SUpdateTileEntityPacket;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.ActionResultType;
+import net.minecraft.util.NonNullList;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
@@ -22,6 +25,7 @@ import net.minecraft.world.World;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
 
 public class TrophyBlockEntity extends TileEntity
@@ -149,10 +153,17 @@ public class TrophyBlockEntity extends TileEntity
     private static Entity createEntity(World world, String entityType, CompoundNBT tag) {
         EntityType<?> type = EntityType.byString(entityType).orElse(null);
         if (type != null) {
-            Entity loadedEntity = type.create(world);
-            if (loadedEntity != null) {
-                loadedEntity.load(tag);
-                return loadedEntity;
+            try {
+                Entity loadedEntity = type.create(world);
+                if (loadedEntity != null) {
+                    loadedEntity.load(tag);
+                    return loadedEntity;
+                }
+            } catch (Exception e) {
+                TrophyManager.LOGGER.warn("Unable to load trophy entity " + entityType + ". Please report it to the mod author at https://github.com/JDKDigital/trophymanager/issues");
+                TrophyManager.LOGGER.warn("Error: " + e.getMessage());
+                TrophyManager.LOGGER.warn("NBT: " + tag);
+                return null;
             }
         }
         return null;
@@ -192,5 +203,82 @@ public class TrophyBlockEntity extends TileEntity
     @Override
     public void handleUpdateTag(BlockState state, CompoundNBT tag) {
         deserializeNBT(tag);
+    }
+
+    public ActionResultType equipArmor(ItemStack heldItem) {
+        if (!canEquip(getCachedEntity())) {
+            return ActionResultType.PASS;
+        }
+
+        // Read existing armor items into list
+        ListNBT armorList = entity.contains("ArmorItems") ? entity.getList("ArmorItems", 10) : new ListNBT();
+        NonNullList<ItemStack> armorItems = NonNullList.withSize(4, ItemStack.EMPTY);
+        for(int l = 0; l < armorItems.size(); ++l) {
+            armorItems.set(l, ItemStack.of(armorList.getCompound(l)));
+        }
+        // Add or remove new armor item
+        Item armorItem = heldItem.getItem();
+        if (armorItem instanceof ArmorItem) {
+            int slot = ((ArmorItem) armorItem).getSlot().getIndex();
+            if (armorItems.get(slot).getItem().equals(armorItem)) {
+                armorItems.set(slot, ItemStack.EMPTY);
+            } else {
+                armorItems.set(slot, heldItem);
+            }
+        }
+
+        // Save armor list in NBT
+        ListNBT listnbt = new ListNBT();
+        CompoundNBT compoundnbt;
+        for(Iterator<ItemStack> var3 = armorItems.iterator(); var3.hasNext(); listnbt.add(compoundnbt)) {
+            ItemStack itemstack = var3.next();
+            compoundnbt = new CompoundNBT();
+            if (!itemstack.isEmpty()) {
+                itemstack.save(compoundnbt);
+            }
+        }
+
+        entity.put("ArmorItems", listnbt);
+
+        return ActionResultType.CONSUME;
+    }
+
+    public ActionResultType equipTool(ItemStack heldItem) {
+        if (!canEquip(getCachedEntity())) {
+            return ActionResultType.PASS;
+        }
+
+        // Read existing armor items into list
+        ListNBT handList = entity.contains("HandItems") ? entity.getList("HandItems", 10) : new ListNBT();
+        NonNullList<ItemStack> handItems = NonNullList.withSize(2, ItemStack.EMPTY);
+        for(int l = 0; l < handItems.size(); ++l) {
+            handItems.set(l, ItemStack.of(handList.getCompound(l)));
+        }
+        // Add or remove equipment
+        int slot = heldItem.getItem() instanceof ShieldItem ? 1 : 0;
+        if (handItems.get(slot).getItem().equals(heldItem.getItem())) {
+            handItems.set(slot, ItemStack.EMPTY);
+        } else {
+            handItems.set(slot, heldItem);
+        }
+
+        // Save list in NBT
+        ListNBT listnbt = new ListNBT();
+        CompoundNBT compoundnbt;
+        for(Iterator<ItemStack> var3 = handItems.iterator(); var3.hasNext(); listnbt.add(compoundnbt)) {
+            ItemStack itemstack = var3.next();
+            compoundnbt = new CompoundNBT();
+            if (!itemstack.isEmpty()) {
+                itemstack.save(compoundnbt);
+            }
+        }
+
+        entity.put("HandItems", listnbt);
+
+        return ActionResultType.CONSUME;
+    }
+
+    private boolean canEquip(Entity cachedEntity) {
+        return cachedEntity instanceof MobEntity || cachedEntity instanceof ArmorStandEntity;
     }
 }
