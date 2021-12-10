@@ -86,10 +86,10 @@ public class TrophyBlock extends BaseEntityBlock implements SimpleWaterloggedBlo
     }
 
     @Override
-    public void setPlacedBy(Level world, @Nonnull BlockPos pos, @Nonnull BlockState state, @Nullable LivingEntity player, @Nonnull ItemStack stack) {
+    public void setPlacedBy(Level level, @Nonnull BlockPos pos, @Nonnull BlockState state, @Nullable LivingEntity player, @Nonnull ItemStack stack) {
         // Read data from stack
-        BlockEntity tileEntity = world.getBlockEntity(pos);
-        if (tileEntity instanceof TrophyBlockEntity) {
+        BlockEntity tileEntity = level.getBlockEntity(pos);
+        if (!level.isClientSide() && tileEntity instanceof TrophyBlockEntity) {
             CompoundTag tag = stack.getOrCreateTag();
             ((TrophyBlockEntity) tileEntity).loadData(tag);
         }
@@ -102,12 +102,16 @@ public class TrophyBlock extends BaseEntityBlock implements SimpleWaterloggedBlo
     }
 
     @Override
-    public ItemStack getPickBlock(BlockState state, HitResult target, BlockGetter world, BlockPos pos, Player player) {
+    public ItemStack getCloneItemStack(BlockState state, HitResult target, BlockGetter world, BlockPos pos, Player player) {
         ItemStack stack = new ItemStack(ModBlocks.TROPHY.get());
         BlockEntity tileEntity = world.getBlockEntity(pos);
         if (tileEntity instanceof TrophyBlockEntity) {
-            CompoundTag tag = tileEntity.save(new CompoundTag());
-            stack.setTag(tag.getCompound("TrophyData"));
+            try {
+                CompoundTag tag = tileEntity.saveWithoutMetadata();
+                stack.setTag(tag.getCompound("TrophyData"));
+            } catch (Exception e) {
+                // Crash can happen here if the server is shutting down as the client (WAILA) is trying to read the data
+            }
         }
         return stack;
     }

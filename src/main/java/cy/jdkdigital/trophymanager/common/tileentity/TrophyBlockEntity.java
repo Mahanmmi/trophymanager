@@ -1,6 +1,7 @@
 package cy.jdkdigital.trophymanager.common.tileentity;
 
 import cy.jdkdigital.trophymanager.TrophyManager;
+import cy.jdkdigital.trophymanager.TrophyManagerConfig;
 import cy.jdkdigital.trophymanager.init.ModBlockEntities;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.NonNullList;
@@ -9,6 +10,7 @@ import net.minecraft.nbt.ListTag;
 import net.minecraft.network.Connection;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
@@ -21,6 +23,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
+import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -58,10 +61,9 @@ public class TrophyBlockEntity extends BlockEntity
         loadData(tag.getCompound("TrophyData"));
     }
 
-    @Nonnull
     @Override
-    public CompoundTag save(@Nonnull CompoundTag tag) {
-        super.save(tag);
+    protected void saveAdditional(CompoundTag tag) {
+        super.saveAdditional(tag);
 
         CompoundTag trophyTag = new CompoundTag();
 
@@ -84,54 +86,52 @@ public class TrophyBlockEntity extends BlockEntity
         }
 
         tag.put("TrophyData", trophyTag);
-
-        return tag;
     }
 
     public void loadData(CompoundTag tag) {
-        trophyType = tag.contains("TrophyType") ? tag.getString("TrophyType") : "item";
+        this.trophyType = tag.contains("TrophyType") ? tag.getString("TrophyType") : "item";
 
         if (tag.contains("TrophyItem")) {
             CompoundTag itemTag = tag.getCompound("TrophyItem");
             if (!itemTag.contains("Count")) {
                 itemTag.putDouble("Count", 1D);
             }
-            item = ItemStack.of(itemTag);
+            this.item = ItemStack.of(itemTag);
         } else if (this.trophyType.equals("item")) {
             // Default
-            item = new ItemStack(Items.ENCHANTED_GOLDEN_APPLE);
+            this.item = new ItemStack(Items.ENCHANTED_GOLDEN_APPLE);
         }
 
         if (tag.contains("TrophyEntity")) {
-            entity = tag.getCompound("TrophyEntity");
+            this.entity = tag.getCompound("TrophyEntity");
         }
 
         if (tag.contains("Scale")) {
-            scale = tag.getFloat("Scale");
+            this.scale = tag.getFloat("Scale");
         } else {
-            scale = 0.5f;
+            this.scale = 0.5f;
         }
 
         if (tag.contains("RotX")) {
-            rotX = tag.getFloat("RotX");
+            this.rotX = tag.getFloat("RotX");
         } else {
-            rotX = 0.0f;
+            this.rotX = 0.0f;
         }
 
         if (tag.contains("OffsetY")) {
-            offsetY = tag.getDouble("OffsetY");
+            this.offsetY = tag.getDouble("OffsetY");
         } else {
-            offsetY = 0.5d;
+            this.offsetY = 0.5d;
         }
 
         if (tag.contains("BaseBlock")) {
-            baseBlock = new ResourceLocation(tag.getString("BaseBlock"));
+            this.baseBlock = new ResourceLocation(tag.getString("BaseBlock"));
         } else {
-            baseBlock = new ResourceLocation("smooth_stone_slab");
+            this.baseBlock = new ResourceLocation(TrophyManagerConfig.GENERAL.defaultBaseBlock.get());
         }
 
         if (tag.contains("Name")) {
-            name = tag.getString("Name");
+            this.name = tag.getString("Name");
         }
     }
 
@@ -201,7 +201,7 @@ public class TrophyBlockEntity extends BlockEntity
     @Nullable
     @Override
     public ClientboundBlockEntityDataPacket getUpdatePacket() {
-        return new ClientboundBlockEntityDataPacket(this.getBlockPos(), -1, this.getUpdateTag());
+        return ClientboundBlockEntityDataPacket.create(this);
     }
 
     @Override
@@ -210,14 +210,8 @@ public class TrophyBlockEntity extends BlockEntity
     }
 
     @Override
-    @Nonnull
-    public CompoundTag getUpdateTag() {
-        return this.serializeNBT();
-    }
-
-    @Override
-    public void handleUpdateTag(CompoundTag tag) {
-        deserializeNBT(tag);
+    public @NotNull CompoundTag getUpdateTag() {
+        return saveWithId();
     }
 
     public InteractionResult equipArmor(ItemStack heldItem) {
@@ -255,6 +249,10 @@ public class TrophyBlockEntity extends BlockEntity
 
         entity.put("ArmorItems", listnbt);
 
+        if (level instanceof ServerLevel) {
+            level.sendBlockUpdated(worldPosition, getBlockState(), getBlockState(), 3);
+        }
+
         return InteractionResult.CONSUME;
     }
 
@@ -289,6 +287,10 @@ public class TrophyBlockEntity extends BlockEntity
         }
 
         entity.put("HandItems", listnbt);
+
+        if (level instanceof ServerLevel) {
+            level.sendBlockUpdated(worldPosition, getBlockState(), getBlockState(), 3);
+        }
 
         return InteractionResult.CONSUME;
     }

@@ -3,7 +3,7 @@ package cy.jdkdigital.trophymanager.init;
 import cy.jdkdigital.trophymanager.TrophyManager;
 import cy.jdkdigital.trophymanager.common.tileentity.TrophyBlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
-import net.minecraftforge.fmllegacy.RegistryObject;
+import net.minecraftforge.registries.RegistryObject;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 

@@ -82,7 +82,7 @@ public class TrophyManager
 
             if (willDropTrophy) {
                 CompoundTag entityTag = new CompoundTag();
-                deadEntity.save(entityTag);
+                deadEntity.saveWithoutId(entityTag);
                 ItemStack trophy = TrophyBlock.createTrophy(deadEntity, entityTag);
                 Block.popResource(deadEntity.level, deadEntity.blockPosition(), trophy);
             }
