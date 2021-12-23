@@ -21,6 +21,11 @@
                                     "op": "replace"
                                 },
                                 {
+                                    "source": "TrophyData.identifier",
+                                    "target": "identifier",
+                                    "op": "replace"
+                                },
+                                {
                                     "source": "TrophyData.TrophyEntity",
                                     "target": "TrophyEntity",
                                     "op": "replace"

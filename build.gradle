@@ -146,14 +146,14 @@ dependencies {
     // http://www.gradle.org/docs/current/userguide/artifact_dependencies_tutorial.html
     // http://www.gradle.org/docs/current/userguide/dependency_management.html
 
-    implementation fg.deobf("curse.maven:architectury-forge-419699:3385660")
-    implementation fg.deobf("curse.maven:ftb-library-forge-404465:3373833")
-    implementation fg.deobf("curse.maven:item-filters-forge-309674:3376819")
-    implementation fg.deobf("curse.maven:ftb-teams-forge-404468:3373835")
-    implementation fg.deobf("curse.maven:ftb-quests-forge-289412:3403160")
-    implementation fg.deobf("curse.maven:cofh-core-69162:3249453")
-    implementation fg.deobf("curse.maven:thermal-foundation-222880:3248150")
-    implementation fg.deobf("curse.maven:thermal-expansion-69163:3247000")
+//    implementation fg.deobf("curse.maven:architectury-forge-419699:3385660")
+//    implementation fg.deobf("curse.maven:ftb-library-forge-404465:3373833")
+//    implementation fg.deobf("curse.maven:item-filters-forge-309674:3376819")
+//    implementation fg.deobf("curse.maven:ftb-teams-forge-404468:3373835")
+//    implementation fg.deobf("curse.maven:ftb-quests-forge-289412:3403160")
+//    implementation fg.deobf("curse.maven:cofh-core-69162:3249453")
+//    implementation fg.deobf("curse.maven:thermal-foundation-222880:3248150")
+//    implementation fg.deobf("curse.maven:thermal-expansion-69163:3247000")
     implementation fg.deobf("curse.maven:productivebees-377897:3509730")
     implementation fg.deobf("curse.maven:infernal-expansion-395078:3526021")
 }

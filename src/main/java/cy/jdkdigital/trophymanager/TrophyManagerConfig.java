@@ -4,9 +4,7 @@ import net.minecraftforge.common.ForgeConfigSpec;
 import net.minecraftforge.fml.common.Mod;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @Mod.EventBusSubscriber
 public class TrophyManagerConfig
@@ -24,8 +22,11 @@ public class TrophyManagerConfig
         public final ForgeConfigSpec.BooleanValue dropFromMobs;
         public final ForgeConfigSpec.DoubleValue dropChanceBoss;
         public final ForgeConfigSpec.DoubleValue dropChanceMobs;
+        public final ForgeConfigSpec.BooleanValue useLootingEnchant;
         public final ForgeConfigSpec.BooleanValue allowNonOpEdit;
         public final ForgeConfigSpec.DoubleValue maxSize;
+        public final ForgeConfigSpec.ConfigValue<? extends String> defaultBaseBlock;
+        public final ForgeConfigSpec.DoubleValue defaultYOffset;
         public final ForgeConfigSpec.ConfigValue<List<String>> nbtMap;
 
         public General(ForgeConfigSpec.Builder builder) {
@@ -43,6 +44,10 @@ public class TrophyManagerConfig
                     .comment("Drop chance for trophies when a normal entity is killed by a player.")
                     .defineInRange("dropChanceMobs", 0.02, 0, 1);
 
+            useLootingEnchant = builder
+                    .comment("Looting increases drop chance")
+                    .define("useLootingEnchant", true);
+
             allowNonOpEdit = builder
                     .comment("Allow non opped players to change the settings for a trophy.")
                     .define("allowNonOpEdit", true);
@@ -51,11 +56,31 @@ public class TrophyManagerConfig
                     .comment("Maximum size multiplier for a trophy.")
                     .defineInRange("maxSize", 20.00, 0, Integer.MAX_VALUE);
 
-            nbtMap = builder.define("nbtMap", new ArrayList<String>() {{
-                add("productivebees:configurable_bee:type");
-                add("infernalexp:shroomloin:ShroomloinType");
-                add("infernalexp:basalt_giant:Size");
-            }});
+            defaultBaseBlock = builder
+                    .comment("Block to use for trophies dropped when killing a mob.")
+                    .define("defaultBaseBlock", "minecraft:smooth_stone_slab");
+
+            defaultYOffset = builder
+                    .comment("Default YOffset for trophies dropped when killing a mob. If defaultBaseBlock is a full block this should be 1.0, slabs 0.5 and carpets 0.1")
+                    .defineInRange("defaultYOffset", 0.5, 0, Integer.MAX_VALUE);
+
+            nbtMap = builder
+                    .comment("List of entities which has NBT data that needs to be saved with the trophy. Format: modid:entityid:tag.")
+                    .define("nbtMap", new ArrayList<String>() {{
+                        add("minecraft:axolotl:Variant");
+                        add("minecraft:cat:CatType");
+                        add("minecraft:llama:Variant");
+                        add("minecraft:horse:Variant");
+                        add("minecraft:fox:Type");
+                        add("minecraft:parrot:Variant");
+                        add("minecraft:panda:MainGene");
+                        add("minecraft:panda:HiddenGene");
+                        add("minecraft:mooshroom:Type");
+                        add("minecraft:villager:VillagerData");
+                        add("productivebees:configurable_bee:type");
+                        add("infernalexp:shroomloin:ShroomloinType");
+                        add("infernalexp:basalt_giant:Size");
+                    }});
 
             builder.pop();
         }

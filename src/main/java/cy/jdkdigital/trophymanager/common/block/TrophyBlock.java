@@ -83,9 +83,8 @@ public class TrophyBlock extends Block implements IWaterLoggable
     public void setPlacedBy(World world, @Nonnull BlockPos pos, @Nonnull BlockState state, @Nullable LivingEntity player, @Nonnull ItemStack stack) {
         // Read data from stack
         TileEntity tileEntity = world.getBlockEntity(pos);
-        if (tileEntity instanceof TrophyBlockEntity) {
-            CompoundNBT tag = stack.getOrCreateTag();
-            ((TrophyBlockEntity) tileEntity).loadData(tag);
+        if (!world.isClientSide() && tileEntity instanceof TrophyBlockEntity) {
+            ((TrophyBlockEntity) tileEntity).loadData(stack.getOrCreateTag());
         }
     }
 
@@ -105,8 +104,12 @@ public class TrophyBlock extends Block implements IWaterLoggable
         ItemStack stack = new ItemStack(ModBlocks.TROPHY.get());
         TileEntity tileEntity = world.getBlockEntity(pos);
         if (tileEntity instanceof TrophyBlockEntity) {
-            CompoundNBT tag = tileEntity.save(new CompoundNBT());
-            stack.setTag(tag.getCompound("TrophyData"));
+            try {
+                CompoundNBT tag = tileEntity.save(new CompoundNBT());
+                stack.setTag(tag.getCompound("TrophyData"));
+            } catch (Exception e) {
+                // client side can crash if data is not yet received
+            }
         }
         return stack;
     }
@@ -159,7 +162,7 @@ public class TrophyBlock extends Block implements IWaterLoggable
                 TileEntity te = level.getBlockEntity(pos);
                 if (te instanceof TrophyBlockEntity) {
                     if (((TrophyBlockEntity) te).trophyType.equals("entity")) {
-                        String entity = ((TrophyBlockEntity) te).entity.getString("entityType");
+                        String entity = ((TrophyBlockEntity) te).entityTag.getString("entityType");
                         switch (entity) {
                             case "minecraft:creeper":
                                 level.playSound(null, pos, SoundEvents.CREEPER_PRIMED, SoundCategory.HOSTILE, 1.0F, 1.0F);
@@ -206,7 +209,7 @@ public class TrophyBlock extends Block implements IWaterLoggable
                                 }
                                 break;
                             default:
-                                Entity e = ((TrophyBlockEntity) te).getCachedEntity();
+                                Entity e = ((TrophyBlockEntity) te).getEntity();
                                 if (e instanceof MobEntity) {
                                     SoundEvent sound = ((MobEntity) e).getAmbientSound();
                                     if (sound != null) {
@@ -235,13 +238,15 @@ public class TrophyBlock extends Block implements IWaterLoggable
     }
 
     public static ItemStack createTrophy(String entityId, CompoundNBT tag, String name) {
+        String identifier = entityId;
         CompoundNBT entityTag = new CompoundNBT();
-        TrophyManagerConfig.GENERAL.nbtMap.get().forEach(s -> {
+        for (String s : TrophyManagerConfig.GENERAL.nbtMap.get()) {
             String[] nbtInfo = s.split(":");
             if (nbtInfo.length == 3 && (nbtInfo[0] + ":" + nbtInfo[1]).equals(entityId) && tag.contains(nbtInfo[2]) && tag.get(nbtInfo[2]) != null) {
                 entityTag.put(nbtInfo[2], tag.get(nbtInfo[2]));
+                identifier = identifier + ":" + tag.get(nbtInfo[2]).getAsString();
             }
-        });
+        }
 
         CompoundNBT trophyTag = new CompoundNBT();
         ItemStack trophy = new ItemStack(ModBlocks.TROPHY.get());
@@ -272,6 +277,7 @@ public class TrophyBlock extends Block implements IWaterLoggable
 
         trophyTag.put("TrophyEntity", entityTag);
         trophyTag.putString("Name", name + " trophy");
+        trophyTag.putString("identifier", identifier);
 
         trophy.setTag(trophyTag);
 

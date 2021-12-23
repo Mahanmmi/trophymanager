@@ -1,6 +1,7 @@
 package cy.jdkdigital.trophymanager.common.tileentity;
 
 import cy.jdkdigital.trophymanager.TrophyManager;
+import cy.jdkdigital.trophymanager.TrophyManagerConfig;
 import cy.jdkdigital.trophymanager.init.ModBlockEntities;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.Entity;
@@ -21,6 +22,7 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.minecraft.world.server.ServerWorld;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -34,11 +36,12 @@ public class TrophyBlockEntity extends TileEntity
 
     public String trophyType; // item, entity
     public ItemStack item = null;
-    public CompoundNBT entity = null;
+    public CompoundNBT entityTag = null;
     public double offsetY;
     public float scale;
     public ResourceLocation baseBlock;
     private String name;
+    private String identifier = "";
 
     public TrophyBlockEntity() {
         super(ModBlockEntities.TROPHY.get());
@@ -64,30 +67,42 @@ public class TrophyBlockEntity extends TileEntity
 
         CompoundNBT trophyTag = new CompoundNBT();
 
-        trophyTag.putString("TrophyType", trophyType);
+        if (trophyType != null) {
+            trophyTag.putString("TrophyType", trophyType);
 
-        if (item != null) {
-            trophyTag.put("TrophyItem", item.save(new CompoundNBT()));
+            if (!identifier.isEmpty()) {
+                trophyTag.putString("identifier", identifier);
+            }
+
+            if (item != null) {
+                trophyTag.put("TrophyItem", item.save(new CompoundNBT()));
+            }
+
+            if (entityTag != null) {
+                trophyTag.put("TrophyEntity", entityTag);
+            }
+
+            trophyTag.putDouble("OffsetY", offsetY);
+            trophyTag.putFloat("Scale", scale);
+            trophyTag.putString("BaseBlock", baseBlock.toString());
+            if (name != null) {
+                trophyTag.putString("Name", name);
+            }
+
+            tag.put("TrophyData", trophyTag);
         }
-
-        if (entity != null) {
-            trophyTag.put("TrophyEntity", entity);
-        }
-
-        trophyTag.putDouble("OffsetY", offsetY);
-        trophyTag.putFloat("Scale", scale);
-        trophyTag.putString("BaseBlock", baseBlock.toString());
-        if (name != null) {
-            trophyTag.putString("Name", name);
-        }
-
-        tag.put("TrophyData", trophyTag);
 
         return tag;
     }
 
     public void loadData(CompoundNBT tag) {
-        trophyType = tag.contains("TrophyType") ? tag.getString("TrophyType") : "item";
+        populateDefaultData(tag);
+
+        trophyType = tag.getString("TrophyType");
+
+        if (tag.contains("identifier")) {
+            identifier = tag.getString("identifier");
+        }
 
         if (tag.contains("TrophyItem")) {
             CompoundNBT itemTag = tag.getCompound("TrophyItem");
@@ -95,49 +110,57 @@ public class TrophyBlockEntity extends TileEntity
                 itemTag.putDouble("Count", 1D);
             }
             item = ItemStack.of(itemTag);
-        } else if (this.trophyType.equals("item")) {
-            // Default
-            item = new ItemStack(Items.ENCHANTED_GOLDEN_APPLE);
         }
 
         if (tag.contains("TrophyEntity")) {
-            entity = tag.getCompound("TrophyEntity");
+            entityTag = tag.getCompound("TrophyEntity");
+            if (identifier.isEmpty()) {
+                identifier = entityTag.getString("entityType");
+            }
         }
 
-        if (tag.contains("Scale")) {
-            scale = tag.getFloat("Scale");
-        } else {
-            scale = 0.5f;
-        }
-
-        if (tag.contains("OffsetY")) {
-            offsetY = tag.getDouble("OffsetY");
-        } else {
-            offsetY = 0.5d;
-        }
-
-        if (tag.contains("BaseBlock")) {
-            baseBlock = new ResourceLocation(tag.getString("BaseBlock"));
-        } else {
-            baseBlock = new ResourceLocation("smooth_stone_slab");
-        }
+        scale = tag.getFloat("Scale");
+        offsetY = tag.getDouble("OffsetY");
+        baseBlock = new ResourceLocation(tag.getString("BaseBlock"));
 
         if (tag.contains("Name")) {
             name = tag.getString("Name");
         }
     }
 
-    public Entity getCachedEntity() {
-        int key = entity.hashCode();
+    public static void populateDefaultData(CompoundNBT tag) {
+        if (!tag.contains("TrophyType")) {
+            tag.putString("TrophyType", "item");
+        }
+        if (!tag.contains("TrophyItem") && tag.getString("TrophyType").equals("item")) {
+            tag.put("TrophyItem", new ItemStack(Items.ENCHANTED_GOLDEN_APPLE).serializeNBT());
+        }
+        if (!tag.contains("Scale")) {
+            tag.putFloat("Scale", 0.5f);
+        }
+        if (!tag.contains("OffsetY")) {
+            tag.putDouble("OffsetY", TrophyManagerConfig.GENERAL.defaultYOffset.get());
+        }
+        if (!tag.contains("BaseBlock")) {
+            tag.putString("BaseBlock", TrophyManagerConfig.GENERAL.defaultBaseBlock.get());
+        }
+    }
+
+    public Entity getEntity() {
+        return getCachedEntity(entityTag);
+    }
+
+    public static Entity getCachedEntity(CompoundNBT tag) {
+        int key = tag.hashCode();
         if (!cachedEntities.containsKey(key)) {
-            Entity cachedEntity = createEntity(TrophyManager.proxy.getWorld(), entity);
-            if (cachedEntity instanceof IAngerable && entity.contains("AngerTime")) {
-                ((IAngerable) cachedEntity).setRemainingPersistentAngerTime(entity.getInt("AngerTime"));
-            } else if (cachedEntity instanceof ShulkerEntity && entity.contains("Peek")) {
-                ((ShulkerEntity) cachedEntity).setRawPeekAmount(entity.getInt("Peek"));
+            Entity cachedEntity = createEntity(TrophyManager.proxy.getWorld(), tag);
+            if (cachedEntity instanceof IAngerable && tag.contains("AngerTime")) {
+                ((IAngerable) cachedEntity).setRemainingPersistentAngerTime(tag.getInt("AngerTime"));
+            } else if (cachedEntity instanceof ShulkerEntity && tag.contains("Peek")) {
+                ((ShulkerEntity) cachedEntity).setRawPeekAmount(tag.getInt("Peek"));
             }
             try {
-                addPassengers(cachedEntity, entity);
+                addPassengers(cachedEntity, tag);
             } catch (Exception e) {
                 // user can fuck it up here, so don't crash
             }
@@ -206,12 +229,12 @@ public class TrophyBlockEntity extends TileEntity
     }
 
     public ActionResultType equipArmor(ItemStack heldItem) {
-        if (!canEquip(getCachedEntity())) {
+        if (!canEquip(getEntity())) {
             return ActionResultType.PASS;
         }
 
         // Read existing armor items into list
-        ListNBT armorList = entity.contains("ArmorItems") ? entity.getList("ArmorItems", 10) : new ListNBT();
+        ListNBT armorList = entityTag.contains("ArmorItems") ? entityTag.getList("ArmorItems", 10) : new ListNBT();
         NonNullList<ItemStack> armorItems = NonNullList.withSize(4, ItemStack.EMPTY);
         for(int l = 0; l < armorItems.size(); ++l) {
             armorItems.set(l, ItemStack.of(armorList.getCompound(l)));
@@ -238,18 +261,25 @@ public class TrophyBlockEntity extends TileEntity
             }
         }
 
-        entity.put("ArmorItems", listnbt);
+        entityTag.remove("ArmorItems");
+        if (!listnbt.isEmpty()) {
+            entityTag.put("ArmorItems", listnbt);
+        }
+
+        if (level instanceof ServerWorld) {
+            level.sendBlockUpdated(worldPosition, getBlockState(), getBlockState(), 3);
+        }
 
         return ActionResultType.CONSUME;
     }
 
     public ActionResultType equipTool(ItemStack heldItem) {
-        if (!canEquip(getCachedEntity())) {
+        if (!canEquip(getEntity())) {
             return ActionResultType.PASS;
         }
 
         // Read existing armor items into list
-        ListNBT handList = entity.contains("HandItems") ? entity.getList("HandItems", 10) : new ListNBT();
+        ListNBT handList = entityTag.contains("HandItems") ? entityTag.getList("HandItems", 10) : new ListNBT();
         NonNullList<ItemStack> handItems = NonNullList.withSize(2, ItemStack.EMPTY);
         for(int l = 0; l < handItems.size(); ++l) {
             handItems.set(l, ItemStack.of(handList.getCompound(l)));
@@ -273,12 +303,19 @@ public class TrophyBlockEntity extends TileEntity
             }
         }
 
-        entity.put("HandItems", listnbt);
+        entityTag.remove("HandItems");
+        if (!listnbt.isEmpty()) {
+            entityTag.put("HandItems", listnbt);
+        }
+
+        if (level instanceof ServerWorld) {
+            level.sendBlockUpdated(worldPosition, getBlockState(), getBlockState(), 3);
+        }
 
         return ActionResultType.CONSUME;
     }
 
-    private boolean canEquip(Entity cachedEntity) {
+    public boolean canEquip(Entity cachedEntity) {
         return cachedEntity instanceof MobEntity || cachedEntity instanceof ArmorStandEntity;
     }
 }

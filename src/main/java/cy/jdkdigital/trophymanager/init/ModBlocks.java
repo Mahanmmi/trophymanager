@@ -17,7 +17,6 @@ import java.util.function.Supplier;
 public final class ModBlocks
 {
     public static final DeferredRegister<Block> BLOCKS = DeferredRegister.create(ForgeRegistries.BLOCKS, TrophyManager.MODID);
-    public static final DeferredRegister<Item> ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS, TrophyManager.MODID);
 
     public static final RegistryObject<Block> TROPHY = createBlock("trophy", () -> new TrophyBlock(Block.Properties.copy(Blocks.STONE_SLAB).noOcclusion()), ItemGroup.TAB_DECORATIONS);
 
@@ -26,7 +25,7 @@ public final class ModBlocks
 
         Item.Properties properties = new Item.Properties().tab(itemGroup).setISTER(() -> TrophyItemStackRenderer::new);
 
-        ITEMS.register(name, () -> new TrophyItem(block.get(), properties));
+        ModItems.ITEMS.register(name, () -> new TrophyItem(block.get(), properties));
 
         return block;
     }

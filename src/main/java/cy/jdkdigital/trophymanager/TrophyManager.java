@@ -1,9 +1,8 @@
 package cy.jdkdigital.trophymanager;
 
-import cy.jdkdigital.trophymanager.client.render.block.TrophyBlockEntityRenderer;
+import cy.jdkdigital.trophymanager.client.event.ClientSetup;
 import cy.jdkdigital.trophymanager.common.block.TrophyBlock;
-import cy.jdkdigital.trophymanager.init.ModBlockEntities;
-import cy.jdkdigital.trophymanager.init.ModBlocks;
+import cy.jdkdigital.trophymanager.init.*;
 import cy.jdkdigital.trophymanager.network.Networking;
 import cy.jdkdigital.trophymanager.setup.ClientProxy;
 import cy.jdkdigital.trophymanager.setup.IProxy;
@@ -12,20 +11,22 @@ import net.minecraft.block.Block;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.enchantment.Enchantments;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.ai.attributes.GlobalEntityTypeAttributes;
+import net.minecraft.entity.passive.BeeEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.world.World;
+import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
+import net.minecraftforge.fml.DeferredWorkQueue;
 import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.fml.ModLoadingContext;
-import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.config.ModConfig;
-import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import org.apache.logging.log4j.LogManager;
@@ -46,21 +47,22 @@ public class TrophyManager
         MinecraftForge.EVENT_BUS.addListener(this::onEntityDeath);
 
         IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
-        modEventBus.addListener(this::doClientStuff);
         modEventBus.addListener(this::doCommonStuff);
         ModBlocks.BLOCKS.register(modEventBus);
-        ModBlocks.ITEMS.register(modEventBus);
+        ModItems.ITEMS.register(modEventBus);
+        ModEntities.ENTITIES.register(modEventBus);
         ModBlockEntities.BLOCK_ENTITY_TYPES.register(modEventBus);
+        ModRecipeTypes.RECIPE_SERIALIZERS.register(modEventBus);
 
         ModLoadingContext.get().registerConfig(ModConfig.Type.SERVER, TrophyManagerConfig.SERVER_CONFIG);
+
+        DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () -> {
+            modEventBus.addListener(ClientSetup::init);
+        });
     }
 
     private void doCommonStuff(final FMLCommonSetupEvent event) {
         Networking.registerMessages();
-    }
-
-    private void doClientStuff(final FMLClientSetupEvent event) {
-        ClientRegistry.bindTileEntityRenderer(ModBlockEntities.TROPHY.get(), TrophyBlockEntityRenderer::new);
     }
 
     private void onEntityDeath(final LivingDeathEvent event) {
@@ -73,7 +75,7 @@ public class TrophyManager
             boolean willDropTrophy = chance >= level.random.nextDouble();
 
             // Each level of looting gives an extra roll
-            if ((source instanceof ServerPlayerEntity)) {
+            if (TrophyManagerConfig.GENERAL.useLootingEnchant.get() && source instanceof ServerPlayerEntity) {
                 ServerPlayerEntity player = (ServerPlayerEntity) source;
                 int lootingLevel = EnchantmentHelper.getItemEnchantmentLevel(Enchantments.MOB_LOOTING, player.getMainHandItem());
                 for (int i = 0; i < (1 + lootingLevel); i++) {

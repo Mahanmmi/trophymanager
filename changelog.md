@@ -1,4 +1,10 @@
-0.1.4.1
+0.1.6.0
+
+- Added Trophy Minecarts, they face the right direction every time half the time
+- Added unique NBT data to root tag to better support shop plugins
+
+
+0.1.5.0
 
 - Armor and equipment can now be added to trophies of mobs that are able to hold them
 - Trophy drop rate is affected by looting level

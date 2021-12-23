@@ -30,7 +30,7 @@ public class TrophyBlockEntityRenderer extends TileEntityRenderer<TrophyBlockEnt
             if (trophyTileEntity.trophyType.equals("item") && trophyTileEntity.item != null) {
                 renderItem(trophyTileEntity, matrixStack, buffer, combinedLightIn, combinedOverlayIn);
             } else if (trophyTileEntity.trophyType.equals("entity")) {
-                Entity entity = trophyTileEntity.getCachedEntity();
+                Entity entity = trophyTileEntity.getEntity();
                 if (entity != null) {
                     renderEntity(trophyTileEntity, matrixStack, buffer, combinedLightIn);
                 }
@@ -78,13 +78,13 @@ public class TrophyBlockEntityRenderer extends TileEntityRenderer<TrophyBlockEnt
         matrixStack.mulPose(Vector3f.YP.rotationDegrees(angle));
         matrixStack.scale(trophyTileEntity.scale, trophyTileEntity.scale, trophyTileEntity.scale);
 
-        if (trophyTileEntity.entity.getString("entityType").equals("minecraft:ender_dragon")) {
+        if (trophyTileEntity.entityTag.getString("entityType").equals("minecraft:ender_dragon")) {
             matrixStack.mulPose(Vector3f.YP.rotationDegrees(180f));
         }
 
         EntityRendererManager entityRendererManager = Minecraft.getInstance().getEntityRenderDispatcher();
         entityRendererManager.setRenderShadow(false);
-        Entity cachedEntity = trophyTileEntity.getCachedEntity();
+        Entity cachedEntity = trophyTileEntity.getEntity();
         entityRendererManager.render(cachedEntity, 0, 0, 0., Minecraft.getInstance().getFrameTime(), 1, matrixStack, buffer, combinedLightIn);
 
         renderPassengers(cachedEntity, entityRendererManager, matrixStack, buffer, combinedLightIn);
