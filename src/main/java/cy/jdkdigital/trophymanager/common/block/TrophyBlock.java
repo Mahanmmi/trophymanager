@@ -105,7 +105,7 @@ public class TrophyBlock extends BaseEntityBlock implements SimpleWaterloggedBlo
     public ItemStack getCloneItemStack(BlockState state, HitResult target, BlockGetter world, BlockPos pos, Player player) {
         ItemStack stack = new ItemStack(ModBlocks.TROPHY.get());
         BlockEntity tileEntity = world.getBlockEntity(pos);
-        if (tileEntity instanceof TrophyBlockEntity) {
+        if (tileEntity instanceof TrophyBlockEntity trophyTile) {
             try {
                 CompoundTag tag = tileEntity.saveWithoutMetadata();
                 stack.setTag(tag.getCompound("TrophyData"));
@@ -121,7 +121,7 @@ public class TrophyBlock extends BaseEntityBlock implements SimpleWaterloggedBlo
         ItemStack heldItem = player.getItemInHand(hand);
         if (heldItem.getItem() instanceof BlockItem) {
             Block heldBlock = ((BlockItem) heldItem.getItem()).getBlock();
-            if (ModTags.TROPHY_BASE.contains(heldBlock)) {
+            if (heldBlock.defaultBlockState().is(ModTags.TROPHY_BASE)) {
                 final BlockEntity blockEntity = world.getBlockEntity(pos);
                 if (blockEntity instanceof TrophyBlockEntity) {
                     ((TrophyBlockEntity) blockEntity).baseBlock = heldBlock.getRegistryName();
