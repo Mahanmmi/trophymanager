@@ -66,6 +66,7 @@ public class TrophyManagerConfig
                     .define("nbtMap", new ArrayList<>() {{
                         add("minecraft:axolotl:Variant");
                         add("minecraft:cat:CatType");
+                        add("minecraft:frog:variant");
                         add("minecraft:llama:Variant");
                         add("minecraft:horse:Variant");
                         add("minecraft:fox:Variant");

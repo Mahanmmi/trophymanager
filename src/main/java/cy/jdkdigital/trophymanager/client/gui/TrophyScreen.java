@@ -8,13 +8,11 @@ import cy.jdkdigital.trophymanager.common.tileentity.TrophyBlockEntity;
 import cy.jdkdigital.trophymanager.network.Networking;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.components.Button;
-import net.minecraft.client.gui.components.MultiLineLabel;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.chat.TextComponent;
-import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.Level;
 
@@ -28,7 +26,7 @@ public class TrophyScreen extends Screen
     private final TrophyBlockEntity trophy;
 
     protected TrophyScreen(BlockPos pos) {
-        super(new TranslatableComponent("gui.trophy.screen"));
+        super(Component.translatable("gui.trophy.screen"));
         Level level = TrophyManager.proxy.getWorld();
         trophy = (TrophyBlockEntity) level.getBlockEntity(pos);
     }
@@ -38,14 +36,14 @@ public class TrophyScreen extends Screen
         int relX = (this.width - WIDTH) / 2;
         int relY = (this.height - HEIGHT) / 2;
 
-        addRenderableWidget(new Button(relX + 10, relY + 10, 20, 20, new TextComponent("-"), button -> adjustScale(-1)));
-        addRenderableWidget(new Button(relX + 120, relY + 10, 20, 20, new TextComponent("+"), button -> adjustScale(1)));
+        addRenderableWidget(new Button(relX + 10, relY + 10, 20, 20, Component.literal("-"), button -> adjustScale(-1)));
+        addRenderableWidget(new Button(relX + 120, relY + 10, 20, 20, Component.literal("+"), button -> adjustScale(1)));
 
-        addRenderableWidget(new Button(relX + 10, relY + 35, 20, 20, new TextComponent("-"), button -> adjustOffsetY(-1)));
-        addRenderableWidget(new Button(relX + 120, relY + 35, 20, 20, new TextComponent("+"), button -> adjustOffsetY(1)));
+        addRenderableWidget(new Button(relX + 10, relY + 35, 20, 20, Component.literal("-"), button -> adjustOffsetY(-1)));
+        addRenderableWidget(new Button(relX + 120, relY + 35, 20, 20, Component.literal("+"), button -> adjustOffsetY(1)));
 
-        addRenderableWidget(new Button(relX + 10, relY + 60, 65, 20, new TranslatableComponent("gui.cancel"), button -> close()));
-        addRenderableWidget(new Button(relX + 76, relY + 60, 65, 20, new TranslatableComponent("gui.ok"), button -> save(this)));
+        addRenderableWidget(new Button(relX + 10, relY + 60, 65, 20, Component.translatable("gui.cancel"), button -> close()));
+        addRenderableWidget(new Button(relX + 76, relY + 60, 65, 20, Component.translatable("gui.ok"), button -> save(this)));
     }
 
     @Override

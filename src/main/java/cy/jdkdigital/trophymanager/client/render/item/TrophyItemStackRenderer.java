@@ -26,6 +26,7 @@ public class TrophyItemStackRenderer extends BlockEntityWithoutLevelRenderer
             blockEntity = new TrophyBlockEntity(BlockPos.ZERO, Blocks.CHEST.defaultBlockState());
         }
         blockEntity.loadData(stack.getOrCreateTag());
+        blockEntity.scale = 0.5f;
         matrixStack.pushPose();
 
         Minecraft.getInstance().getBlockEntityRenderDispatcher().renderItem(blockEntity, matrixStack, buffer, packedLightIn, packedUV);

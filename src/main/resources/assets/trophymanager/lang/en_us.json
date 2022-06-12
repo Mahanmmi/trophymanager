@@ -1,3 +1,4 @@
 {
-    "block.trophymanager.trophy": "Trophy"
+    "block.trophymanager.trophy": "Trophy",
+    "everythingcopper.tooltip.trophy.scale": "Scale: %s"
 }
