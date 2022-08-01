@@ -35,7 +35,7 @@ public class Networking
         INSTANCE.messageBuilder(PacketOpenGui.class, nextID())
                 .encoder((packetOpenGui, packetBuffer) -> {packetBuffer.writeBlockPos(packetOpenGui.pos);})
                 .decoder(buf -> new PacketOpenGui(buf.readBlockPos()))
-                .consumer(PacketOpenGui::handle)
+                .consumerNetworkThread(PacketOpenGui::handle)
                 .add();
         INSTANCE.messageBuilder(PacketUpdateTrophy.class, nextID())
                 .encoder((packetUpdateTrophy, packetBuffer) -> {
@@ -43,7 +43,7 @@ public class Networking
                     packetBuffer.writeNbt(packetUpdateTrophy.tag);
                 })
                 .decoder(buf -> new PacketUpdateTrophy(buf.readBlockPos(), buf.readAnySizeNbt()))
-                .consumer(PacketUpdateTrophy::handle)
+                .consumerMainThread(PacketUpdateTrophy::handle)
                 .add();
     }
 

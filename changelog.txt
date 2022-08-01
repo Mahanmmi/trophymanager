@@ -1,4 +1,9 @@
+1.19-0.2.0.1
+
+-- Updated to Forge 41.0.98
+
+
 1.19-0.2.0.0
 
 -- Port to 1.19
--- Added trophies for n, Frogs, Tadpole and Allay
+-- Added trophies for Warden, Frogs, Tadpole and Allay
