@@ -18,6 +18,7 @@ import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.NeutralMob;
 import net.minecraft.world.entity.decoration.ArmorStand;
 import net.minecraft.world.entity.monster.Shulker;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.*;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -144,12 +145,17 @@ public class TrophyBlockEntity extends BlockEntity
                     ((NeutralMob) cachedEntity).setRemainingPersistentAngerTime(entity.getInt("AngerTime"));
                 } else if (cachedEntity instanceof Shulker && entity.contains("Peek")) {
                     ((Shulker) cachedEntity).setRawPeekAmount(entity.getInt("Peek"));
+                } else if (cachedEntity instanceof Player && entity.contains("UUID")) {
+//                    TrophyManager.LOGGER.info("Player trophy entity " + entity.contains("UUID"));
+//                    TrophyManager.LOGGER.info(cachedEntity);
                 }
                 try {
                     addPassengers(cachedEntity, entity);
                 } catch (Exception e) {
                     // user can fuck it up here, so don't crash
                 }
+            } else {
+                TrophyManager.LOGGER.info("Unable to create trophy entity " + entity);
             }
             try {
                 addPassengers(cachedEntity, entity);
