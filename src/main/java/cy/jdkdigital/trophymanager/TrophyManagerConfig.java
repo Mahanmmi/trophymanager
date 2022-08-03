@@ -20,6 +20,7 @@ public class TrophyManagerConfig
     public static class General
     {
         public final ForgeConfigSpec.BooleanValue dropFromMobs;
+        public final ForgeConfigSpec.BooleanValue applyLooting;
         public final ForgeConfigSpec.DoubleValue dropChanceBoss;
         public final ForgeConfigSpec.DoubleValue dropChanceMobs;
         public final ForgeConfigSpec.BooleanValue allowNonOpEdit;
@@ -34,6 +35,10 @@ public class TrophyManagerConfig
             dropFromMobs = builder
                     .comment("Should trophies drop from mobs when killed by a player?")
                     .define("dropFromMobs", true);
+
+            applyLooting = builder
+                    .comment("Looting enchant will increase drop change")
+                    .define("applyLooting", true);
 
             dropChanceBoss = builder
                     .comment("Drop chance for trophies when a boss entity is killed by a player.")

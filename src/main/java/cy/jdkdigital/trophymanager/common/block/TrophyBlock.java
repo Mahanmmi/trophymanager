@@ -260,6 +260,11 @@ public class TrophyBlock extends BaseEntityBlock implements SimpleWaterloggedBlo
         ItemStack trophy = new ItemStack(ModBlocks.TROPHY.get());
         trophyTag.putString("TrophyType", "entity");
         entityTag.putString("entityType", entityId);
+        if (tag.contains("Age")) {
+            if (tag.getInt("Age") < 0) {
+                entityTag.putInt("Age", -1);
+            }
+        }
         switch (entityId) {
             case "axolotl" -> entityTag.putInt("Variant", 4);
             case "ender_dragon" -> {

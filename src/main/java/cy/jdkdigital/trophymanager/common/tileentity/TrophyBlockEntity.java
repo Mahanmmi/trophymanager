@@ -146,8 +146,8 @@ public class TrophyBlockEntity extends BlockEntity
                 } else if (cachedEntity instanceof Shulker && entity.contains("Peek")) {
                     ((Shulker) cachedEntity).setRawPeekAmount(entity.getInt("Peek"));
                 } else if (cachedEntity instanceof Player && entity.contains("UUID")) {
-                    TrophyManager.LOGGER.info("Player trophy entity " + entity.contains("UUID"));
-                    TrophyManager.LOGGER.info(cachedEntity);
+//                    TrophyManager.LOGGER.info("Player trophy entity " + entity.contains("UUID"));
+//                    TrophyManager.LOGGER.info(cachedEntity);
                 }
                 try {
                     addPassengers(cachedEntity, entity);

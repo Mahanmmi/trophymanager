@@ -66,17 +66,16 @@ public class TrophyManager
     private void onEntityDeath(final LivingDeathEvent event) {
         Entity deadEntity = event.getEntity();
         Entity source = event.getSource().getEntity();
-        if (TrophyManagerConfig.GENERAL.dropFromMobs.get() && !(deadEntity instanceof Player) && source instanceof Player) {
-            Level level = deadEntity.level;
+        if (TrophyManagerConfig.GENERAL.dropFromMobs.get() && !(deadEntity instanceof Player) && source instanceof ServerPlayer player) {
             Double chance = deadEntity.canChangeDimensions() ? TrophyManagerConfig.GENERAL.dropChanceMobs.get() : TrophyManagerConfig.GENERAL.dropChanceBoss.get();
 
-            boolean willDropTrophy = chance >= level.random.nextDouble();
+            boolean willDropTrophy = chance >= deadEntity.level.random.nextDouble();
 
-            // Each level of looting gives an extra roll
-            if (source instanceof ServerPlayer player) {
+            if (TrophyManagerConfig.GENERAL.applyLooting.get()) {
+                // Each level of looting gives an extra roll
                 int lootingLevel = EnchantmentHelper.getItemEnchantmentLevel(Enchantments.MOB_LOOTING, player.getMainHandItem());
                 for (int i = 0; i < (1 + lootingLevel); i++) {
-                    willDropTrophy = willDropTrophy || chance >= level.random.nextDouble();
+                    willDropTrophy = willDropTrophy || chance >= deadEntity.level.random.nextDouble();
                 }
             }
 
