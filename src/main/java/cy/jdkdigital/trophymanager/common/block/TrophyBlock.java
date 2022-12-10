@@ -234,14 +234,6 @@ public class TrophyBlock extends BaseEntityBlock implements SimpleWaterloggedBlo
         }
     }
 
-    @Override
-    public void fillItemCategory(@Nonnull CreativeModeTab group, @Nonnull NonNullList<ItemStack> items) {
-        String[] entities = {"allay", "axolotl", "bat", "bee", "blaze", "cat", "cave_spider", "chicken", "cow", "creeper", "dolphin", "donkey", "drowned", "elder_guardian", "ender_dragon", "enderman", "endermite", "evoker", "fox", "frog", "ghast", "glow_squid", "goat", "guardian", "hoglin", "horse", "husk", "illusioner", "iron_golem", "llama", "magma_cube", "mule", "mooshroom", "ocelot", "panda", "parrot", "phantom", "pig", "piglin", "piglin_brute", "pillager", "polar_bear", "pufferfish", "rabbit", "ravager", "sheep", "shulker", "silverfish", "skeleton", "skeleton_horse", "slime", "snow_golem", "spider", "squid", "stray", "strider", "tadpole", "trader_llama", "tropical_fish", "turtle", "vex", "villager", "vindicator", "wandering_trader", "warden", "witch", "wither", "wither_skeleton", "wolf", "zoglin", "zombie", "zombie_horse", "zombie_villager", "zombified_piglin"};
-        for (String entityId : entities) {
-            items.add(createTrophy("minecraft:" + entityId, new CompoundTag(), idToName("minecraft:" + entityId)));
-        }
-    }
-
     public static ItemStack createTrophy(Entity entity, CompoundTag tag) {
         Component name = entity.getDisplayName();
         return createTrophy(entity.getEncodeId(), tag, name.getString());
@@ -294,10 +286,5 @@ public class TrophyBlock extends BaseEntityBlock implements SimpleWaterloggedBlo
         trophy.setTag(trophyTag);
 
         return trophy;
-    }
-
-    private static String idToName(String id) {
-        int start = id.indexOf(":") + 1;
-        return id.substring(start, start + 1).toUpperCase() + id.substring(start + 1).replace("_", " ");
     }
 }

@@ -20,12 +20,12 @@ public final class ModBlocks
     public static final DeferredRegister<Block> BLOCKS = DeferredRegister.create(ForgeRegistries.BLOCKS, TrophyManager.MODID);
     public static final DeferredRegister<Item> ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS, TrophyManager.MODID);
 
-    public static final RegistryObject<Block> TROPHY = createBlock("trophy", () -> new TrophyBlock(BlockBehaviour.Properties.of(Material.STONE, MaterialColor.STONE).strength(2.0F, 6.0F).noOcclusion()), CreativeModeTab.TAB_DECORATIONS);
+    public static final RegistryObject<Block> TROPHY = createBlock("trophy", () -> new TrophyBlock(BlockBehaviour.Properties.of(Material.STONE, MaterialColor.STONE).strength(2.0F, 6.0F).noOcclusion()));
 
-    public static <B extends Block> RegistryObject<B> createBlock(String name, Supplier<? extends B> supplier, CreativeModeTab itemGroup) {
+    public static <B extends Block> RegistryObject<B> createBlock(String name, Supplier<? extends B> supplier) {
         RegistryObject<B> block = BLOCKS.register(name, supplier);
 
-        ITEMS.register(name, () -> new TrophyItem(block.get(), new Item.Properties().tab(itemGroup)));
+        ITEMS.register(name, () -> new TrophyItem(block.get(), new Item.Properties()));
 
         return block;
     }

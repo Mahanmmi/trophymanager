@@ -10,9 +10,12 @@ import cy.jdkdigital.trophymanager.setup.IProxy;
 import cy.jdkdigital.trophymanager.setup.ServerProxy;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderers;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.CreativeModeTab;
+import net.minecraft.world.item.CreativeModeTabs;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.item.enchantment.Enchantments;
@@ -20,6 +23,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.util.FakePlayer;
+import net.minecraftforge.event.CreativeModeTabEvent;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.DistExecutor;
@@ -49,6 +53,7 @@ public class TrophyManager
         IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
         modEventBus.addListener(this::doClientStuff);
         modEventBus.addListener(this::doCommonStuff);
+        modEventBus.addListener(this::tabs);
         ModBlocks.BLOCKS.register(modEventBus);
         ModBlocks.ITEMS.register(modEventBus);
         ModBlockEntities.BLOCK_ENTITIES.register(modEventBus);
@@ -87,5 +92,22 @@ public class TrophyManager
                 Block.popResource(deadEntity.level, deadEntity.blockPosition(), trophy);
             }
         }
+    }
+
+    private void tabs(final CreativeModeTabEvent.BuildContents event) {
+        if (event.getTab().equals(CreativeModeTabs.OP_BLOCKS)) {
+            String[] entities = {"allay", "axolotl", "bat", "bee", "blaze", "camel", "cat", "cave_spider", "chicken", "cow", "creeper", "dolphin", "donkey", "drowned", "elder_guardian", "ender_dragon", "enderman", "endermite", "evoker", "fox", "frog", "ghast", "glow_squid", "goat", "guardian", "hoglin", "horse", "husk", "illusioner", "iron_golem", "llama", "magma_cube", "mule", "mooshroom", "ocelot", "panda", "parrot", "phantom", "pig", "piglin", "piglin_brute", "pillager", "polar_bear", "pufferfish", "rabbit", "ravager", "sheep", "shulker", "silverfish", "skeleton", "skeleton_horse", "slime", "snow_golem", "spider", "squid", "stray", "strider", "tadpole", "trader_llama", "tropical_fish", "turtle", "vex", "villager", "vindicator", "wandering_trader", "warden", "witch", "wither", "wither_skeleton", "wolf", "zoglin", "zombie", "zombie_horse", "zombie_villager", "zombified_piglin"};
+
+            event.register(event.getTab(), (enabledFlags, populator, hasPermissions) -> {
+                for (String entityId : entities) {
+                    populator.accept(TrophyBlock.createTrophy("minecraft:" + entityId, new CompoundTag(), idToName("minecraft:" + entityId)));
+                }
+            });
+        }
+    }
+
+    private static String idToName(String id) {
+        int start = id.indexOf(":") + 1;
+        return id.substring(start, start + 1).toUpperCase() + id.substring(start + 1).replace("_", " ");
     }
 }

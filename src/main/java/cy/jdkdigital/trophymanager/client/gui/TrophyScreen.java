@@ -36,14 +36,14 @@ public class TrophyScreen extends Screen
         int relX = (this.width - WIDTH) / 2;
         int relY = (this.height - HEIGHT) / 2;
 
-        addRenderableWidget(new Button(relX + 10, relY + 10, 20, 20, Component.literal("-"), button -> adjustScale(-1)));
-        addRenderableWidget(new Button(relX + 120, relY + 10, 20, 20, Component.literal("+"), button -> adjustScale(1)));
+        addRenderableWidget(Button.builder(Component.literal("-"), button -> adjustScale(-1)).pos(relX + 10, relY + 10).size(20, 20).build());
+        addRenderableWidget(Button.builder(Component.literal("+"), button -> adjustScale(1)).pos(relX + 120, relY + 10).size(20, 20).build());
 
-        addRenderableWidget(new Button(relX + 10, relY + 35, 20, 20, Component.literal("-"), button -> adjustOffsetY(-1)));
-        addRenderableWidget(new Button(relX + 120, relY + 35, 20, 20, Component.literal("+"), button -> adjustOffsetY(1)));
+        addRenderableWidget(Button.builder(Component.literal("-"), button -> adjustOffsetY(-1)).pos(relX + 10, relY + 35).size(20, 20).build());
+        addRenderableWidget(Button.builder(Component.literal("+"), button -> adjustOffsetY(1)).pos(relX + 120, relY + 35).size(20, 20).build());
 
-        addRenderableWidget(new Button(relX + 10, relY + 60, 65, 20, Component.translatable("gui.cancel"), button -> close()));
-        addRenderableWidget(new Button(relX + 76, relY + 60, 65, 20, Component.translatable("gui.ok"), button -> save(this)));
+        addRenderableWidget(Button.builder(Component.translatable("gui.cancel"), button -> close()).pos(relX + 10, relY + 60).size(65, 20).build());
+        addRenderableWidget(Button.builder(Component.translatable("gui.ok"), button -> save(this)).pos(relX + 76, relY + 60).size(65, 20).build());
     }
 
     @Override

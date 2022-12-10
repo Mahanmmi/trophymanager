@@ -29,6 +29,7 @@ public class TrophyManagerConfig
         public final ForgeConfigSpec.ConfigValue<? extends String> defaultBaseBlock;
         public final ForgeConfigSpec.DoubleValue defaultYOffset;
         public final ForgeConfigSpec.ConfigValue<List<String>> nbtMap;
+        public final ForgeConfigSpec.BooleanValue rotateItemTrophies;
 
         public General(ForgeConfigSpec.Builder builder) {
             builder.push("General");
@@ -73,7 +74,9 @@ public class TrophyManagerConfig
                     .comment("List of entities which has NBT data that needs to be saved with the trophy. Format: modid:entityid:tag.")
                     .define("nbtMap", new ArrayList<>() {{
                         add("minecraft:axolotl:Variant");
-                        add("minecraft:cat:CatType");
+                        add("minecraft:cat:Variant");
+                        add("minecraft:cat:CollarColor");
+                        add("minecraft:wolf:CollarColor");
                         add("minecraft:frog:variant");
                         add("minecraft:llama:Variant");
                         add("minecraft:horse:Variant");
@@ -87,6 +90,10 @@ public class TrophyManagerConfig
                         add("infernalexp:shroomloin:ShroomloinType");
                         add("infernalexp:basalt_giant:Size");
                     }});
+
+            rotateItemTrophies = builder
+                    .comment("Have item on item trophies slowly rotate around.")
+                    .define("rotateItemTrophies", true);
 
             builder.pop();
         }
