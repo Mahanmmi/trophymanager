@@ -21,6 +21,7 @@ public class TrophyManagerConfig
     {
         public final ForgeConfigSpec.BooleanValue dropFromMobs;
         public final ForgeConfigSpec.BooleanValue applyLooting;
+        public final ForgeConfigSpec.BooleanValue allowFakePlayer;
         public final ForgeConfigSpec.DoubleValue dropChanceBoss;
         public final ForgeConfigSpec.DoubleValue dropChanceMobs;
         public final ForgeConfigSpec.BooleanValue allowNonOpEdit;
@@ -39,6 +40,10 @@ public class TrophyManagerConfig
             applyLooting = builder
                     .comment("Looting enchant will increase drop change")
                     .define("applyLooting", true);
+
+            allowFakePlayer = builder
+                    .comment("Allow fake players (machines) to get trophy drops")
+                    .define("allowFakePlayer", true);
 
             dropChanceBoss = builder
                     .comment("Drop chance for trophies when a boss entity is killed by a player.")

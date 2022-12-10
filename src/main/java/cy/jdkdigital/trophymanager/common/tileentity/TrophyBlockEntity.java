@@ -36,14 +36,14 @@ public class TrophyBlockEntity extends BlockEntity
 {
     private static final Map<Integer, Entity> cachedEntities = new HashMap<>();
 
-    public String trophyType; // item, entity
+    public String trophyType = "item"; // item, entity
     public ItemStack item = null;
     public CompoundTag entity = null;
-    public double offsetY;
-    public float rotX;
-    public float scale;
+    public double offsetY = 0.0D;
+    public float rotX = 0.0F;
+    public float scale = 1.0F;
     public ResourceLocation baseBlock;
-    private String name;
+    private String name = "";
 
     public TrophyBlockEntity(BlockPos pos, BlockState state) {
         super(ModBlockEntities.TROPHY.get(), pos, state);
@@ -217,7 +217,7 @@ public class TrophyBlockEntity extends BlockEntity
 
     @Override
     public @NotNull CompoundTag getUpdateTag() {
-        return saveWithId();
+        return saveWithoutMetadata();
     }
 
     public InteractionResult equipArmor(ItemStack heldItem) {
