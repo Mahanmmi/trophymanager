@@ -40,6 +40,7 @@ import net.minecraftforge.registries.ForgeRegistries;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import java.util.Arrays;
 
 public class TrophyBlock extends BaseEntityBlock implements SimpleWaterloggedBlock
 {
@@ -241,7 +242,7 @@ public class TrophyBlock extends BaseEntityBlock implements SimpleWaterloggedBlo
 
     public static ItemStack createTrophy(String entityId, CompoundTag tag, String name) {
         CompoundTag entityTag = new CompoundTag();
-        TrophyManagerConfig.GENERAL.nbtMap.get().forEach(s -> {
+        Arrays.asList(TrophyManagerConfig.GENERAL.nbtMap.get().split(",")).forEach(s -> {
             String[] nbtInfo = s.split(":");
             if (nbtInfo.length == 3 && (nbtInfo[0] + ":" + nbtInfo[1]).equals(entityId) && tag.contains(nbtInfo[2]) && tag.get(nbtInfo[2]) != null) {
                 entityTag.put(nbtInfo[2], tag.get(nbtInfo[2]));

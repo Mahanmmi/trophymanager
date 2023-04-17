@@ -28,7 +28,7 @@ public class TrophyManagerConfig
         public final ForgeConfigSpec.DoubleValue maxSize;
         public final ForgeConfigSpec.ConfigValue<? extends String> defaultBaseBlock;
         public final ForgeConfigSpec.DoubleValue defaultYOffset;
-        public final ForgeConfigSpec.ConfigValue<List<String>> nbtMap;
+        public final ForgeConfigSpec.ConfigValue<String> nbtMap;
         public final ForgeConfigSpec.BooleanValue rotateItemTrophies;
 
         public General(ForgeConfigSpec.Builder builder) {
@@ -71,28 +71,11 @@ public class TrophyManagerConfig
                     .defineInRange("defaultYOffset", 0.5, 0, Integer.MAX_VALUE);
 
             nbtMap = builder
-                    .comment("List of entities which has NBT data that needs to be saved with the trophy. Format: modid:entityid:tag.")
-                    .define("nbtMap", new ArrayList<>() {{
-                        add("minecraft:axolotl:Variant");
-                        add("minecraft:cat:Variant");
-                        add("minecraft:cat:CollarColor");
-                        add("minecraft:wolf:CollarColor");
-                        add("minecraft:frog:variant");
-                        add("minecraft:llama:Variant");
-                        add("minecraft:horse:Variant");
-                        add("minecraft:fox:Variant");
-                        add("minecraft:parrot:Variant");
-                        add("minecraft:panda:MainGene");
-                        add("minecraft:panda:HiddenGene");
-                        add("minecraft:mooshroom:Type");
-                        add("minecraft:villager:VillagerData");
-                        add("productivebees:configurable_bee:type");
-                        add("infernalexp:shroomloin:ShroomloinType");
-                        add("infernalexp:basalt_giant:Size");
-                    }});
+                    .comment("Comma separated list of entities which has NBT data that needs to be saved with the trophy. Format: modid:entityid:tag.")
+                    .define("nbtMap", "minecraft:axolotl:Variant,minecraft:cat:Variant,minecraft:cat:CollarColor,minecraft:wolf:CollarColor,minecraft:frog:variant,minecraft:llama:Variant,minecraft:horse:Variant,minecraft:fox:Variant,minecraft:parrot:Variant,minecraft:panda:MainGene,minecraft:panda:HiddenGene,minecraft:mooshroom:Type,minecraft:villager:VillagerData,productivebees:configurable_bee:type,infernalexp:shroomloin:ShroomloinType,infernalexp:basalt_giant:Size");
 
             rotateItemTrophies = builder
-                    .comment("Have item on item trophies slowly rotate around.")
+                    .comment("Have items on item trophies slowly rotate around.")
                     .define("rotateItemTrophies", true);
 
             builder.pop();
