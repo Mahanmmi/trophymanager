@@ -19,19 +19,26 @@ public class TrophyManagerConfig
 
     public static class General
     {
+        public final ForgeConfigSpec.BooleanValue dropFromPlayers;
         public final ForgeConfigSpec.BooleanValue dropFromMobs;
         public final ForgeConfigSpec.BooleanValue applyLooting;
         public final ForgeConfigSpec.BooleanValue allowFakePlayer;
+        public final ForgeConfigSpec.DoubleValue dropChancePlayers;
         public final ForgeConfigSpec.DoubleValue dropChanceBoss;
         public final ForgeConfigSpec.DoubleValue dropChanceMobs;
         public final ForgeConfigSpec.BooleanValue allowNonOpEdit;
         public final ForgeConfigSpec.DoubleValue maxSize;
+        public final ForgeConfigSpec.DoubleValue maxYOffset;
         public final ForgeConfigSpec.ConfigValue<? extends String> defaultBaseBlock;
         public final ForgeConfigSpec.DoubleValue defaultYOffset;
         public final ForgeConfigSpec.ConfigValue<List<String>> nbtMap;
 
         public General(ForgeConfigSpec.Builder builder) {
             builder.push("General");
+
+            dropFromPlayers = builder
+                    .comment("Should trophies drop from players when killed by another player?")
+                    .define("dropFromPlayers", true);
 
             dropFromMobs = builder
                     .comment("Should trophies drop from mobs when killed by a player?")
@@ -44,6 +51,10 @@ public class TrophyManagerConfig
             allowFakePlayer = builder
                     .comment("Allow fake players (machines) to get trophy drops")
                     .define("allowFakePlayer", true);
+
+            dropChancePlayers = builder
+                    .comment("Drop chance for trophies when a player is killed by a player.")
+                    .defineInRange("dropChancePlayers", 1.0, 0, 1);
 
             dropChanceBoss = builder
                     .comment("Drop chance for trophies when a boss entity is killed by a player.")
@@ -60,6 +71,10 @@ public class TrophyManagerConfig
             maxSize = builder
                     .comment("Maximum size multiplier for a trophy.")
                     .defineInRange("maxSize", 20.00, 0, Integer.MAX_VALUE);
+
+            maxYOffset = builder
+                    .comment("Maximum Y offset for a trophy.")
+                    .defineInRange("maxYOffset", 2000.00, 0, Integer.MAX_VALUE);
 
             defaultBaseBlock = builder
                     .comment("Block to use for trophies dropped when killing a mob.")
@@ -86,6 +101,8 @@ public class TrophyManagerConfig
                         add("productivebees:configurable_bee:type");
                         add("infernalexp:shroomloin:ShroomloinType");
                         add("infernalexp:basalt_giant:Size");
+                        add("cobblemon:pokemon:Pokemon");
+                        add("cobblemon:pokemon:PoseType");
                     }});
 
             builder.pop();

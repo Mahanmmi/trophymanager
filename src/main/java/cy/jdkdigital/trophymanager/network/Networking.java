@@ -71,7 +71,7 @@ public class Networking
                     ServerLevel level = player.getLevel();
                     BlockEntity blockEntity = level.getBlockEntity(pos);
                     if (blockEntity instanceof TrophyBlockEntity trophyBlockEntity) {
-                        trophyBlockEntity.offsetY = tag.getDouble("OffsetY");
+                        trophyBlockEntity.offsetY = Math.min(tag.getDouble("OffsetY"), TrophyManagerConfig.GENERAL.maxYOffset.get());
                         trophyBlockEntity.scale = (float) Math.min(tag.getFloat("Scale"), TrophyManagerConfig.GENERAL.maxSize.get());
                         blockEntity.setChanged();
                     }

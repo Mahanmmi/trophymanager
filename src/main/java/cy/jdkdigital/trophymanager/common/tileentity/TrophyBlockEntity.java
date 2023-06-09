@@ -21,9 +21,12 @@ import net.minecraft.world.entity.monster.Shulker;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.*;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
+import net.minecraftforge.registries.ForgeRegistries;
 import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nonnull;
@@ -43,7 +46,9 @@ public class TrophyBlockEntity extends BlockEntity
     public float rotX = 0.0F;
     public float scale = 1.0F;
     public ResourceLocation baseBlock;
+    public boolean isOnHead = false;
     private String name = "";
+    private Block baseBlockBlock;
 
     public TrophyBlockEntity(BlockPos pos, BlockState state) {
         super(ModBlockEntities.TROPHY.get(), pos, state);
@@ -202,6 +207,13 @@ public class TrophyBlockEntity extends BlockEntity
                 }
             }
         }
+    }
+
+    public Block getBaseBlock() {
+        if (baseBlockBlock == null || baseBlockBlock.equals(Blocks.AIR)) {
+            baseBlockBlock = ForgeRegistries.BLOCKS.getValue(baseBlock);
+        }
+        return baseBlockBlock;
     }
 
     @Nullable

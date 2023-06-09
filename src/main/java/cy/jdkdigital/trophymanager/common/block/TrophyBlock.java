@@ -63,7 +63,7 @@ public class TrophyBlock extends BaseEntityBlock implements SimpleWaterloggedBlo
     @Override
     public BlockState getStateForPlacement(BlockPlaceContext context) {
         FluidState fluidState = context.getLevel().getFluidState(context.getClickedPos());
-        return this.defaultBlockState().setValue(BeehiveBlock.FACING, context.getHorizontalDirection().getOpposite()).setValue(BlockStateProperties.WATERLOGGED, fluidState.getType() == Fluids.WATER);
+        return this.defaultBlockState().setValue(HorizontalDirectionalBlock.FACING, context.getHorizontalDirection().getOpposite()).setValue(BlockStateProperties.WATERLOGGED, fluidState.getType() == Fluids.WATER);
     }
 
     @Override
@@ -240,6 +240,19 @@ public class TrophyBlock extends BaseEntityBlock implements SimpleWaterloggedBlo
         for (String entityId : entities) {
             items.add(createTrophy("minecraft:" + entityId, new CompoundTag(), idToName("minecraft:" + entityId)));
         }
+    }
+
+    public static ItemStack createPlayerTrophy(Player player) {
+        CompoundTag trophyTag = new CompoundTag();
+        ItemStack trophy = new ItemStack(ModBlocks.TROPHY.get());
+        trophyTag.putString("TrophyType", "player");
+
+        trophyTag.putString("TrophyPlayer", player.getStringUUID());
+        trophyTag.putString("Name", player.getDisplayName() + " trophy");
+
+        trophy.setTag(trophyTag);
+
+        return trophy;
     }
 
     public static ItemStack createTrophy(Entity entity, CompoundTag tag) {

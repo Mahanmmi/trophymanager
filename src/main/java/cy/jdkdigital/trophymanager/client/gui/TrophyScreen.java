@@ -78,7 +78,7 @@ public class TrophyScreen extends Screen
         if (Screen.hasShiftDown()) {
             d = d * 10;
         }
-        trophy.offsetY = Math.round(trophy.offsetY * 10 + d) / 10d;
+        trophy.offsetY = Math.min(Math.round(trophy.offsetY * 10 + d) / 10d, TrophyManagerConfig.GENERAL.maxYOffset.get());
     }
 
     public static void open(BlockPos pos) {

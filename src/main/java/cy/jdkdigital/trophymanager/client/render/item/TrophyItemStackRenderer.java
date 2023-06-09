@@ -7,6 +7,7 @@ import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.block.model.ItemTransforms;
 import net.minecraft.core.BlockPos;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.Blocks;
 
@@ -24,9 +25,15 @@ public class TrophyItemStackRenderer extends BlockEntityWithoutLevelRenderer
     public void renderByItem(@Nonnull ItemStack stack, @Nonnull ItemTransforms.TransformType transformType, @Nonnull PoseStack matrixStack, @Nonnull MultiBufferSource buffer, int packedLightIn, int packedUV) {
         if (blockEntity == null) {
             blockEntity = new TrophyBlockEntity(BlockPos.ZERO, Blocks.CHEST.defaultBlockState());
+            blockEntity.loadData(stack.getOrCreateTag());
         }
-        blockEntity.loadData(stack.getOrCreateTag());
         blockEntity.scale = 0.5f;
+
+        blockEntity.isOnHead = false;
+        if (transformType.equals(ItemTransforms.TransformType.HEAD)) {
+            blockEntity.isOnHead = true;
+        }
+
         matrixStack.pushPose();
 
         Minecraft.getInstance().getBlockEntityRenderDispatcher().renderItem(blockEntity, matrixStack, buffer, packedLightIn, packedUV);

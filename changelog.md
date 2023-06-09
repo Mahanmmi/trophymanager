@@ -1,26 +1,44 @@
+1.19.2-0.2.2.2
+
+- Fixed baseblock sometimes being invisible
+- Added "support" for Cobblemon
+- Fixed trophies making a mess of other curios items
+
+
+1.19.2-0.2.2.1
+
+- Removed some debug output
+
+
+1.19.2-0.2.2.0
+
+- Trophies can be worn on head or in Curios head slot
+- Custom trophies given for compat mod advancements (only The Bumblezone for now)
+ 
+
 1.19.2-0.2.1.0
 
--- Updated to latest Forge
--- Fixed occasional crash
+- Updated to latest Forge
+- Fixed occasional crash
 
 
 1.19.1-0.2.0.3
 
--- Added config to disable trophies dropping from FakePlayer deaths (mob farms)
+- Added config to disable trophies dropping from FakePlayer deaths (mob farms)
 
 
 1.19.1-0.2.0.2
 
--- Added config to disable chance increase from looting enchant
--- Killed baby animal now drop baby animal trophies
+- Added config to disable chance increase from looting enchant
+- Killed baby animal now drop baby animal trophies
 
 
 1.19-0.2.0.1
 
--- Updated to Forge 41.0.98
+- Updated to Forge 41.0.98
 
 
 1.19-0.2.0.0
 
--- Port to 1.19
--- Added trophies for Warden, Frogs, Tadpole and Allay
+- Port to 1.19
+- Added trophies for Warden, Frogs, Tadpole and Allay
