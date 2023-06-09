@@ -4,6 +4,8 @@ import cy.jdkdigital.trophymanager.client.render.item.TrophyItemStackRenderer;
 import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
@@ -38,7 +40,7 @@ public class TrophyItem extends BlockItem
 
         CompoundTag tag = stack.getTag();
         if (tag != null && tag.contains("TrophyData")) {
-            list.add(Component.translatable("everythingcopper.tooltip.trophy.scale", tag.getCompound("TrophyData").getFloat("scale")));
+            list.add(Component.translatable("trophymanager.tooltip.trophy.scale", tag.getCompound("TrophyData").getFloat("scale")));
         }
     }
 
@@ -54,5 +56,15 @@ public class TrophyItem extends BlockItem
                 return myRenderer;
             }
         });
+    }
+
+    @Override
+    public boolean canEquip(ItemStack stack, EquipmentSlot armorType, Entity entity) {
+        return armorType == EquipmentSlot.HEAD;
+    }
+
+    @Override
+    public @Nullable EquipmentSlot getEquipmentSlot(ItemStack stack) {
+        return EquipmentSlot.HEAD;
     }
 }
