@@ -68,7 +68,7 @@ public class Networking
             ctx.get().enqueueWork(() -> {
                 ServerPlayer player = ctx.get().getSender();
                 if (player != null) {
-                    ServerLevel level = player.getLevel();
+                    ServerLevel level = player.serverLevel();
                     BlockEntity blockEntity = level.getBlockEntity(pos);
                     if (blockEntity instanceof TrophyBlockEntity trophyBlockEntity) {
                         trophyBlockEntity.offsetY = Math.min(tag.getDouble("OffsetY"), TrophyManagerConfig.GENERAL.maxYOffset.get());

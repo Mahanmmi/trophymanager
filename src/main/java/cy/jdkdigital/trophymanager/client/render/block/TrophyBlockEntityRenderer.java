@@ -19,6 +19,7 @@ import net.minecraft.core.Direction;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.HorizontalDirectionalBlock;
@@ -51,11 +52,11 @@ public class TrophyBlockEntityRenderer implements BlockEntityRenderer<TrophyBloc
                 if (entity != null) {
                     renderEntity(trophyTileEntity, poseStack, buffer, combinedLightIn);
                 }
-            } else if (trophyTileEntity.trophyType.equals("player")) {
-                Entity entity = trophyTileEntity.getCachedEntity();
-                if (entity != null) {
-                    renderPlayer(trophyTileEntity, poseStack, buffer, combinedLightIn);
-                }
+//            } else if (trophyTileEntity.trophyType.equals("player")) {
+//                Entity entity = trophyTileEntity.getCachedEntity();
+//                if (entity != null) {
+//                    renderPlayer(trophyTileEntity, poseStack, buffer, combinedLightIn);
+//                }
             }
         }
 
@@ -69,13 +70,13 @@ public class TrophyBlockEntityRenderer implements BlockEntityRenderer<TrophyBloc
         }
     }
 
-    private void renderItem(TrophyBlockEntity trophyTileEntity, PoseStack poseStack, @Nonnull MultiBufferSource buffer, int combinedLightIn, int combinedOverlayIn) {
+    private void renderItem(TrophyBlockEntity trophyBlockEntity, PoseStack poseStack, @Nonnull MultiBufferSource buffer, int combinedLightIn, int combinedOverlayIn) {
         double tick = 0;
         if (TrophyManagerConfig.GENERAL.rotateItemTrophies.get()) {
             tick = System.currentTimeMillis() / 800.0D;
         } else {
-            if (trophyTileEntity.getLevel() != null) {
-                Direction facing = trophyTileEntity.getBlockState().getValue(HorizontalDirectionalBlock.FACING);
+            if (trophyBlockEntity.getLevel() != null) {
+                Direction facing = trophyBlockEntity.getBlockState().getValue(HorizontalDirectionalBlock.FACING);
                 if (facing == Direction.NORTH) {
                     tick = 6D;
                 } else if (facing == Direction.SOUTH) {
@@ -89,10 +90,10 @@ public class TrophyBlockEntityRenderer implements BlockEntityRenderer<TrophyBloc
         }
 
         poseStack.pushPose();
-        poseStack.translate(0.5f, trophyTileEntity.offsetY + 0.5D + Math.sin(tick / 25f) / 15f, 0.5f);
+        poseStack.translate(0.5f, trophyBlockEntity.offsetY + 0.5D + Math.sin(tick / 25f) / 15f, 0.5f);
         poseStack.mulPose(Axis.YP.rotationDegrees((float) ((tick * 30.0D) % 360)));
-        poseStack.scale(trophyTileEntity.scale, trophyTileEntity.scale, trophyTileEntity.scale);
-        Minecraft.getInstance().getItemRenderer().renderStatic(trophyTileEntity.item, ItemTransforms.TransformType.FIXED, combinedLightIn, combinedOverlayIn, poseStack, buffer, 0);
+        poseStack.scale(trophyBlockEntity.scale, trophyBlockEntity.scale, trophyBlockEntity.scale);
+        Minecraft.getInstance().getItemRenderer().renderStatic(trophyBlockEntity.item, ItemDisplayContext.FIXED, combinedLightIn, combinedOverlayIn, poseStack, buffer, trophyBlockEntity.getLevel(), 0);
         poseStack.popPose();
     }
 

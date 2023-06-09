@@ -246,7 +246,7 @@ public class TrophyBlockEntity extends BlockEntity
         // Add or remove new armor item
         Item armorItem = heldItem.getItem();
         if (armorItem instanceof ArmorItem) {
-            int slot = ((ArmorItem) armorItem).getSlot().getIndex();
+            int slot = ((ArmorItem) armorItem).getEquipmentSlot().getIndex();
             if (armorItems.get(slot).getItem().equals(armorItem)) {
                 armorItems.set(slot, ItemStack.EMPTY);
             } else {

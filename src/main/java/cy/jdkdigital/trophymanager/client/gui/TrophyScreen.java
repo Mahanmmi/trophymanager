@@ -1,12 +1,12 @@
 package cy.jdkdigital.trophymanager.client.gui;
 
 import com.mojang.blaze3d.systems.RenderSystem;
-import com.mojang.blaze3d.vertex.PoseStack;
 import cy.jdkdigital.trophymanager.TrophyManager;
 import cy.jdkdigital.trophymanager.TrophyManagerConfig;
 import cy.jdkdigital.trophymanager.common.tileentity.TrophyBlockEntity;
 import cy.jdkdigital.trophymanager.network.Networking;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.renderer.GameRenderer;
@@ -15,8 +15,6 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.Level;
-
-import javax.annotation.Nonnull;
 
 public class TrophyScreen extends Screen
 {
@@ -47,19 +45,15 @@ public class TrophyScreen extends Screen
     }
 
     @Override
-    public void render(@Nonnull PoseStack matrixStack, int mouseX, int mouseY, float partialTicks) {
-        RenderSystem.setShader(GameRenderer::getPositionTexShader);
-        RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
-        RenderSystem.setShaderTexture(0, GUI);
-
+    public void render(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTicks) {
         int relX = (this.width - WIDTH) / 2;
         int relY = (this.height - HEIGHT) / 2;
-        this.blit(matrixStack, relX, relY, 0, 0, WIDTH, HEIGHT);
+        guiGraphics.blit(GUI, relX, relY, 0, 0, WIDTH, HEIGHT);
 
-        drawCenteredString(matrixStack, font, "" + trophy.scale, relX + 75, relY + 15, 10526880);
-        drawCenteredString(matrixStack, font, "" + trophy.offsetY, relX + 75, relY + 40, 10526880);
+        guiGraphics.drawCenteredString(font, "" + trophy.scale, relX + 75, relY + 15, 10526880);
+        guiGraphics.drawCenteredString(font, "" + trophy.offsetY, relX + 75, relY + 40, 10526880);
 
-        super.render(matrixStack, mouseX, mouseY, partialTicks);
+        super.render(guiGraphics, mouseX, mouseY, partialTicks);
     }
 
     @Override
