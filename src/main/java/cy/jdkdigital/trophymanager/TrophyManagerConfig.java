@@ -3,9 +3,6 @@ package cy.jdkdigital.trophymanager;
 import net.minecraftforge.common.ForgeConfigSpec;
 import net.minecraftforge.fml.common.Mod;
 
-import java.util.ArrayList;
-import java.util.List;
-
 @Mod.EventBusSubscriber
 public class TrophyManagerConfig
 {
@@ -31,6 +28,7 @@ public class TrophyManagerConfig
         public final ForgeConfigSpec.DoubleValue maxYOffset;
         public final ForgeConfigSpec.ConfigValue<? extends String> defaultBaseBlock;
         public final ForgeConfigSpec.DoubleValue defaultYOffset;
+        public final ForgeConfigSpec.DoubleValue defaultScale;
         public final ForgeConfigSpec.ConfigValue<String> nbtMap;
         public final ForgeConfigSpec.BooleanValue rotateItemTrophies;
 
@@ -38,8 +36,8 @@ public class TrophyManagerConfig
             builder.push("General");
 
             dropFromPlayers = builder
-                    .comment("Should trophies drop from players when killed by another player?")
-                    .define("dropFromPlayers", true);
+                    .comment("[WIP] Should trophies drop from players when killed by another player?")
+                    .define("dropFromPlayers", false);
 
             dropFromMobs = builder
                     .comment("Should trophies drop from mobs when killed by a player?")
@@ -84,6 +82,10 @@ public class TrophyManagerConfig
             defaultYOffset = builder
                     .comment("Default YOffset for trophies dropped when killing a mob. If defaultBaseBlock is a full block this should be 1.0, slabs 0.5 and carpets 0.1")
                     .defineInRange("defaultYOffset", 0.5, 0, Integer.MAX_VALUE);
+
+            defaultScale = builder
+                    .comment("Default size for trophies dropped when killing a mob.")
+                    .defineInRange("defaultScale", 0.5, 0, Integer.MAX_VALUE);
 
             nbtMap = builder
                     .comment("Comma separated list of entities which has NBT data that needs to be saved with the trophy. Format: modid:entityid:tag.")

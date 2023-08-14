@@ -241,7 +241,7 @@ public class TrophyBlock extends BaseEntityBlock implements SimpleWaterloggedBlo
         trophyTag.putString("TrophyType", "player");
 
         trophyTag.putString("TrophyPlayer", player.getStringUUID());
-        trophyTag.putString("Name", player.getDisplayName() + " trophy");
+        trophyTag.putString("Name", player.getDisplayName().getString() + " trophy");
 
         trophy.setTag(trophyTag);
 

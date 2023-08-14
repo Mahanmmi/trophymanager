@@ -24,6 +24,8 @@ minecraft {
             workingDirectory project.file('run')
             property 'forge.logging.markers', 'REGISTRIES'
             property 'forge.logging.console.level', 'debug'
+            property 'mixin.env.remapRefMap', 'true'
+            property 'mixin.env.refMapRemappingFile', "${buildDir}/createSrgToMcp/output.srg"
 
             mods {
                 trophymanager {
@@ -36,6 +38,8 @@ minecraft {
             workingDirectory project.file('run')
             property 'forge.logging.markers', 'REGISTRIES'
             property 'forge.logging.console.level', 'debug'
+            property 'mixin.env.remapRefMap', 'true'
+            property 'mixin.env.refMapRemappingFile', "${buildDir}/createSrgToMcp/output.srg"
 
             mods {
                 trophymanager {
@@ -48,6 +52,8 @@ minecraft {
             workingDirectory project.file('run')
             property 'forge.logging.markers', 'REGISTRIES'
             property 'forge.logging.console.level', 'debug'
+            property 'mixin.env.remapRefMap', 'true'
+            property 'mixin.env.refMapRemappingFile', "${buildDir}/createSrgToMcp/output.srg"
 
             args '--mod', 'trophymanager', '--all', '--output', file('src/generated/resources/'), '--existing', file('src/main/resources/')
 
@@ -72,6 +78,8 @@ repositories {
 dependencies {
     minecraft "net.minecraftforge:forge:${minecraft_version}-${forge_version}"
     annotationProcessor 'org.spongepowered:mixin:0.8.5:processor'
+
+    implementation fg.deobf("curse.maven:curios-309927:4583413")
 }
 
 def resourceTargets = ['META-INF/mods.toml', 'pack.mcmeta']
@@ -95,7 +103,7 @@ processResources {
 jar {
     manifest {
         attributes([
-                "Specification-Title"     : "Jumpy Boats",
+                "Specification-Title"     : "Jonn's Trophies",
                 "Specification-Vendor"    : "JDK Digital",
                 "Specification-Version"   : "1", // We are version 1 of ourselves
                 "Implementation-Title"    : project.name,

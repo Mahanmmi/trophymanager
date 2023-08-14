@@ -115,7 +115,7 @@ public class TrophyBlockEntity extends BlockEntity
         if (tag.contains("Scale")) {
             this.scale = tag.getFloat("Scale");
         } else {
-            this.scale = 0.5f;
+            this.scale = TrophyManagerConfig.GENERAL.defaultScale.get().floatValue();
         }
 
         if (tag.contains("RotX")) {
@@ -127,7 +127,7 @@ public class TrophyBlockEntity extends BlockEntity
         if (tag.contains("OffsetY")) {
             this.offsetY = tag.getDouble("OffsetY");
         } else {
-            this.offsetY = 0.5d;
+            this.offsetY = TrophyManagerConfig.GENERAL.defaultYOffset.get();
         }
 
         if (tag.contains("BaseBlock")) {

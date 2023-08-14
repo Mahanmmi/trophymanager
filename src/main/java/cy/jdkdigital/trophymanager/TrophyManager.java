@@ -2,6 +2,7 @@ package cy.jdkdigital.trophymanager;
 
 import cy.jdkdigital.trophymanager.client.render.block.TrophyBlockEntityRenderer;
 import cy.jdkdigital.trophymanager.common.block.TrophyBlock;
+import cy.jdkdigital.trophymanager.compat.CuriosCompat;
 import cy.jdkdigital.trophymanager.init.ModBlockEntities;
 import cy.jdkdigital.trophymanager.init.ModBlocks;
 import cy.jdkdigital.trophymanager.network.Networking;
@@ -73,7 +74,7 @@ public class TrophyManager
 
     private void modComms(final InterModEnqueueEvent event) {
         if (ModList.get().isLoaded("curios")) {
-//            CuriosCompat.register();
+            CuriosCompat.register();
         }
     }
 
