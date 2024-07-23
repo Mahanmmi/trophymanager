@@ -127,6 +127,7 @@ public class TrophyBlock extends BaseEntityBlock implements SimpleWaterloggedBlo
                 final BlockEntity blockEntity = world.getBlockEntity(pos);
                 if (blockEntity instanceof TrophyBlockEntity) {
                     ((TrophyBlockEntity) blockEntity).baseBlock = ForgeRegistries.BLOCKS.getKey(heldBlock);
+                    world.setBlockAndUpdate(pos, state);
                     return InteractionResult.SUCCESS;
                 }
             }
@@ -135,14 +136,22 @@ public class TrophyBlock extends BaseEntityBlock implements SimpleWaterloggedBlo
         if (!world.isClientSide() && heldItem.getItem() instanceof ArmorItem) {
             final BlockEntity blockEntity = world.getBlockEntity(pos);
             if (blockEntity instanceof TrophyBlockEntity) {
-                return ((TrophyBlockEntity) blockEntity).equipArmor(heldItem);
+                var res = ((TrophyBlockEntity) blockEntity).equipArmor(heldItem);
+                if (res.equals(InteractionResult.SUCCESS)) {
+                    world.setBlockAndUpdate(pos, state);
+                }
+                return res;
             }
         }
 
         if (!world.isClientSide() && (heldItem.getItem() instanceof TieredItem || heldItem.getItem() instanceof ShieldItem)) {
             final BlockEntity blockEntity = world.getBlockEntity(pos);
             if (blockEntity instanceof TrophyBlockEntity) {
-                return ((TrophyBlockEntity) blockEntity).equipTool(heldItem);
+                var res = ((TrophyBlockEntity) blockEntity).equipTool(heldItem);
+                if (res.equals(InteractionResult.SUCCESS)) {
+                    world.setBlockAndUpdate(pos, state);
+                }
+                return res;
             }
         }
 
@@ -238,11 +247,13 @@ public class TrophyBlock extends BaseEntityBlock implements SimpleWaterloggedBlo
     public static ItemStack createPlayerTrophy(Player player) {
         CompoundTag trophyTag = new CompoundTag();
         ItemStack trophy = new ItemStack(ModBlocks.TROPHY.get());
-        trophyTag.putString("TrophyType", "player");
+        trophyTag.putString("TrophyType", "entity");
 
-        trophyTag.putString("TrophyPlayer", player.getStringUUID());
+        CompoundTag entityTag = new CompoundTag();
+        entityTag.putString("entityType", "trophymanager:player");
+        entityTag.putString("uuid", player.getUUID().toString());
         trophyTag.putString("Name", player.getDisplayName().getString() + " trophy");
-
+        trophyTag.put("TrophyEntity", entityTag);
         trophy.setTag(trophyTag);
 
         return trophy;

@@ -1,27 +1,32 @@
 package cy.jdkdigital.trophymanager;
 
 import cy.jdkdigital.trophymanager.client.render.block.TrophyBlockEntityRenderer;
+import cy.jdkdigital.trophymanager.client.render.entity.PlayerTrophyRenderer;
 import cy.jdkdigital.trophymanager.common.block.TrophyBlock;
 import cy.jdkdigital.trophymanager.compat.CuriosCompat;
 import cy.jdkdigital.trophymanager.init.ModBlockEntities;
 import cy.jdkdigital.trophymanager.init.ModBlocks;
+import cy.jdkdigital.trophymanager.init.ModEntities;
 import cy.jdkdigital.trophymanager.network.Networking;
 import cy.jdkdigital.trophymanager.setup.ClientProxy;
 import cy.jdkdigital.trophymanager.setup.IProxy;
 import cy.jdkdigital.trophymanager.setup.ServerProxy;
-import net.minecraft.client.renderer.blockentity.BlockEntityRenderers;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.monster.Zombie;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.CreativeModeTabs;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.block.Block;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.client.event.EntityRenderersEvent;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.util.FakePlayer;
 import net.minecraftforge.event.BuildCreativeModeTabContentsEvent;
+import net.minecraftforge.event.entity.EntityAttributeCreationEvent;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.event.entity.player.AdvancementEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
@@ -31,7 +36,6 @@ import net.minecraftforge.fml.ModList;
 import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.config.ModConfig;
-import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.InterModEnqueueEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
@@ -54,22 +58,18 @@ public class TrophyManager
         MinecraftForge.EVENT_BUS.addListener(this::onAdvancementEarned);
 
         IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
-        modEventBus.addListener(this::doClientStuff);
         modEventBus.addListener(this::modComms);
         modEventBus.addListener(this::doCommonStuff);
         ModBlocks.BLOCKS.register(modEventBus);
         ModBlocks.ITEMS.register(modEventBus);
         ModBlockEntities.BLOCK_ENTITIES.register(modEventBus);
+        ModEntities.ENTITIES.register(modEventBus);
 
         ModLoadingContext.get().registerConfig(ModConfig.Type.SERVER, TrophyManagerConfig.SERVER_CONFIG);
     }
 
     private void doCommonStuff(final FMLCommonSetupEvent event) {
         Networking.registerMessages();
-    }
-
-    private void doClientStuff(final FMLClientSetupEvent event) {
-        BlockEntityRenderers.register(ModBlockEntities.TROPHY.get(), TrophyBlockEntityRenderer::new);
     }
 
     private void modComms(final InterModEnqueueEvent event) {
@@ -100,18 +100,18 @@ public class TrophyManager
                 ItemStack trophy = TrophyBlock.createTrophy(deadEntity, entityTag);
                 Block.popResource(deadEntity.level(), deadEntity.blockPosition(), trophy);
             }
-        } else if (TrophyManagerConfig.GENERAL.dropFromPlayers.get() && deadEntity instanceof Player killedPlayer && source instanceof ServerPlayer player && (!(source instanceof FakePlayer) || TrophyManagerConfig.GENERAL.allowFakePlayer.get())) {
+        } else if (TrophyManagerConfig.GENERAL.dropFromPlayers.get() && deadEntity instanceof Player killedPlayer) { // && source instanceof ServerPlayer player && (!(source instanceof FakePlayer) || TrophyManagerConfig.GENERAL.allowFakePlayer.get())) {
             Double chance = TrophyManagerConfig.GENERAL.dropChancePlayers.get();
 
             boolean willDropTrophy = chance >= deadEntity.level().random.nextDouble();
 
-            if (TrophyManagerConfig.GENERAL.applyLooting.get()) {
-                // Each level of looting gives an extra roll
-                int lootingLevel = player.getMainHandItem().getEnchantmentLevel(Enchantments.MOB_LOOTING);
-                for (int i = 0; i < (1 + lootingLevel); i++) {
-                    willDropTrophy = willDropTrophy || chance >= deadEntity.level().random.nextDouble();
-                }
-            }
+//            if (TrophyManagerConfig.GENERAL.applyLooting.get() && !willDropTrophy) {
+//                // Each level of looting gives an extra roll
+//                int lootingLevel = player.getMainHandItem().getEnchantmentLevel(Enchantments.MOB_LOOTING);
+//                for (int i = 0; i < (1 + lootingLevel); i++) {
+//                    willDropTrophy = willDropTrophy || chance >= deadEntity.level().random.nextDouble();
+//                }
+//            }
 
             if (willDropTrophy) {
                 ItemStack trophy = TrophyBlock.createPlayerTrophy(killedPlayer);
@@ -134,10 +134,24 @@ public class TrophyManager
             }
         }
     }
+    @Mod.EventBusSubscriber(modid = MODID, value = Dist.CLIENT, bus = Mod.EventBusSubscriber.Bus.MOD)
+    public class ClientSetup
+    {
+        @SubscribeEvent
+        public static void registerEntityRenderers(EntityRenderersEvent.RegisterRenderers event) {
+            event.registerBlockEntityRenderer(ModBlockEntities.TROPHY.get(), TrophyBlockEntityRenderer::new);
+            event.registerEntityRenderer(ModEntities.PLAYER.get(), PlayerTrophyRenderer::new);
+        }
+    }
 
     @Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD, modid = MODID)
     public static class EventHandler
     {
+        @SubscribeEvent
+        public static void onEntityAttributeCreate(EntityAttributeCreationEvent event) {
+            event.put(ModEntities.PLAYER.get(), Zombie.createAttributes().build());
+        }
+
         @SubscribeEvent
         public static void buildContents(BuildCreativeModeTabContentsEvent event) {
             if (event.getTabKey().equals(CreativeModeTabs.OP_BLOCKS)) {

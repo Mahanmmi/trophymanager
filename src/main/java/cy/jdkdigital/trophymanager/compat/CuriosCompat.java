@@ -24,7 +24,6 @@ import top.theillusivec4.curios.api.client.ICurioRenderer;
 public class CuriosCompat
 {
     public static void register() {
-        TrophyManager.LOGGER.info("registering head curios");
         InterModComms.sendTo("curios", SlotTypeMessage.REGISTER_TYPE, () -> SlotTypePreset.HEAD.getMessageBuilder().build());
 
         CuriosRendererRegistry.register(ModBlocks.TROPHY.get().asItem(), Renderer::new);

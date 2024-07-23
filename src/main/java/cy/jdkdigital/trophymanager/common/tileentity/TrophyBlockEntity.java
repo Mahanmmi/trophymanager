@@ -142,34 +142,34 @@ public class TrophyBlockEntity extends BlockEntity
     }
 
     public Entity getCachedEntity() {
-        int key = entity.hashCode();
-        if (!cachedEntities.containsKey(key)) {
-            Entity cachedEntity = createEntity(TrophyManager.proxy.getWorld(), entity);
-            if (cachedEntity != null) {
-                if (cachedEntity instanceof NeutralMob && entity.contains("AngerTime")) {
-                    ((NeutralMob) cachedEntity).setRemainingPersistentAngerTime(entity.getInt("AngerTime"));
-                } else if (cachedEntity instanceof Shulker && entity.contains("Peek")) {
-                    ((Shulker) cachedEntity).setRawPeekAmount(entity.getInt("Peek"));
-                } else if (cachedEntity instanceof Player && entity.contains("UUID")) {
-//                    TrophyManager.LOGGER.info("Player trophy entity " + entity.contains("UUID"));
-//                    TrophyManager.LOGGER.info(cachedEntity);
+        if (entity != null) {
+            int key = entity.hashCode();
+            if (!cachedEntities.containsKey(key)) {
+                Entity cachedEntity = createEntity(TrophyManager.proxy.getWorld(), entity);
+                if (cachedEntity != null) {
+                    if (cachedEntity instanceof NeutralMob && entity.contains("AngerTime")) {
+                        ((NeutralMob) cachedEntity).setRemainingPersistentAngerTime(entity.getInt("AngerTime"));
+                    } else if (cachedEntity instanceof Shulker && entity.contains("Peek")) {
+                        ((Shulker) cachedEntity).setRawPeekAmount(entity.getInt("Peek"));
+                    }
+                    try {
+                        addPassengers(cachedEntity, entity);
+                    } catch (Exception e) {
+                        // user can fuck it up here, so don't crash
+                    }
+                } else {
+                    TrophyManager.LOGGER.info("Unable to create trophy entity " + entity);
                 }
                 try {
                     addPassengers(cachedEntity, entity);
                 } catch (Exception e) {
                     // user can fuck it up here, so don't crash
                 }
-            } else {
-                TrophyManager.LOGGER.info("Unable to create trophy entity " + entity);
+                TrophyBlockEntity.cachedEntities.put(key, cachedEntity);
             }
-            try {
-                addPassengers(cachedEntity, entity);
-            } catch (Exception e) {
-                // user can fuck it up here, so don't crash
-            }
-            TrophyBlockEntity.cachedEntities.put(key, cachedEntity);
+            return cachedEntities.getOrDefault(key, null);
         }
-        return cachedEntities.getOrDefault(key, null);
+        return null;
     }
 
     private static Entity createEntity(Level world, CompoundTag tag) {

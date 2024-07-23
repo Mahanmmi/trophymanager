@@ -2,7 +2,6 @@ package cy.jdkdigital.trophymanager.client.render.block;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
-import cy.jdkdigital.trophymanager.TrophyManager;
 import cy.jdkdigital.trophymanager.TrophyManagerConfig;
 import cy.jdkdigital.trophymanager.common.tileentity.TrophyBlockEntity;
 import net.minecraft.client.Minecraft;
@@ -10,13 +9,10 @@ import net.minecraft.client.model.PlayerModel;
 import net.minecraft.client.model.geom.ModelLayers;
 import net.minecraft.client.multiplayer.PlayerInfo;
 import net.minecraft.client.renderer.MultiBufferSource;
-import net.minecraft.client.renderer.block.model.ItemTransforms;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.client.renderer.entity.EntityRenderDispatcher;
-import net.minecraft.client.resources.DefaultPlayerSkin;
 import net.minecraft.core.Direction;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemDisplayContext;
@@ -25,8 +21,6 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.HorizontalDirectionalBlock;
 
 import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-import java.util.UUID;
 
 public class TrophyBlockEntityRenderer implements BlockEntityRenderer<TrophyBlockEntity>
 {
@@ -52,11 +46,6 @@ public class TrophyBlockEntityRenderer implements BlockEntityRenderer<TrophyBloc
                 if (entity != null) {
                     renderEntity(trophyTileEntity, poseStack, buffer, combinedLightIn);
                 }
-//            } else if (trophyTileEntity.trophyType.equals("player")) {
-//                Entity entity = trophyTileEntity.getCachedEntity();
-//                if (entity != null) {
-//                    renderPlayer(trophyTileEntity, poseStack, buffer, combinedLightIn);
-//                }
             }
         }
 
@@ -141,35 +130,5 @@ public class TrophyBlockEntityRenderer implements BlockEntityRenderer<TrophyBloc
                 renderPassengers(rider, entityRendererManager, matrixStack, buffer, combinedLightIn);
             }
         }
-    }
-
-    private void renderPlayer(TrophyBlockEntity trophyTileEntity, PoseStack poseStack, @Nonnull MultiBufferSource buffer, int combinedLightIn, int combinedOverlayIn) {
-//        double tick = System.currentTimeMillis() / 800.0D;
-//
-//        poseStack.pushPose();
-//        poseStack.translate(0.5f, trophyTileEntity.offsetY + 0.5D + Math.sin(tick / 25f) / 15f, 0.5f);
-//        poseStack.mulPose(Vector3f.YP.rotationDegrees((float) ((tick * 40.0D) % 360)));
-//        poseStack.scale(trophyTileEntity.scale, trophyTileEntity.scale, trophyTileEntity.scale);
-//        Minecraft.getInstance().getItemRenderer().renderStatic(trophyTileEntity.item, ItemTransforms.TransformType.FIXED, combinedLightIn, combinedOverlayIn, poseStack, buffer, 0);
-//        poseStack.popPose();
-    }
-
-    @Nullable
-    protected PlayerInfo getPlayerInfo(UUID uuid) {
-        if (this.playerInfo == null) {
-            this.playerInfo = Minecraft.getInstance().getConnection().getPlayerInfo(uuid);
-        }
-
-        return this.playerInfo;
-    }
-
-    public boolean isSkinLoaded(UUID uuid) {
-        PlayerInfo playerinfo = this.getPlayerInfo(uuid);
-        return playerinfo != null && playerinfo.isSkinLoaded();
-    }
-
-    public ResourceLocation getSkinTextureLocation(UUID uuid) {
-        PlayerInfo playerinfo = this.getPlayerInfo(uuid);
-        return playerinfo == null ? DefaultPlayerSkin.getDefaultSkin(uuid) : playerinfo.getSkinLocation();
     }
 }
