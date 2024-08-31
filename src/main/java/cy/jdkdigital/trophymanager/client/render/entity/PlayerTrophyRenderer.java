@@ -35,7 +35,7 @@ public class PlayerTrophyRenderer extends AbstractZombieRenderer<RenderPlayer, Z
         if (!player.getUUIDData().isEmpty()) {
             return getSkinTextureLocation(UUID.fromString(player.getUUIDData()));
         }
-        return DefaultPlayerSkin.getDefaultSkin();
+        return DefaultPlayerSkin.getDefaultTexture();
     }
 
     @Nullable
@@ -48,7 +48,7 @@ public class PlayerTrophyRenderer extends AbstractZombieRenderer<RenderPlayer, Z
 
     public static boolean isSkinLoaded(UUID uuid) {
         PlayerInfo playerinfo = getPlayerInfo(uuid);
-        return playerinfo != null && playerinfo.isSkinLoaded();
+        return playerinfo != null;
     }
 
     public static ResourceLocation getSkinTextureLocation(UUID uuid) {
@@ -57,6 +57,6 @@ public class PlayerTrophyRenderer extends AbstractZombieRenderer<RenderPlayer, Z
         if (playerinfo != null) {
             TrophyManager.LOGGER.info("playerInfo " + playerinfo.getTabListDisplayName());
         }
-        return playerinfo == null ? DefaultPlayerSkin.getDefaultSkin(uuid) : playerinfo.getSkinLocation();
+        return playerinfo == null ? DefaultPlayerSkin.getDefaultTexture() : playerinfo.getSkin().texture();
     }
 }

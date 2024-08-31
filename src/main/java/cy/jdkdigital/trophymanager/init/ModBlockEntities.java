@@ -1,16 +1,16 @@
 package cy.jdkdigital.trophymanager.init;
 
 import cy.jdkdigital.trophymanager.TrophyManager;
-import cy.jdkdigital.trophymanager.common.tileentity.TrophyBlockEntity;
+import cy.jdkdigital.trophymanager.common.blockentity.TrophyBlockEntity;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.world.level.block.entity.BlockEntityType;
-import net.minecraftforge.registries.DeferredRegister;
-import net.minecraftforge.registries.ForgeRegistries;
-import net.minecraftforge.registries.RegistryObject;
+import net.neoforged.neoforge.registries.DeferredHolder;
+import net.neoforged.neoforge.registries.DeferredRegister;
 
 public final class ModBlockEntities
 {
-    public static final DeferredRegister<BlockEntityType<?>> BLOCK_ENTITIES = DeferredRegister.create(ForgeRegistries.BLOCK_ENTITY_TYPES, TrophyManager.MODID);
+    public static final DeferredRegister<BlockEntityType<?>> BLOCK_ENTITIES = DeferredRegister.create(BuiltInRegistries.BLOCK_ENTITY_TYPE, TrophyManager.MODID);
 
-    public static final RegistryObject<BlockEntityType<TrophyBlockEntity>> TROPHY
+    public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<TrophyBlockEntity>> TROPHY
             = BLOCK_ENTITIES.register("trophy", () -> BlockEntityType.Builder.of(TrophyBlockEntity::new, ModBlocks.TROPHY.get()).build(null));
 }

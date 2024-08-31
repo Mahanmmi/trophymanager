@@ -1,0 +1,251 @@
+[13Aug2024 15:01:12.370] [main/INFO] [cpw.mods.modlauncher.Launcher/MODLAUNCHER]: ModLauncher running: args [--launchTarget, forgeclientuserdev, --version, 21.1.5, --assetIndex, asset-index, --assetsDir, D:\jais\.gradle\caches\minecraft\assets\1.21.1, --gameDir, ., --fml.neoForgeVersion, 21.1.5, --fml.fmlVersion, 4.0.24, --fml.mcVersion, 1.21.1, --fml.neoFormVersion, 20240808.144430]
+[13Aug2024 15:01:12.375] [main/INFO] [cpw.mods.modlauncher.Launcher/MODLAUNCHER]: JVM identified as Amazon.com Inc. OpenJDK 64-Bit Server VM 21.0.3+9-LTS
+[13Aug2024 15:01:12.378] [main/INFO] [cpw.mods.modlauncher.Launcher/MODLAUNCHER]: ModLauncher 11.0.4+main.d2e20e43 starting: java version 21.0.3 by Amazon.com Inc.; OS Windows 10 arch amd64 version 10.0
+[13Aug2024 15:01:12.589] [main/INFO] [net.neoforged.fml.loading.ImmediateWindowHandler/]: Loading ImmediateWindowProvider fmlearlywindow
+[13Aug2024 15:01:12.766] [main/INFO] [EARLYDISPLAY/]: Trying GL version 4.6
+[13Aug2024 15:01:13.413] [main/INFO] [EARLYDISPLAY/]: Requested GL version 4.6 got version 4.6
+[13Aug2024 15:01:13.593] [main/INFO] [mixin/]: SpongePowered MIXIN Subsystem Version=0.8.6 Source=union:/D:/jais/.gradle/caches/modules-2/files-2.1/net.fabricmc/sponge-mixin/0.14.0+mixin.0.8.6/c265173c84346e9e5d42a2384b2b02bd39a4a899/sponge-mixin-0.14.0+mixin.0.8.6.jar%23135!/ Service=ModLauncher Env=CLIENT
+[13Aug2024 15:01:13.925] [main/INFO] [net.neoforged.fml.loading.moddiscovery.ModDiscoverer/SCAN]: Found mod file "neoforge-21.1.5.jar" [locator: neoforge devenv provider ([D:\jais\projects\trophymanager-1.19\.gradle\repositories\ng_dummy_ng\net\neoforged\neoforge\21.1.5\neoforge-21.1.5.jar])]
+[13Aug2024 15:01:13.952] [pool-2-thread-1/INFO] [EARLYDISPLAY/]: GL info: NVIDIA GeForce GTX 1050 Ti/PCIe/SSE2 GL version 4.6.0 NVIDIA 552.41, NVIDIA Corporation
+[13Aug2024 15:01:13.953] [main/INFO] [net.neoforged.fml.loading.moddiscovery.ModDiscoverer/SCAN]: Found mod file "neoforge-21.1.5.jar" [locator: neoforge devenv provider ([D:\jais\projects\trophymanager-1.19\.gradle\repositories\ng_dummy_ng\net\neoforged\neoforge\21.1.5\neoforge-21.1.5.jar])]
+[13Aug2024 15:01:13.976] [main/INFO] [net.neoforged.fml.loading.moddiscovery.ModDiscoverer/SCAN]: Found mod file "main" [locator: userdev mods and services, reader: mod manifest]
+[13Aug2024 15:01:14.014] [main/INFO] [net.neoforged.fml.loading.moddiscovery.ModDiscoverer/SCAN]: Found mod file "neoforge-21.1.5.jar" [locator: userdev mods and services, reader: mod manifest]
+[13Aug2024 15:01:14.027] [main/INFO] [net.neoforged.fml.loading.moddiscovery.ModDiscoverer/SCAN]: Found mod file "jei-238222-5537216.jar" [locator: userdev mods and services, reader: mod manifest]
+[13Aug2024 15:01:14.037] [main/INFO] [net.neoforged.fml.loading.moddiscovery.ModDiscoverer/SCAN]: Found mod file "adorned-1036809-5546365.jar" [locator: userdev mods and services, reader: mod manifest]
+[13Aug2024 15:01:14.046] [main/INFO] [net.neoforged.fml.loading.moddiscovery.ModDiscoverer/SCAN]: Found mod file "emi-neoforge-1.1.10+1.21.jar" [locator: userdev mods and services, reader: mod manifest]
+[13Aug2024 15:01:14.101] [main/INFO] [net.neoforged.fml.loading.moddiscovery.ModDiscoverer/SCAN]: Found gamelibrary file "mixinextras-neoforge-0.3.5.jar" [locator: userdev mods and services, reader: mod manifest]
+[13Aug2024 15:01:14.475] [main/WARN] [net.neoforged.jarjar.selection.JarSelector/]: Attempted to select a dependency jar for JarJar which was passed in as source: mixinextras-neoforge-0.3.5.jar. Using Mod File: D:\jais\.gradle\caches\modules-2\files-2.1\io.github.llamalad7\mixinextras-neoforge\0.3.5\ef3ffcf309dae656517b2f120189b1c9b21737dd\mixinextras-neoforge-0.3.5.jar
+[13Aug2024 15:01:14.475] [main/INFO] [net.neoforged.fml.loading.moddiscovery.locators.JarInJarDependencyLocator/]: No dependencies to load found. Skipping!
+[13Aug2024 15:01:14.820] [main/INFO] [net.neoforged.fml.loading.FMLServiceProvider/CORE]: Loading coremod script-engine for [neoforge]
+[13Aug2024 15:01:16.136] [main/INFO] [mixin/]: Compatibility level set to JAVA_17
+[13Aug2024 15:01:16.141] [main/INFO] [mixin/]: Compatibility level set to JAVA_21
+[13Aug2024 15:01:16.157] [main/INFO] [cpw.mods.modlauncher.LaunchServiceHandler/MODLAUNCHER]: Launching target 'forgeclientuserdev' with arguments [--version, 21.1.5, --gameDir, ., --assetsDir, D:\jais\.gradle\caches\minecraft\assets\1.21.1, --assetIndex, asset-index]
+[13Aug2024 15:01:16.230] [main/WARN] [mixin/]: Reference map 'curios.refmap.json' for curios.neoforge.mixins.json could not be read. If this is a development environment you can ignore this message
+[13Aug2024 15:01:16.231] [main/WARN] [mixin/]: Reference map 'curios.refmap.json' for curios.mixins.json could not be read. If this is a development environment you can ignore this message
+[13Aug2024 15:01:16.761] [main/INFO] [MixinExtras|Service/]: Initializing MixinExtras via com.llamalad7.mixinextras.service.MixinExtrasServiceImpl(version=0.3.5).
+[13Aug2024 15:01:19.443] [Datafixer Bootstrap/INFO] [com.mojang.datafixers.DataFixerBuilder/]: 229 Datafixer optimizations took 703 milliseconds
+[13Aug2024 15:01:28.274] [main/WARN] [net.minecraft.commands.Commands/]: Ambiguity between arguments [teleport, location] and [teleport, destination] with inputs: [0.1 -0.5 .9, 0 0 0]
+[13Aug2024 15:01:28.276] [main/WARN] [net.minecraft.commands.Commands/]: Ambiguity between arguments [teleport, location] and [teleport, targets] with inputs: [0.1 -0.5 .9, 0 0 0]
+[13Aug2024 15:01:28.281] [main/WARN] [net.minecraft.commands.Commands/]: Ambiguity between arguments [teleport, destination] and [teleport, targets] with inputs: [Player, 0123, @e, dd12be42-52a9-4a91-a8a1-11c01849e498]
+[13Aug2024 15:01:28.283] [main/WARN] [net.minecraft.commands.Commands/]: Ambiguity between arguments [teleport, targets] and [teleport, destination] with inputs: [Player, 0123, dd12be42-52a9-4a91-a8a1-11c01849e498]
+[13Aug2024 15:01:28.285] [main/WARN] [net.minecraft.commands.Commands/]: Ambiguity between arguments [teleport, targets, location] and [teleport, targets, destination] with inputs: [0.1 -0.5 .9, 0 0 0]
+[13Aug2024 15:01:28.706] [Render thread/WARN] [net.minecraft.server.packs.VanillaPackResourcesBuilder/]: Assets URL 'union:/D:/jais/projects/trophymanager-1.19/.gradle/repositories/ng_dummy_ng/net/neoforged/neoforge/21.1.5/neoforge-21.1.5.jar%23189!/assets/.mcassetsroot' uses unexpected schema
+[13Aug2024 15:01:28.707] [Render thread/WARN] [net.minecraft.server.packs.VanillaPackResourcesBuilder/]: Assets URL 'union:/D:/jais/projects/trophymanager-1.19/.gradle/repositories/ng_dummy_ng/net/neoforged/neoforge/21.1.5/neoforge-21.1.5.jar%23189!/data/.mcassetsroot' uses unexpected schema
+[13Aug2024 15:01:28.768] [Render thread/INFO] [com.mojang.authlib.yggdrasil.YggdrasilAuthenticationService/]: Environment: Environment[sessionHost=https://sessionserver.mojang.com, servicesHost=https://api.minecraftservices.com, name=PROD]
+[13Aug2024 15:01:28.793] [Render thread/INFO] [net.minecraft.client.Minecraft/]: Setting user: Dev
+[13Aug2024 15:01:29.045] [Render thread/INFO] [net.minecraft.client.Minecraft/]: Backend library: LWJGL version 3.3.3+5
+[13Aug2024 15:01:29.937] [modloading-worker-0/INFO] [net.neoforged.neoforge.common.NeoForgeMod/NEOFORGE-MOD]: NeoForge mod loading, version 21.1.5, for MC 1.21.1
+[13Aug2024 15:01:30.221] [modloading-worker-0/INFO] [mezz.jei.library.load.PluginCaller/]: Sending ConfigManager...
+[13Aug2024 15:01:30.231] [modloading-worker-0/INFO] [mezz.jei.library.load.PluginCaller/]: Sending ConfigManager took 6.533 ms
+[13Aug2024 15:01:31.430] [Render thread/INFO] [net.neoforged.neoforge.gametest.GameTestHooks/]: Enabled Gametest Namespaces: []
+[13Aug2024 15:01:31.839] [Render thread/INFO] [net.minecraft.server.packs.resources.ReloadableResourceManager/]: Reloading ResourceManager: vanilla, mod_resources, mod/emi, mod/trophymanager, mod/curios, mod/neoforge, mod/jei
+[13Aug2024 15:01:32.093] [Worker-Main-6/INFO] [net.minecraft.client.gui.font.providers.UnihexProvider/]: Found unifont_all_no_pua-15.1.05.hex, loading
+[13Aug2024 15:01:32.451] [Worker-Main-7/INFO] [net.minecraft.client.gui.font.providers.UnihexProvider/]: Found unifont_jp_patch-15.1.05.hex, loading
+[13Aug2024 15:01:34.662] [Render thread/WARN] [net.minecraft.client.sounds.SoundEngine/]: Missing sound for event: minecraft:item.goat_horn.play
+[13Aug2024 15:01:34.662] [Render thread/WARN] [net.minecraft.client.sounds.SoundEngine/]: Missing sound for event: minecraft:entity.goat.screaming.horn_break
+[13Aug2024 15:01:34.916] [Render thread/INFO] [com.mojang.blaze3d.audio.Library/]: OpenAL initialized on device OpenAL Soft on Speakers (Realtek High Definition Audio)
+[13Aug2024 15:01:34.917] [Render thread/INFO] [net.minecraft.client.sounds.SoundEngine/SOUNDS]: Sound engine started
+[13Aug2024 15:01:35.135] [Render thread/INFO] [net.minecraft.client.renderer.texture.TextureAtlas/]: Created: 1024x512x4 minecraft:textures/atlas/blocks.png-atlas
+[13Aug2024 15:01:35.157] [Render thread/INFO] [net.minecraft.client.renderer.texture.TextureAtlas/]: Created: 256x256x4 minecraft:textures/atlas/signs.png-atlas
+[13Aug2024 15:01:35.158] [Render thread/INFO] [net.minecraft.client.renderer.texture.TextureAtlas/]: Created: 512x512x4 minecraft:textures/atlas/shield_patterns.png-atlas
+[13Aug2024 15:01:35.159] [Render thread/INFO] [net.minecraft.client.renderer.texture.TextureAtlas/]: Created: 512x512x4 minecraft:textures/atlas/banner_patterns.png-atlas
+[13Aug2024 15:01:35.161] [Render thread/INFO] [net.minecraft.client.renderer.texture.TextureAtlas/]: Created: 1024x1024x4 minecraft:textures/atlas/armor_trims.png-atlas
+[13Aug2024 15:01:35.171] [Render thread/INFO] [net.minecraft.client.renderer.texture.TextureAtlas/]: Created: 128x64x4 minecraft:textures/atlas/decorated_pot.png-atlas
+[13Aug2024 15:01:35.172] [Render thread/INFO] [net.minecraft.client.renderer.texture.TextureAtlas/]: Created: 256x256x4 minecraft:textures/atlas/chest.png-atlas
+[13Aug2024 15:01:35.172] [Render thread/INFO] [net.minecraft.client.renderer.texture.TextureAtlas/]: Created: 512x256x4 minecraft:textures/atlas/shulker_boxes.png-atlas
+[13Aug2024 15:01:35.173] [Render thread/INFO] [net.minecraft.client.renderer.texture.TextureAtlas/]: Created: 512x256x4 minecraft:textures/atlas/beds.png-atlas
+[13Aug2024 15:01:35.329] [Render thread/INFO] [net.minecraft.client.renderer.texture.TextureAtlas/]: Created: 512x256x0 minecraft:textures/atlas/particles.png-atlas
+[13Aug2024 15:01:35.332] [Render thread/INFO] [net.minecraft.client.renderer.texture.TextureAtlas/]: Created: 512x256x0 minecraft:textures/atlas/paintings.png-atlas
+[13Aug2024 15:01:35.333] [Render thread/INFO] [net.minecraft.client.renderer.texture.TextureAtlas/]: Created: 256x128x0 minecraft:textures/atlas/mob_effects.png-atlas
+[13Aug2024 15:01:35.334] [Render thread/INFO] [net.minecraft.client.renderer.texture.TextureAtlas/]: Created: 64x64x0 minecraft:textures/atlas/map_decorations.png-atlas
+[13Aug2024 15:01:35.334] [Render thread/INFO] [net.minecraft.client.renderer.texture.TextureAtlas/]: Created: 1024x512x0 minecraft:textures/atlas/gui.png-atlas
+[13Aug2024 15:01:35.382] [Render thread/WARN] [net.minecraft.client.renderer.ShaderInstance/]: Shader rendertype_entity_translucent_emissive could not find sampler named Sampler2 in the specified shader program.
+[13Aug2024 15:01:35.465] [Render thread/INFO] [net.minecraft.client.renderer.texture.TextureAtlas/]: Created: 256x256x0 jei:textures/atlas/gui.png-atlas
+[13Aug2024 15:01:42.719] [Render thread/INFO] [net.minecraft.world.item.crafting.RecipeManager/]: Loaded 1290 recipes
+[13Aug2024 15:01:43.011] [Render thread/INFO] [net.minecraft.advancements.AdvancementTree/]: Loaded 1399 advancements
+[13Aug2024 15:01:43.019] [Render thread/INFO] [Curios API/]: Loaded 10 curio slots
+[13Aug2024 15:01:43.023] [Render thread/INFO] [Curios API/]: Loaded 1 curio entities
+[13Aug2024 15:01:43.732] [Render thread/INFO] [mezz.jei.neoforge.startup.StartEventObserver/]: JEI StartEventObserver received class net.neoforged.neoforge.event.TagsUpdatedEvent too early, ignoring
+[13Aug2024 15:01:43.734] [Render thread/INFO] [EMI/]: [EMI] Recipes synchronized, waiting for tags to reload EMI...
+[13Aug2024 15:01:43.938] [Server thread/INFO] [net.minecraft.client.server.IntegratedServer/]: Starting integrated minecraft server version 1.21.1
+[13Aug2024 15:01:43.938] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Generating keypair
+[13Aug2024 15:01:46.199] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Preparing start region for dimension minecraft:overworld
+[13Aug2024 15:01:46.603] [progressListener/INFO] [net.minecraft.server.level.progress.LoggerChunkProgressListener/]: Preparing spawn area: 0%
+[13Aug2024 15:01:46.842] [Server thread/INFO] [net.neoforged.neoforge.server.permission.PermissionAPI/]: Successfully initialized permission handler neoforge:default_handler
+[13Aug2024 15:01:46.845] [progressListener/INFO] [net.minecraft.server.level.progress.LoggerChunkProgressListener/]: Time elapsed: 635 ms
+[13Aug2024 15:01:46.962] [Server thread/INFO] [net.minecraft.client.server.IntegratedServer/]: Changing view distance to 12, from 10
+[13Aug2024 15:01:46.962] [Server thread/INFO] [net.minecraft.client.server.IntegratedServer/]: Changing simulation distance to 12, from 0
+[13Aug2024 15:01:47.972] [Render thread/INFO] [mezz.jei.neoforge.startup.StartEventObserver/]: JEI StartEventObserver received class net.neoforged.neoforge.event.TagsUpdatedEvent
+[13Aug2024 15:01:47.972] [Render thread/INFO] [EMI/]: [EMI] Recipes synchronized, waiting for tags to reload EMI...
+[13Aug2024 15:01:48.321] [Server thread/INFO] [net.minecraft.server.players.PlayerList/]: Dev[local:E:6adfd65f] logged in with entity id 132 at (-45.03436333539885, 72.0, 62.92692073566136)
+[13Aug2024 15:01:48.484] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Dev joined the game
+[13Aug2024 15:01:48.611] [Render thread/INFO] [mezz.jei.neoforge.startup.StartEventObserver/]: JEI StartEventObserver received class net.neoforged.neoforge.client.event.RecipesUpdatedEvent
+[13Aug2024 15:01:48.611] [Render thread/INFO] [mezz.jei.neoforge.startup.StartEventObserver/]: JEI StartEventObserver transitioning state from LISTENING to JEI_STARTED
+[13Aug2024 15:01:48.612] [Render thread/INFO] [mezz.jei.core.util.LoggedTimer/]: Starting JEI...
+[13Aug2024 15:01:48.624] [Render thread/INFO] [mezz.jei.library.load.PluginCaller/]: Registering item subtypes...
+[13Aug2024 15:01:48.626] [Render thread/INFO] [mezz.jei.library.load.PluginCaller/]: Registering item subtypes took 1.740 ms
+[13Aug2024 15:01:48.627] [Render thread/INFO] [mezz.jei.library.load.PluginCaller/]: Registering fluid subtypes...
+[13Aug2024 15:01:48.631] [Render thread/INFO] [mezz.jei.library.load.PluginCaller/]: Registering fluid subtypes took 3.676 ms
+[13Aug2024 15:01:48.633] [Render thread/INFO] [mezz.jei.library.load.PluginCaller/]: Registering ingredients...
+[13Aug2024 15:01:48.867] [Render thread/INFO] [mezz.jei.library.load.PluginCallerTimerRunnable/]: Registering ingredients: jei:minecraft took 233.2 milliseconds
+[13Aug2024 15:01:48.870] [Render thread/INFO] [mezz.jei.library.load.PluginCaller/]: Registering ingredients took 236.1 ms
+[13Aug2024 15:01:48.880] [Render thread/INFO] [mezz.jei.library.load.PluginCaller/]: Registering Mod Info...
+[13Aug2024 15:01:48.882] [Render thread/INFO] [mezz.jei.library.load.PluginCaller/]: Registering Mod Info took 1.226 ms
+[13Aug2024 15:01:48.922] [Render thread/INFO] [mezz.jei.library.load.PluginCaller/]: Registering categories...
+[13Aug2024 15:01:48.956] [Render thread/INFO] [mezz.jei.library.load.PluginCallerTimerRunnable/]: Registering categories: jei:minecraft took 32.64 milliseconds
+[13Aug2024 15:01:48.957] [Render thread/INFO] [mezz.jei.library.load.PluginCaller/]: Registering categories took 34.98 ms
+[13Aug2024 15:01:48.959] [Render thread/INFO] [mezz.jei.library.load.PluginCaller/]: Registering vanilla category extensions...
+[13Aug2024 15:01:48.963] [Render thread/INFO] [mezz.jei.library.load.PluginCaller/]: Registering vanilla category extensions took 3.198 ms
+[13Aug2024 15:01:48.965] [Render thread/INFO] [mezz.jei.library.load.PluginCaller/]: Registering recipe catalysts...
+[13Aug2024 15:01:48.967] [Render thread/INFO] [mezz.jei.library.load.PluginCaller/]: Registering recipe catalysts took 1.256 ms
+[13Aug2024 15:01:48.969] [Render thread/INFO] [mezz.jei.library.load.PluginCaller/]: Registering advanced plugins...
+[13Aug2024 15:01:48.971] [Render thread/INFO] [mezz.jei.library.load.PluginCaller/]: Registering advanced plugins took 1.106 ms
+[13Aug2024 15:01:48.971] [Render thread/INFO] [mezz.jei.core.util.LoggedTimer/]: Building recipe registry...
+[13Aug2024 15:01:49.022] [Render thread/INFO] [mezz.jei.core.util.LoggedTimer/]: Building recipe registry took 50.13 ms
+[13Aug2024 15:01:49.027] [Render thread/INFO] [mezz.jei.library.load.PluginCaller/]: Registering recipes...
+[13Aug2024 15:01:49.029] [Render thread/INFO] [mezz.jei.library.load.PluginCaller/]: Registering recipes took 1.272 ms
+[13Aug2024 15:01:49.037] [Render thread/INFO] [mezz.jei.library.load.PluginCaller/]: Registering recipes transfer handlers...
+[13Aug2024 15:01:49.039] [Render thread/INFO] [mezz.jei.library.load.PluginCaller/]: Registering recipes transfer handlers took 1.221 ms
+[13Aug2024 15:01:49.060] [Render thread/INFO] [mezz.jei.core.util.LoggedTimer/]: Building runtime...
+[13Aug2024 15:01:49.063] [Render thread/INFO] [mezz.jei.library.load.PluginCaller/]: Registering gui handlers...
+[13Aug2024 15:01:49.067] [Render thread/INFO] [mezz.jei.library.load.PluginCaller/]: Registering gui handlers took 3.905 ms
+[13Aug2024 15:01:49.072] [Render thread/INFO] [mezz.jei.library.load.PluginCaller/]: Registering Runtime...
+[13Aug2024 15:01:49.080] [Render thread/INFO] [mezz.jei.gui.startup.JeiGuiStarter/]: Starting JEI GUI
+[13Aug2024 15:01:49.081] [Render thread/INFO] [mezz.jei.core.util.LoggedTimer/]: Building ingredient list...
+[13Aug2024 15:01:49.090] [Render thread/INFO] [mezz.jei.core.util.LoggedTimer/]: Building ingredient list took 8.058 ms
+[13Aug2024 15:01:49.090] [Render thread/INFO] [mezz.jei.core.util.LoggedTimer/]: Building ingredient filter...
+[13Aug2024 15:01:49.125] [Render thread/INFO] [mezz.jei.gui.ingredients.IngredientFilter/]: Adding 1318 ingredients
+[13Aug2024 15:01:49.643] [Render thread/INFO] [mezz.jei.gui.ingredients.IngredientFilter/]: Added 1318 ingredients
+[13Aug2024 15:01:49.645] [Render thread/INFO] [mezz.jei.core.util.LoggedTimer/]: Building ingredient filter took 554.4 ms
+[13Aug2024 15:01:49.784] [Render thread/INFO] [mezz.jei.library.load.PluginCallerTimerRunnable/]: Registering Runtime: jei:neoforge_gui took 706.5 milliseconds
+[13Aug2024 15:01:49.785] [Render thread/INFO] [mezz.jei.library.load.PluginCaller/]: Registering Runtime took 711.9 ms
+[13Aug2024 15:01:49.786] [Render thread/INFO] [mezz.jei.core.util.LoggedTimer/]: Building runtime took 725.8 ms
+[13Aug2024 15:01:49.786] [Render thread/INFO] [mezz.jei.library.load.PluginCaller/]: Sending Runtime...
+[13Aug2024 15:01:49.788] [Render thread/INFO] [mezz.jei.library.load.PluginCaller/]: Sending Runtime took 1.329 ms
+[13Aug2024 15:01:49.788] [Render thread/INFO] [mezz.jei.core.util.LoggedTimer/]: Starting JEI took 1.176 s
+[13Aug2024 15:01:49.789] [Render thread/INFO] [EMI/]: [EMI] Tags synchronized, reloading EMI
+[13Aug2024 15:01:49.789] [Render thread/INFO] [EMI/]: [EMI] Starting Reload
+[13Aug2024 15:01:49.792] [Thread-12/INFO] [EMI/]: [EMI] Starting EMI reload...
+[13Aug2024 15:01:49.793] [Thread-12/INFO] [EMI/]: [EMI] Clearing data
+[13Aug2024 15:01:49.839] [Thread-12/INFO] [EMI/]: [EMI] Initializing plugin from emi
+[13Aug2024 15:01:49.839] [Render thread/INFO] [net.minecraft.advancements.AdvancementTree/]: Loaded 50 advancements
+[13Aug2024 15:01:49.849] [Thread-12/INFO] [EMI/]: [EMI] Initialized plugin from emi in 7ms
+[13Aug2024 15:01:49.849] [Thread-12/INFO] [EMI/]: [EMI] Initializing plugin from trophymanager
+[13Aug2024 15:01:49.849] [Thread-12/INFO] [EMI/]: [EMI] Initialized plugin from trophymanager in 0ms
+[13Aug2024 15:01:49.849] [Thread-12/INFO] [EMI/]: [EMI] Initializing plugin from jemi
+[13Aug2024 15:01:49.850] [Thread-12/INFO] [EMI/]: [EMI] Initialized plugin from jemi in 0ms
+[13Aug2024 15:01:49.851] [Thread-12/INFO] [EMI/]: [EMI] Processing tags
+[13Aug2024 15:01:49.860] [Thread-12/ERROR] [EMI/]: [EMI] Untranslated tag #curios:head
+[13Aug2024 15:01:49.860] [Thread-12/INFO] [EMI/]: [EMI]  Tag warning can be disabled in the config, EMI docs describe how to add a translation or exclude tags.
+[13Aug2024 15:01:49.889] [Thread-12/INFO] [EMI/]: [EMI] Constructing index
+[13Aug2024 15:01:50.004] [Thread-12/INFO] [EMI/]: [EMI] Loading plugin from emi
+[13Aug2024 15:01:50.318] [Thread-12/INFO] [EMI/]: [EMI] Reloaded plugin from emi in 313ms
+[13Aug2024 15:01:50.318] [Thread-12/INFO] [EMI/]: [EMI] Loading plugin from trophymanager
+[13Aug2024 15:01:50.319] [Thread-12/INFO] [EMI/]: [EMI] Reloaded plugin from trophymanager in 0ms
+[13Aug2024 15:01:50.319] [Thread-12/INFO] [EMI/]: [EMI] Loading plugin from jemi
+[13Aug2024 15:01:50.319] [Thread-12/INFO] [EMI/]: [EMI] [JEMI] Waiting for JEI to finish reloading...
+[13Aug2024 15:01:50.320] [Thread-12/INFO] [EMI/]: [EMI] Waiting for JEI to finish...
+[13Aug2024 15:01:50.320] [Thread-12/INFO] [EMI/]: [EMI] [JEMI] JEI reloaded!
+[13Aug2024 15:01:50.322] [Thread-12/INFO] [EMI/]: [EMI] Loading information from JEI...
+[13Aug2024 15:01:50.327] [Thread-12/INFO] [EMI/]: [EMI] Processing JEI stacks...
+[13Aug2024 15:01:50.329] [Thread-12/INFO] [EMI/]: [EMI] Processing JEI subtypes...
+[13Aug2024 15:01:50.330] [Thread-12/ERROR] [EMI/]: [EMI] Exception thrown when reloading subtype comparison step in JEMI plugin
+[13Aug2024 15:01:50.332] [Thread-12/ERROR] [EMI/]: [EMI] java.lang.ClassCastException: class net.minecraft.world.item.AirItem cannot be cast to class net.minecraft.world.item.ItemStack (net.minecraft.world.item.AirItem and net.minecraft.world.item.ItemStack are in module minecraft@1.21.1 of loader 'TRANSFORMER' @3902bd2c)
+	at TRANSFORMER
+[13Aug2024 15:01:50.332] [Thread-12/ERROR] [EMI/]: [EMI] jei@19.5.0.35
+[13Aug2024 15:01:50.332] [Thread-12/ERROR] [EMI/]: [EMI] mezz.jei.api.constants.VanillaTypes$1.getBase(VanillaTypes.java:16)
+	at TRANSFORMER
+[13Aug2024 15:01:50.332] [Thread-12/ERROR] [EMI/]: [EMI] jei@19.5.0.35
+[13Aug2024 15:01:50.332] [Thread-12/ERROR] [EMI/]: [EMI] mezz.jei.library.ingredients.subtypes.SubtypeInterpreters.contains(SubtypeInterpreters.java:39)
+	at TRANSFORMER
+[13Aug2024 15:01:50.332] [Thread-12/ERROR] [EMI/]: [EMI] emi@1.1.10+1.21+neoforge
+[13Aug2024 15:01:50.332] [Thread-12/ERROR] [EMI/]: [EMI] dev.emi.emi.jemi.JemiPlugin.lambda$registerItemSubtypes$1(JemiPlugin.java:99)
+	at TRANSFORMER
+[13Aug2024 15:01:50.333] [Thread-12/ERROR] [EMI/]: [EMI] emi@1.1.10+1.21+neoforge
+[13Aug2024 15:01:50.333] [Thread-12/ERROR] [EMI/]: [EMI] dev.emi.emi.jemi.JemiPlugin.parseSubtypes(JemiPlugin.java:378)
+	at TRANSFORMER
+[13Aug2024 15:01:50.333] [Thread-12/ERROR] [EMI/]: [EMI] emi@1.1.10+1.21+neoforge
+[13Aug2024 15:01:50.333] [Thread-12/ERROR] [EMI/]: [EMI] dev.emi.emi.jemi.JemiPlugin.lambda$register$6(JemiPlugin.java:199)
+	at TRANSFORMER
+[13Aug2024 15:01:50.333] [Thread-12/ERROR] [EMI/]: [EMI] emi@1.1.10+1.21+neoforge
+[13Aug2024 15:01:50.333] [Thread-12/ERROR] [EMI/]: [EMI] dev.emi.emi.jemi.JemiPlugin.safely(JemiPlugin.java:432)
+	at TRANSFORMER
+[13Aug2024 15:01:50.333] [Thread-12/ERROR] [EMI/]: [EMI] emi@1.1.10+1.21+neoforge
+[13Aug2024 15:01:50.333] [Thread-12/ERROR] [EMI/]: [EMI] dev.emi.emi.jemi.JemiPlugin.register(JemiPlugin.java:199)
+	at TRANSFORMER
+[13Aug2024 15:01:50.333] [Thread-12/ERROR] [EMI/]: [EMI] emi@1.1.10+1.21+neoforge
+[13Aug2024 15:01:50.333] [Thread-12/ERROR] [EMI/]: [EMI] dev.emi.emi.runtime.EmiReloadManager$ReloadWorker.run(EmiReloadManager.java:185)
+	at java.base
+[13Aug2024 15:01:50.333] [Thread-12/ERROR] [EMI/]: [EMI] java.lang.Thread.run(Thread.java:1583)
+
+[13Aug2024 15:01:50.334] [Thread-12/INFO] [EMI/]: [EMI] Processing JEI recipes...
+[13Aug2024 15:01:50.335] [Thread-12/INFO] [EMI/]: [EMI] [JEMI] Collecting data for Crafting
+[13Aug2024 15:01:50.335] [Thread-12/INFO] [EMI/]: [EMI] Loading JEI data for Crafting
+[13Aug2024 15:01:50.338] [Thread-12/ERROR] [EMI/]: [EMI] [JEMI] Exception thrown setting JEI crafting recipe
+[13Aug2024 15:01:50.339] [Thread-12/ERROR] [EMI/]: [EMI] [JEMI] Exception thrown setting JEI crafting recipe
+[13Aug2024 15:01:50.339] [Thread-12/ERROR] [EMI/]: [EMI] [JEMI] Exception thrown setting JEI crafting recipe
+[13Aug2024 15:01:50.339] [Thread-12/ERROR] [EMI/]: [EMI] [JEMI] Exception thrown setting JEI crafting recipe
+[13Aug2024 15:01:50.339] [Thread-12/ERROR] [EMI/]: [EMI] [JEMI] Exception thrown setting JEI crafting recipe
+[13Aug2024 15:01:50.340] [Thread-12/ERROR] [EMI/]: [EMI] [JEMI] Exception thrown setting JEI crafting recipe
+[13Aug2024 15:01:50.340] [Thread-12/ERROR] [EMI/]: [EMI] [JEMI] Exception thrown setting JEI crafting recipe
+[13Aug2024 15:01:50.340] [Thread-12/ERROR] [EMI/]: [EMI] [JEMI] Exception thrown setting JEI crafting recipe
+[13Aug2024 15:01:50.340] [Thread-12/ERROR] [EMI/]: [EMI] [JEMI] Exception thrown setting JEI crafting recipe
+[13Aug2024 15:01:50.340] [Thread-12/ERROR] [EMI/]: [EMI] [JEMI] Exception thrown setting JEI crafting recipe
+[13Aug2024 15:01:50.340] [Thread-12/ERROR] [EMI/]: [EMI] [JEMI] Exception thrown setting JEI crafting recipe
+[13Aug2024 15:01:50.341] [Thread-12/ERROR] [EMI/]: [EMI] [JEMI] Exception thrown setting JEI crafting recipe
+[13Aug2024 15:01:50.341] [Thread-12/ERROR] [EMI/]: [EMI] [JEMI] Exception thrown setting JEI crafting recipe
+[13Aug2024 15:01:50.341] [Thread-12/INFO] [EMI/]: [EMI] [JEMI] Collecting data for Anvil
+[13Aug2024 15:01:50.342] [Thread-12/INFO] [EMI/]: [EMI] Loading JEI data for Anvil
+[13Aug2024 15:01:50.342] [Thread-12/INFO] [EMI/]: [EMI] [JEMI] Collecting data for Blasting
+[13Aug2024 15:01:50.342] [Thread-12/INFO] [EMI/]: [EMI] Loading JEI data for Blasting
+[13Aug2024 15:01:50.342] [Thread-12/INFO] [EMI/]: [EMI] [JEMI] Collecting data for Brewing
+[13Aug2024 15:01:50.342] [Thread-12/INFO] [EMI/]: [EMI] Loading JEI data for Brewing
+[13Aug2024 15:01:50.342] [Thread-12/INFO] [EMI/]: [EMI] [JEMI] Collecting data for Campfire Cooking
+[13Aug2024 15:01:50.343] [Thread-12/INFO] [EMI/]: [EMI] Loading JEI data for Campfire Cooking
+[13Aug2024 15:01:50.343] [Thread-12/INFO] [EMI/]: [EMI] [JEMI] Collecting data for Compostable
+[13Aug2024 15:01:50.343] [Thread-12/INFO] [EMI/]: [EMI] Loading JEI data for Compostable
+[13Aug2024 15:01:50.343] [Thread-12/INFO] [EMI/]: [EMI] [JEMI] Collecting data for Fuel
+[13Aug2024 15:01:50.343] [Thread-12/INFO] [EMI/]: [EMI] Loading JEI data for Fuel
+[13Aug2024 15:01:50.343] [Thread-12/INFO] [EMI/]: [EMI] [JEMI] Collecting data for Smelting
+[13Aug2024 15:01:50.343] [Thread-12/INFO] [EMI/]: [EMI] Loading JEI data for Smelting
+[13Aug2024 15:01:50.344] [Thread-12/INFO] [EMI/]: [EMI] [JEMI] Collecting data for Smithing Table
+[13Aug2024 15:01:50.344] [Thread-12/INFO] [EMI/]: [EMI] Loading JEI data for Smithing Table
+[13Aug2024 15:01:50.344] [Thread-12/INFO] [EMI/]: [EMI] [JEMI] Collecting data for Smoking
+[13Aug2024 15:01:50.344] [Thread-12/INFO] [EMI/]: [EMI] Loading JEI data for Smoking
+[13Aug2024 15:01:50.344] [Thread-12/INFO] [EMI/]: [EMI] [JEMI] Collecting data for Stonecutting
+[13Aug2024 15:01:50.344] [Thread-12/INFO] [EMI/]: [EMI] Loading JEI data for Stonecutting
+[13Aug2024 15:01:50.345] [Thread-12/INFO] [EMI/]: [EMI] [JEMI] Collecting data for Information
+[13Aug2024 15:01:50.345] [Thread-12/INFO] [EMI/]: [EMI] Loading JEI data for Information
+[13Aug2024 15:01:50.346] [Thread-12/INFO] [EMI/]: [EMI] Reloaded plugin from jemi in 27ms
+[13Aug2024 15:01:50.346] [Thread-12/INFO] [EMI/]: [EMI] Baking index
+[13Aug2024 15:01:50.402] [Thread-12/INFO] [EMI/]: [EMI] Registering late recipes
+[13Aug2024 15:01:50.403] [Thread-12/INFO] [EMI/]: [EMI] Baking recipes
+[13Aug2024 15:01:50.649] [Thread-12/INFO] [EMI/]: [EMI] Baked 3253 recipes in 241ms
+[13Aug2024 15:01:50.654] [Thread-12/INFO] [EMI/]: [EMI] Baking search
+[13Aug2024 15:01:50.922] [Thread-13/INFO] [EMI/]: [EMI] Baked recipes after reload in 70ms
+[13Aug2024 15:01:50.992] [Thread-12/INFO] [EMI/]: [EMI] Finishing up
+[13Aug2024 15:01:51.058] [Thread-12/INFO] [EMI/]: [EMI] Reloaded EMI in 1265ms
+[13Aug2024 15:02:06.747] [Server thread/INFO] [net.minecraft.client.server.IntegratedServer/]: Saving and pausing game...
+[13Aug2024 15:02:06.800] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[New World]'/minecraft:overworld
+[13Aug2024 15:02:07.006] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[New World]'/minecraft:the_end
+[13Aug2024 15:02:07.221] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[New World]'/minecraft:the_nether
+[13Aug2024 15:02:08.388] [Render thread/INFO] [net.minecraft.client.Minecraft/]: Stopping!
+[13Aug2024 15:02:08.396] [Render thread/INFO] [mezz.jei.neoforge.startup.StartEventObserver/]: JEI StartEventObserver received class net.neoforged.neoforge.client.event.ClientPlayerNetworkEvent$LoggingOut
+[13Aug2024 15:02:08.396] [Render thread/INFO] [mezz.jei.neoforge.startup.StartEventObserver/]: JEI StartEventObserver transitioning state from JEI_STARTED to LISTENING
+[13Aug2024 15:02:08.397] [Render thread/INFO] [mezz.jei.library.startup.JeiStarter/]: Stopping JEI
+[13Aug2024 15:02:08.397] [Render thread/INFO] [mezz.jei.library.load.PluginCaller/]: Sending Runtime Unavailable...
+[13Aug2024 15:02:08.398] [Render thread/INFO] [mezz.jei.neoforge.plugins.neoforge.NeoForgeGuiPlugin/]: Stopping JEI GUI
+[13Aug2024 15:02:08.405] [Render thread/INFO] [mezz.jei.library.load.PluginCaller/]: Sending Runtime Unavailable took 7.793 ms
+[13Aug2024 15:02:08.462] [Server thread/INFO] [net.minecraft.server.network.ServerGamePacketListenerImpl/]: Dev lost connection: Disconnected
+[13Aug2024 15:02:08.462] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Dev left the game
+[13Aug2024 15:02:08.500] [Server thread/INFO] [net.minecraft.server.network.ServerCommonPacketListenerImpl/]: Stopping singleplayer server as player logged out
+[13Aug2024 15:02:08.527] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Stopping server
+[13Aug2024 15:02:08.528] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving players
+[13Aug2024 15:02:08.528] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving worlds
+[13Aug2024 15:02:09.085] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[New World]'/minecraft:overworld
+[13Aug2024 15:02:09.452] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[New World]'/minecraft:the_end
+[13Aug2024 15:02:09.470] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[New World]'/minecraft:the_nether
+[13Aug2024 15:02:09.508] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: ThreadedAnvilChunkStorage (New World): All chunks are saved
+[13Aug2024 15:02:09.508] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: ThreadedAnvilChunkStorage (DIM1): All chunks are saved
+[13Aug2024 15:02:09.508] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: ThreadedAnvilChunkStorage (DIM-1): All chunks are saved
+[13Aug2024 15:02:09.508] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: ThreadedAnvilChunkStorage: All dimensions are saved

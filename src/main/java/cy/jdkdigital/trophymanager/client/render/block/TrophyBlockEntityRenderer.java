@@ -3,7 +3,7 @@ package cy.jdkdigital.trophymanager.client.render.block;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
 import cy.jdkdigital.trophymanager.TrophyManagerConfig;
-import cy.jdkdigital.trophymanager.common.tileentity.TrophyBlockEntity;
+import cy.jdkdigital.trophymanager.common.blockentity.TrophyBlockEntity;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.PlayerModel;
 import net.minecraft.client.model.geom.ModelLayers;
@@ -19,6 +19,7 @@ import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.HorizontalDirectionalBlock;
+import net.minecraft.world.phys.AABB;
 
 import javax.annotation.Nonnull;
 
@@ -35,7 +36,8 @@ public class TrophyBlockEntityRenderer implements BlockEntityRenderer<TrophyBloc
 
     @Override
     public void render(@Nonnull TrophyBlockEntity trophyTileEntity, float v, @Nonnull PoseStack poseStack, @Nonnull MultiBufferSource buffer, int combinedLightIn, int combinedOverlayIn) {
-        if (trophyTileEntity.trophyType != null) {
+        if (trophyTileEntity.trophyType != null && Minecraft.getInstance().level != null) {
+            trophyTileEntity.setLevel(Minecraft.getInstance().level);
             if (trophyTileEntity.isOnHead) {
                 poseStack.translate(0,0.4f, 0);
             }
@@ -115,7 +117,7 @@ public class TrophyBlockEntityRenderer implements BlockEntityRenderer<TrophyBloc
         entityRendererManager.setRenderShadow(false);
         Entity cachedEntity = trophyTileEntity.getCachedEntity();
         if (cachedEntity != null) {
-            entityRendererManager.render(cachedEntity, 0, 0, 0., Minecraft.getInstance().getFrameTime(), 1, matrixStack, buffer, combinedLightIn);
+            entityRendererManager.render(cachedEntity, 0, 0, 0., Minecraft.getInstance().getFrameTimeNs(), 1, matrixStack, buffer, combinedLightIn);
             renderPassengers(cachedEntity, entityRendererManager, matrixStack, buffer, combinedLightIn);
         }
 
@@ -126,9 +128,24 @@ public class TrophyBlockEntityRenderer implements BlockEntityRenderer<TrophyBloc
         if (entity.isVehicle()) {
             for(Entity rider : entity.getPassengers()) {
                 entity.positionRider(rider);
-                entityRendererManager.render(rider, rider.getX(), rider.getY(), rider.getZ(), Minecraft.getInstance().getFrameTime(), 1, matrixStack, buffer, combinedLightIn);
+                entityRendererManager.render(rider, rider.getX(), rider.getY(), rider.getZ(), Minecraft.getInstance().getFrameTimeNs(), 1, matrixStack, buffer, combinedLightIn);
                 renderPassengers(rider, entityRendererManager, matrixStack, buffer, combinedLightIn);
             }
         }
+    }
+
+    @Override
+    public boolean shouldRenderOffScreen(TrophyBlockEntity pBlockEntity) {
+        return true;
+    }
+
+    @Override
+    public int getViewDistance() {
+        return 256;
+    }
+
+    @Override
+    public AABB getRenderBoundingBox(TrophyBlockEntity blockEntity) {
+        return AABB.INFINITE;
     }
 }

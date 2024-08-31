@@ -1,31 +1,30 @@
 package cy.jdkdigital.trophymanager.client.gui;
 
-import com.mojang.blaze3d.systems.RenderSystem;
 import cy.jdkdigital.trophymanager.TrophyManager;
 import cy.jdkdigital.trophymanager.TrophyManagerConfig;
-import cy.jdkdigital.trophymanager.common.tileentity.TrophyBlockEntity;
-import cy.jdkdigital.trophymanager.network.Networking;
+import cy.jdkdigital.trophymanager.common.blockentity.TrophyBlockEntity;
+import cy.jdkdigital.trophymanager.network.PacketUpdateTrophy;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.screens.Screen;
-import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.Level;
+import net.neoforged.neoforge.network.PacketDistributor;
 
 public class TrophyScreen extends Screen
 {
     private static final int WIDTH = 150;
     private static final int HEIGHT = 150;
-    private static final ResourceLocation GUI = new ResourceLocation(TrophyManager.MODID, "textures/gui/trophy.png");
+    private static final ResourceLocation GUI = ResourceLocation.fromNamespaceAndPath(TrophyManager.MODID, "textures/gui/trophy.png");
     private final TrophyBlockEntity trophy;
 
     protected TrophyScreen(BlockPos pos) {
         super(Component.translatable("gui.trophy.screen"));
-        Level level = TrophyManager.proxy.getWorld();
+        Level level = Minecraft.getInstance().level;
         trophy = (TrophyBlockEntity) level.getBlockEntity(pos);
     }
 
@@ -45,15 +44,15 @@ public class TrophyScreen extends Screen
     }
 
     @Override
-    public void render(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTicks) {
+    protected void renderMenuBackground(GuiGraphics guiGraphics) {
         int relX = (this.width - WIDTH) / 2;
         int relY = (this.height - HEIGHT) / 2;
         guiGraphics.blit(GUI, relX, relY, 0, 0, WIDTH, HEIGHT);
 
-        guiGraphics.drawCenteredString(font, "" + trophy.scale, relX + 75, relY + 15, 10526880);
-        guiGraphics.drawCenteredString(font, "" + trophy.offsetY, relX + 75, relY + 40, 10526880);
+        guiGraphics.drawCenteredString(font, "" + trophy.scale, relX + 75, relY + 15, 14737632);
+        guiGraphics.drawCenteredString(font, "" + trophy.offsetY, relX + 75, relY + 40, 14737632);
 
-        super.render(guiGraphics, mouseX, mouseY, partialTicks);
+        super.renderMenuBackground(guiGraphics);
     }
 
     @Override
@@ -65,14 +64,26 @@ public class TrophyScreen extends Screen
         if (Screen.hasShiftDown()) {
             d = d * 10;
         }
-        trophy.scale = (float) Math.min(Math.round(trophy.scale * 10 + d) / 10f, TrophyManagerConfig.GENERAL.maxSize.get());
+        trophy.scale = (float) Math.round(trophy.scale * 10 + d) / 10f;
+        if (trophy.scale > TrophyManagerConfig.GENERAL.maxSize.get()) {
+            trophy.scale = TrophyManagerConfig.GENERAL.maxSize.get().floatValue();
+        }
+        if (trophy.scale < TrophyManagerConfig.GENERAL.maxSize.get() * -1) {
+            trophy.scale = TrophyManagerConfig.GENERAL.maxSize.get().floatValue() * -1;
+        }
     }
 
     private void adjustOffsetY(double d) {
         if (Screen.hasShiftDown()) {
             d = d * 10;
         }
-        trophy.offsetY = Math.min(Math.round(trophy.offsetY * 10 + d) / 10d, TrophyManagerConfig.GENERAL.maxYOffset.get());
+        trophy.offsetY = Math.round(trophy.offsetY * 10 + d) / 10d;
+        if (trophy.offsetY > TrophyManagerConfig.GENERAL.maxYOffset.get()) {
+            trophy.offsetY = TrophyManagerConfig.GENERAL.maxYOffset.get();
+        }
+        if (trophy.offsetY < TrophyManagerConfig.GENERAL.maxYOffset.get() * -1) {
+            trophy.offsetY = TrophyManagerConfig.GENERAL.maxYOffset.get() * -1;
+        }
     }
 
     public static void open(BlockPos pos) {
@@ -83,7 +94,7 @@ public class TrophyScreen extends Screen
         CompoundTag tag = new CompoundTag();
         tag.putDouble("OffsetY", screen.trophy.offsetY);
         tag.putFloat("Scale", screen.trophy.scale);
-        Networking.sendToServer(new Networking.PacketUpdateTrophy(screen.trophy.getBlockPos(), tag));
+        PacketDistributor.sendToServer(new PacketUpdateTrophy(screen.trophy.getBlockPos(), tag));
         close();
     }
 

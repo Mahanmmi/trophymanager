@@ -17,9 +17,9 @@ public class RenderPlayer extends Zombie
     static final EntityDataAccessor<String> DATA_UUID = SynchedEntityData.defineId(RenderPlayer.class, EntityDataSerializers.STRING);
 
     @Override
-    protected void defineSynchedData() {
-        super.defineSynchedData();
-        super.getEntityData().define(DATA_UUID, "");
+    protected void defineSynchedData(SynchedEntityData.Builder pBuilder) {
+        super.defineSynchedData(pBuilder);
+        pBuilder.define(DATA_UUID, "");
     }
 
     public void setUUIDData(String uuid) {

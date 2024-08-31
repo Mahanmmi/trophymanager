@@ -8,5 +8,5 @@ import net.minecraft.world.level.block.Block;
 
 public class ModTags
 {
-    public static final TagKey<Block> TROPHY_BASE = BlockTags.create(new ResourceLocation(TrophyManager.MODID, "trophy_base"));
+    public static final TagKey<Block> TROPHY_BASE = BlockTags.create(ResourceLocation.fromNamespaceAndPath(TrophyManager.MODID, "trophy_base"));
 }

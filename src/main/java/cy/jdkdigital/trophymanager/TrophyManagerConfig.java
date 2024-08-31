@@ -1,13 +1,11 @@
 package cy.jdkdigital.trophymanager;
 
-import net.minecraftforge.common.ForgeConfigSpec;
-import net.minecraftforge.fml.common.Mod;
+import net.neoforged.neoforge.common.ModConfigSpec;
 
-@Mod.EventBusSubscriber
 public class TrophyManagerConfig
 {
-    private static final ForgeConfigSpec.Builder SERVER_BUILDER = new ForgeConfigSpec.Builder();
-    public static final ForgeConfigSpec SERVER_CONFIG;
+    private static final ModConfigSpec.Builder SERVER_BUILDER = new ModConfigSpec.Builder();
+    public static final ModConfigSpec SERVER_CONFIG;
     public static final General GENERAL = new General(SERVER_BUILDER);
 
     static {
@@ -16,23 +14,23 @@ public class TrophyManagerConfig
 
     public static class General
     {
-        public final ForgeConfigSpec.BooleanValue dropFromPlayers;
-        public final ForgeConfigSpec.BooleanValue dropFromMobs;
-        public final ForgeConfigSpec.BooleanValue applyLooting;
-        public final ForgeConfigSpec.BooleanValue allowFakePlayer;
-        public final ForgeConfigSpec.DoubleValue dropChancePlayers;
-        public final ForgeConfigSpec.DoubleValue dropChanceBoss;
-        public final ForgeConfigSpec.DoubleValue dropChanceMobs;
-        public final ForgeConfigSpec.BooleanValue allowNonOpEdit;
-        public final ForgeConfigSpec.DoubleValue maxSize;
-        public final ForgeConfigSpec.DoubleValue maxYOffset;
-        public final ForgeConfigSpec.ConfigValue<? extends String> defaultBaseBlock;
-        public final ForgeConfigSpec.DoubleValue defaultYOffset;
-        public final ForgeConfigSpec.DoubleValue defaultScale;
-        public final ForgeConfigSpec.ConfigValue<String> nbtMap;
-        public final ForgeConfigSpec.BooleanValue rotateItemTrophies;
+        public final ModConfigSpec.BooleanValue dropFromPlayers;
+        public final ModConfigSpec.BooleanValue dropFromMobs;
+        public final ModConfigSpec.BooleanValue applyLooting;
+        public final ModConfigSpec.BooleanValue allowFakePlayer;
+        public final ModConfigSpec.DoubleValue dropChancePlayers;
+        public final ModConfigSpec.DoubleValue dropChanceBoss;
+        public final ModConfigSpec.DoubleValue dropChanceMobs;
+        public final ModConfigSpec.BooleanValue allowNonOpEdit;
+        public final ModConfigSpec.DoubleValue maxSize;
+        public final ModConfigSpec.DoubleValue maxYOffset;
+        public final ModConfigSpec.ConfigValue<? extends String> defaultBaseBlock;
+        public final ModConfigSpec.DoubleValue defaultYOffset;
+        public final ModConfigSpec.DoubleValue defaultScale;
+        public final ModConfigSpec.ConfigValue<String> nbtMap;
+        public final ModConfigSpec.BooleanValue rotateItemTrophies;
 
-        public General(ForgeConfigSpec.Builder builder) {
+        public General(ModConfigSpec.Builder builder) {
             builder.push("General");
 
             dropFromPlayers = builder
