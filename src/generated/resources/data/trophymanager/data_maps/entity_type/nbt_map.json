@@ -1,0 +1,100 @@
+{
+  "values": {
+    "infernalexp:basalt_giant": {
+      "neoforge:conditions": [
+        {
+          "type": "neoforge:mod_loaded",
+          "modid": "infernalexp"
+        }
+      ],
+      "nbt": [
+        "Size"
+      ]
+    },
+    "infernalexp:shroomloin": {
+      "neoforge:conditions": [
+        {
+          "type": "neoforge:mod_loaded",
+          "modid": "infernalexp"
+        }
+      ],
+      "nbt": [
+        "ShroomloinType"
+      ]
+    },
+    "minecraft:axolotl": {
+      "nbt": [
+        "Variant"
+      ]
+    },
+    "minecraft:cat": {
+      "nbt": [
+        "variant",
+        "CollarColor"
+      ]
+    },
+    "minecraft:fox": {
+      "nbt": [
+        "Variant"
+      ]
+    },
+    "minecraft:frog": {
+      "nbt": [
+        "variant"
+      ]
+    },
+    "minecraft:horse": {
+      "nbt": [
+        "Variant"
+      ]
+    },
+    "minecraft:llama": {
+      "nbt": [
+        "Variant"
+      ]
+    },
+    "minecraft:mooshroom": {
+      "nbt": [
+        "Type"
+      ]
+    },
+    "minecraft:panda": {
+      "nbt": [
+        "MainGene",
+        "HiddenGene"
+      ]
+    },
+    "minecraft:parrot": {
+      "nbt": [
+        "Variant"
+      ]
+    },
+    "minecraft:villager": {
+      "nbt": [
+        "VillagerData"
+      ]
+    },
+    "minecraft:wolf": {
+      "nbt": [
+        "variant",
+        "CollarColor"
+      ]
+    },
+    "minecraft:zombie_villager": {
+      "nbt": [
+        "VillagerData"
+      ]
+    },
+    "productivebees:configurable_bee": {
+      "neoforge:conditions": [
+        {
+          "type": "neoforge:mod_loaded",
+          "modid": "productivebeees"
+        }
+      ],
+      "nbt": [
+        "type"
+      ]
+    }
+  }
+}

@@ -3,6 +3,7 @@ package cy.jdkdigital.trophymanager;
 import cy.jdkdigital.trophymanager.client.render.block.TrophyBlockEntityRenderer;
 import cy.jdkdigital.trophymanager.client.render.entity.PlayerTrophyRenderer;
 import cy.jdkdigital.trophymanager.common.block.TrophyBlock;
+import cy.jdkdigital.trophymanager.common.datamap.NbtMap;
 import cy.jdkdigital.trophymanager.compat.CuriosCompat;
 import cy.jdkdigital.trophymanager.init.ModBlockEntities;
 import cy.jdkdigital.trophymanager.init.ModBlocks;
@@ -11,11 +12,13 @@ import cy.jdkdigital.trophymanager.init.ModEntities;
 import cy.jdkdigital.trophymanager.network.PacketOpenGui;
 import cy.jdkdigital.trophymanager.network.PacketUpdateTrophy;
 import net.minecraft.core.HolderLookup;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.monster.Zombie;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.CreativeModeTabs;
@@ -41,10 +44,11 @@ import net.neoforged.neoforge.common.util.FakePlayer;
 import net.neoforged.neoforge.event.BuildCreativeModeTabContentsEvent;
 import net.neoforged.neoforge.event.entity.EntityAttributeCreationEvent;
 import net.neoforged.neoforge.event.entity.living.LivingDeathEvent;
-import net.neoforged.neoforge.event.entity.player.AdvancementEvent;
 import net.neoforged.neoforge.network.event.RegisterPayloadHandlersEvent;
 import net.neoforged.neoforge.network.handling.DirectionalPayloadHandler;
 import net.neoforged.neoforge.network.registration.PayloadRegistrar;
+import net.neoforged.neoforge.registries.datamaps.DataMapType;
+import net.neoforged.neoforge.registries.datamaps.RegisterDataMapTypesEvent;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -55,7 +59,7 @@ public class TrophyManager
     public static final Logger LOGGER = LogManager.getLogger();
     public static final String MODID = "trophymanager";
 
-    //data get entity @s SelectedItem
+    public static final DataMapType<EntityType<?>, NbtMap> NBT_MAP = DataMapType.builder(ResourceLocation.fromNamespaceAndPath(MODID, "nbt_map"), Registries.ENTITY_TYPE, NbtMap.CODEC).synced(NbtMap.NBT_CODEC, false).build();
 
     public TrophyManager(IEventBus modEventBus, ModContainer modContainer) {
         // Register ourselves for server and other game events we are interested in
@@ -178,9 +182,14 @@ public class TrophyManager
                 String[] entities = {"allay", "axolotl", "bat", "bee", "blaze", "camel", "cat", "cave_spider", "chicken", "cow", "creeper", "dolphin", "donkey", "drowned", "elder_guardian", "ender_dragon", "enderman", "endermite", "evoker", "fox", "frog", "ghast", "glow_squid", "goat", "guardian", "hoglin", "horse", "husk", "illusioner", "iron_golem", "llama", "magma_cube", "mule", "mooshroom", "ocelot", "panda", "parrot", "phantom", "pig", "piglin", "piglin_brute", "pillager", "polar_bear", "pufferfish", "rabbit", "ravager", "sheep", "shulker", "silverfish", "skeleton", "skeleton_horse", "slime", "snow_golem", "spider", "squid", "stray", "strider", "tadpole", "trader_llama", "tropical_fish", "turtle", "vex", "villager", "vindicator", "wandering_trader", "warden", "witch", "wither", "wither_skeleton", "wolf", "zoglin", "zombie", "zombie_horse", "zombie_villager", "zombified_piglin", "sniffer", "bogged", "breeze"};
 
                 for (String entityId : entities) {
-                    event.accept(TrophyBlock.createTrophy("minecraft:" + entityId, new CompoundTag(), idToName("minecraft:" + entityId)));
+                    event.accept(TrophyBlock.createTrophy(BuiltInRegistries.ENTITY_TYPE.getHolder(ResourceLocation.withDefaultNamespace(entityId)).get(), new CompoundTag(), idToName("minecraft:" + entityId)));
                 }
             }
+        }
+
+        @SubscribeEvent
+        private static void registerDataMap(final RegisterDataMapTypesEvent event) {
+            event.register(NBT_MAP);
         }
     }
 

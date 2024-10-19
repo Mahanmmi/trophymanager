@@ -12,6 +12,7 @@ import cy.jdkdigital.trophymanager.init.ModTags;
 import cy.jdkdigital.trophymanager.network.PacketOpenGui;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.Holder;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.nbt.CompoundTag;
@@ -25,6 +26,7 @@ import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.ItemInteractionResult;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.player.Player;
@@ -284,17 +286,20 @@ public class TrophyBlock extends BaseEntityBlock implements SimpleWaterloggedBlo
 
     public static ItemStack createTrophy(Entity entity, CompoundTag tag) {
         Component name = entity.getDisplayName();
-        return createTrophy(entity.getEncodeId(), tag, name.getString());
+        return createTrophy(entity.getType().builtInRegistryHolder(), tag, name.getString());
     }
 
-    public static ItemStack createTrophy(String entityId, CompoundTag tag, String name) {
+    public static ItemStack createTrophy(Holder<EntityType<?>> entityType, CompoundTag tag, String name) {
+        String entityId = entityType.getKey().location().toString();
         CompoundTag entityTag = new CompoundTag();
-        Arrays.asList(TrophyManagerConfig.GENERAL.nbtMap.get().split(",")).forEach(s -> {
-            String[] nbtInfo = s.split(":");
-            if (nbtInfo.length == 3 && (nbtInfo[0] + ":" + nbtInfo[1]).equals(entityId) && tag.contains(nbtInfo[2]) && tag.get(nbtInfo[2]) != null) {
-                entityTag.put(nbtInfo[2], tag.get(nbtInfo[2]));
-            }
-        });
+        var data = entityType.getData(TrophyManager.NBT_MAP);
+        if (data != null) {
+            data.nbtKeys().forEach(key -> {
+                if (tag.contains(key)) {
+                    entityTag.put(key, tag.get(key));
+                }
+            });
+        }
 
         CompoundTag trophyTag = new CompoundTag();
         ItemStack trophy = new ItemStack(ModBlocks.TROPHY.get());
