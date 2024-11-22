@@ -3,6 +3,7 @@ package cy.jdkdigital.trophymanager;
 import cy.jdkdigital.trophymanager.client.render.block.TrophyBlockEntityRenderer;
 import cy.jdkdigital.trophymanager.client.render.entity.PlayerTrophyRenderer;
 import cy.jdkdigital.trophymanager.common.block.TrophyBlock;
+import cy.jdkdigital.trophymanager.common.datamap.DropRateMap;
 import cy.jdkdigital.trophymanager.common.datamap.NbtMap;
 import cy.jdkdigital.trophymanager.compat.CuriosCompat;
 import cy.jdkdigital.trophymanager.init.ModBlockEntities;
@@ -55,11 +56,11 @@ import org.apache.logging.log4j.Logger;
 @Mod("trophymanager")
 public class TrophyManager
 {
-    // Directly reference a log4j logger.
     public static final Logger LOGGER = LogManager.getLogger();
     public static final String MODID = "trophymanager";
 
     public static final DataMapType<EntityType<?>, NbtMap> NBT_MAP = DataMapType.builder(ResourceLocation.fromNamespaceAndPath(MODID, "nbt_map"), Registries.ENTITY_TYPE, NbtMap.CODEC).synced(NbtMap.NBT_CODEC, false).build();
+    public static final DataMapType<EntityType<?>, DropRateMap> DROP_RATE_MAP = DataMapType.builder(ResourceLocation.fromNamespaceAndPath(MODID, "drop_rate_map"), Registries.ENTITY_TYPE, DropRateMap.CODEC).synced(DropRateMap.DROP_RATE_CODEC, false).build();
 
     public TrophyManager(IEventBus modEventBus, ModContainer modContainer) {
         // Register ourselves for server and other game events we are interested in
@@ -90,7 +91,8 @@ public class TrophyManager
         Entity deadEntity = event.getEntity();
         Entity source = event.getSource().getEntity();
         if (TrophyManagerConfig.GENERAL.dropFromMobs.get() && !(deadEntity instanceof Player) && source instanceof ServerPlayer player && (!(source instanceof FakePlayer) || TrophyManagerConfig.GENERAL.allowFakePlayer.get())) {
-            double chance = deadEntity.getType().is(Tags.EntityTypes.BOSSES) ? TrophyManagerConfig.GENERAL.dropChanceBoss.get() : TrophyManagerConfig.GENERAL.dropChanceMobs.get();
+            var dropRate = deadEntity.getType().builtInRegistryHolder().getData(DROP_RATE_MAP);
+            double chance = dropRate != null ? dropRate.dropRate() : deadEntity.getType().is(Tags.EntityTypes.BOSSES) ? TrophyManagerConfig.GENERAL.dropChanceBoss.get() : TrophyManagerConfig.GENERAL.dropChanceMobs.get();
 
             boolean willDropTrophy = chance >= deadEntity.level().random.nextDouble();
 
@@ -190,6 +192,7 @@ public class TrophyManager
         @SubscribeEvent
         private static void registerDataMap(final RegisterDataMapTypesEvent event) {
             event.register(NBT_MAP);
+            event.register(DROP_RATE_MAP);
         }
     }
 

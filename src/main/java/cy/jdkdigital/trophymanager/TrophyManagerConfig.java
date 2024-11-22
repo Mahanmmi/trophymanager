@@ -86,8 +86,8 @@ public class TrophyManagerConfig
                     .defineInRange("defaultScale", 0.5, 0, Integer.MAX_VALUE);
 
             nbtMap = builder
-                    .comment("Comma separated list of entities which has NBT data that needs to be saved with the trophy. Format: modid:entityid:tag.")
-                    .define("nbtMap", "minecraft:axolotl:Variant,minecraft:cat:Variant,minecraft:cat:CollarColor,minecraft:wolf:CollarColor,minecraft:frog:variant,minecraft:llama:Variant,minecraft:horse:Variant,minecraft:fox:Variant,minecraft:parrot:Variant,minecraft:panda:MainGene,minecraft:panda:HiddenGene,minecraft:mooshroom:Type,minecraft:villager:VillagerData,productivebees:configurable_bee:type,infernalexp:shroomloin:ShroomloinType,infernalexp:basalt_giant:Size");
+                    .comment("This config has been moved to a datamap at /data/trophymanager/data_maps/entity_type/nbt_map.json")
+                    .define("nbtMap", "");
 
             rotateItemTrophies = builder
                     .comment("Have items on item trophies slowly rotate around.")

@@ -1,6 +1,7 @@
 package cy.jdkdigital.trophymanager.client.render.item;
 
 import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.math.Axis;
 import cy.jdkdigital.trophymanager.common.blockentity.TrophyBlockEntity;
 import cy.jdkdigital.trophymanager.init.ModBlocks;
 import net.minecraft.client.Minecraft;
@@ -31,6 +32,7 @@ public class TrophyItemStackRenderer extends BlockEntityWithoutLevelRenderer
         }
         blockEntity.loadData(stack.get(DataComponents.CUSTOM_DATA).copyTag(), Minecraft.getInstance().level.registryAccess());
         blockEntity.scale = 0.5f;
+//        matrixStack.mulPose(Axis.YP.rotationDegrees(180f));
 
         blockEntity.isOnHead = false;
         if (transformType.equals(ItemDisplayContext.HEAD)) {

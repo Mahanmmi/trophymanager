@@ -1,6 +1,7 @@
 package cy.jdkdigital.trophymanager.data;
 
 import cy.jdkdigital.trophymanager.TrophyManager;
+import cy.jdkdigital.trophymanager.common.datamap.DropRateMap;
 import cy.jdkdigital.trophymanager.common.datamap.NbtMap;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -37,5 +38,9 @@ public class DataMapProvider extends net.neoforged.neoforge.common.data.DataMapP
         nbt.add(ResourceLocation.parse("productivebees:configurable_bee"), new NbtMap(List.of("type")), false, new ModLoadedCondition("productivebeees"));
         nbt.add(ResourceLocation.parse("infernalexp:shroomloin"), new NbtMap(List.of("ShroomloinType")), false, new ModLoadedCondition("infernalexp"));
         nbt.add(ResourceLocation.parse("infernalexp:basalt_giant"), new NbtMap(List.of("Size")), false, new ModLoadedCondition("infernalexp"));
+
+        final var dropRates = builder(TrophyManager.DROP_RATE_MAP);
+
+        dropRates.add(BuiltInRegistries.ENTITY_TYPE.getKey(EntityType.ENDER_DRAGON), new DropRateMap(1f), false);
     }
 }
